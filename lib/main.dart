@@ -31,4 +31,15 @@ class ToDo {
     "content": content,
     "deadline": deadline
   };
+
+  String get displayDeadline {
+    if (deadline == "everyday") {
+      return "毎日";
+    } else if (deadline == "tomorrow") {
+      return "明日まで";
+    } else if (deadline == "today") {
+      return "今日中";
+    }
+    return "";
+  }
 }
