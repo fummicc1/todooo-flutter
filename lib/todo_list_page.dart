@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todooo/create_todo_page.dart';
 import 'package:todooo/main.dart';
 import 'package:todooo/repository/local_storage_client.dart';
+import 'package:todooo/todo_detail_page.dart';
 
 class ToDoListPage extends StatefulWidget {
   @override
@@ -22,20 +23,16 @@ class _ToDoListPageState extends State<ToDoListPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("ToDooo"),
+        title: Text("ToDooo一覧"),
       ),
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.all(16),
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
+          child: ListView.builder(
             itemCount: todoList.length,
             itemBuilder: (context, index) {
               return Container(
-                width: MediaQuery.of(context).size.width * 0.4,
-                height: 60,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Card(
                     elevation: 4,
                     child: ListTile(
@@ -48,7 +45,13 @@ class _ToDoListPageState extends State<ToDoListPage> {
                         todoList[index].displayDeadline,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    )),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ToDoDetailPage(todoList[index])
+                        ));
+                      },
+                    ),
+                ),
               );
             },
           ),
@@ -59,7 +62,6 @@ class _ToDoListPageState extends State<ToDoListPage> {
         width: 64,
         height: 64,
         child: FloatingActionButton(
-          elevation: 12,
           child: Icon(
             Icons.add,
             size: 48,
