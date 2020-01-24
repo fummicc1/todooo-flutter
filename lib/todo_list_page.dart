@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todooo/create_todo_page.dart';
 import 'package:todooo/main.dart';
+import 'package:todooo/repository/local_storage_client.dart';
 
 class ToDoListPage extends StatefulWidget {
   @override
@@ -7,20 +9,16 @@ class ToDoListPage extends StatefulWidget {
 }
 
 class _ToDoListPageState extends State<ToDoListPage> {
-  List<ToDo> todoList = [
-    ToDo("テスト1", DateTime(2020, 1, 27)),
-    ToDo("テスト2", DateTime(2020, 1, 27)),
-    ToDo("テスト3", DateTime(2020, 1, 27)),
-    ToDo("テスト4", DateTime(2020, 1, 28)),
-    ToDo("テスト5", DateTime(2020, 1, 28)),
-    ToDo("テスト6", DateTime(2020, 1, 28)),
-    ToDo("テスト7", DateTime(2020, 1, 29)),
-    ToDo("テスト8", DateTime(2020, 1, 29)),
-    ToDo("テスト9", DateTime(2020, 1, 29)),
-  ];
+  List<ToDo> todoList = [];
 
   @override
   Widget build(BuildContext context) {
+
+    LocalStorageClient().getToDos().then((list) {
+      setState(() {
+        todoList = list;
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -35,12 +33,13 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 width: MediaQuery.of(context).size.width * 0.7,
                 height: 150,
                 child: Card(
-                  elevation: 4,
+                    elevation: 4,
                     child: ListTile(
-                  title: Text(todoList[index].content, style: TextStyle(
-                    fontWeight: FontWeight.bold
-                  ),),
-                )),
+                      title: Text(
+                        todoList[index].content,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    )),
               ),
             );
           },
@@ -55,6 +54,11 @@ class _ToDoListPageState extends State<ToDoListPage> {
             Icons.add,
             size: 48,
           ),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CreateToDoPage(),
+            ));
+          },
         ),
       ),
     );

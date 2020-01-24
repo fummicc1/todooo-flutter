@@ -18,7 +18,17 @@ class MyApp extends StatelessWidget {
 }
 
 class ToDo {
-  final String content;
-  final DateTime deadline;
+  String content;
+  String deadline;
   ToDo(this.content, this.deadline);
+
+  ToDo.fromJSON(Map<String, dynamic> json) {
+    content = json["content"];
+    deadline = json["deadline"];
+  }
+
+  Map<String, String> get json => {
+    "content": content,
+    "deadline": deadline
+  };
 }
