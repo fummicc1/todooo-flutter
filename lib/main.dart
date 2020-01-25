@@ -10,7 +10,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'todooo',
       theme: ThemeData(
+        backgroundColor: Color(0xFF55b9f3),
+        appBarTheme: AppBarTheme(
+          color: Color(0xFF55b9f3),
+        ),
         primarySwatch: Colors.blue,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF55b9f3)
+        )
       ),
       home: ToDoListPage(),
     );
@@ -20,16 +27,18 @@ class MyApp extends StatelessWidget {
 class ToDo {
   String content;
   String deadline;
-  ToDo(this.content, this.deadline);
-
+  bool isDone;
+  ToDo(this.content, this.deadline, this.isDone);
   ToDo.fromJSON(Map<String, dynamic> json) {
     content = json["content"];
     deadline = json["deadline"];
+    isDone = json["is_done"];
   }
 
-  Map<String, String> get json => {
+  Map<String, dynamic> get json => {
     "content": content,
-    "deadline": deadline
+    "deadline": deadline,
+    "is_done": isDone
   };
 
   String get displayDeadline {
