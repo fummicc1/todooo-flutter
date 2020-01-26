@@ -90,7 +90,7 @@ class _CreateToDoPageState extends State<CreateToDoPage> {
               onPressed: () {
 
                 if (_content.isEmpty || _deadlineType.isEmpty) return;
-                final todo = ToDo(_content, _deadlineType, false);
+                final todo = ToDo(_content, _deadlineType);
 
                 LocalStorageClient().saveToDo(todo).then((isSuccess) {
                   if (isSuccess) Navigator.of(context).pop();
