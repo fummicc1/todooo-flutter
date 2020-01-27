@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todooo/main.dart';
+
+import 'todo.dart';
 
 class LocalStorageClient {
 
@@ -14,10 +15,10 @@ class LocalStorageClient {
       return Future.value([]);
     }
 
-    final memosJsonData = shared.get("todo_list");
-    if (memosJsonData == null) return Future.value([]);
+    final todosJSONData = shared.get("todo_list");
+    if (todosJSONData == null) return Future.value([]);
 
-    final List<dynamic> memosMap = json.decode(memosJsonData) as List<dynamic>;
+    final List<dynamic> memosMap = json.decode(todosJSONData) as List<dynamic>;
 
     List<ToDo> todoList = [];
 
@@ -40,9 +41,12 @@ class LocalStorageClient {
   Future<bool> deleteToDo(ToDo todo) async {
     final shared = await SharedPreferences.getInstance();
     final todoList = await getToDos();
-    todoList.remove(todo);
+    var index = todoList.indexWhere((element) => element.createDate == todo.createDate);
+    print(index);
+    todoList.removeAt(index);
     List<Map<String, dynamic>> _json = todoList.map((todo) => todo.json).toList();
     String jsonData = json.encode(_json);
+    print(jsonData);
     return shared.setString("todo_list", jsonData);
   }
 }

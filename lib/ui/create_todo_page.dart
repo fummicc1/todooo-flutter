@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todooo/main.dart';
-import 'package:todooo/repository/local_storage_client.dart';
+import 'package:provider/provider.dart';
+import 'package:todooo/bloc/bloc.dart';
+import 'package:todooo/data/todo.dart';
 
 class CreateToDoPage extends StatefulWidget {
   @override
@@ -14,6 +15,9 @@ class _CreateToDoPageState extends State<CreateToDoPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Bloc bloc = Provider.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("ToDoooを作成"),
@@ -88,13 +92,11 @@ class _CreateToDoPageState extends State<CreateToDoPage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               onPressed: () {
-
                 if (_content.isEmpty || _deadlineType.isEmpty) return;
-                final todo = ToDo(_content, _deadlineType);
-
-                LocalStorageClient().saveToDo(todo).then((isSuccess) {
-                  if (isSuccess) Navigator.of(context).pop();
-                });
+                final todo = ToDo(_content, _deadlineType, DateTime.now(), false);
+                print(bloc);
+                bloc.createToDo(todo);
+                Navigator.of(context).pop();
               },
             )
           ],
