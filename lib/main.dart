@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todooo/todo_list_page.dart';
+import 'package:provider/provider.dart';
+import 'package:todooo/bloc/bloc.dart';
+import 'package:todooo/ui/todo_list_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,38 +10,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'todooo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xFFf3d91f),
+        backgroundColor: Color(0xFF212ae0),
       ),
-      home: ToDoListPage(),
+      home: Provider(
+          create: (_) => Bloc(),
+          dispose: (_, bloc) => bloc.dispose,
+          child: ToDoListPage()),
     );
-  }
-}
-
-class ToDo {
-  String content;
-  String deadline;
-  ToDo(this.content, this.deadline);
-
-  ToDo.fromJSON(Map<String, dynamic> json) {
-    content = json["content"];
-    deadline = json["deadline"];
-  }
-
-  Map<String, String> get json => {
-    "content": content,
-    "deadline": deadline
-  };
-
-  String get displayDeadline {
-    if (deadline == "everyday") {
-      return "毎日";
-    } else if (deadline == "tomorrow") {
-      return "明日まで";
-    } else if (deadline == "today") {
-      return "今日中";
-    }
-    return "";
   }
 }
