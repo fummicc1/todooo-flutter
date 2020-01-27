@@ -3,10 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:todooo/bloc/bloc.dart';
 import 'package:todooo/ui/create_todo_page.dart';
 import 'package:todooo/ui/list_page.dart';
-import 'package:todooo/main.dart';
 import 'package:todooo/data/todo.dart';
 
-import '../data/local_storage_client.dart';
 
 class ToDoListPage extends StatefulWidget {
   @override

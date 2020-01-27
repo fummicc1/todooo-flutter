@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/data/todo.dart';
 import '../bloc/bloc.dart';
-import '../data/local_storage_client.dart';
 
 class ListPage extends StatefulWidget {
   final List<ToDo> todoList;
