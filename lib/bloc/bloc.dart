@@ -29,6 +29,14 @@ class Bloc {
     });
   }
 
+  void updateToDo(ToDo toDo) {
+    LocalStorageClient().updateToDo(toDo).then((_) {
+      LocalStorageClient().getToDos().then((list) {
+        _controller.add(list);
+      });
+    });
+  }
+
   void dispose() {
     _controller.close();
   }

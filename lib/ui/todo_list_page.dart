@@ -49,6 +49,9 @@ class _ToDoListPageState extends State<ToDoListPage>
         stream: bloc.todoListStream,
         initialData: [],
         builder: (context, snapshot) {
+
+          var todoList = snapshot.data ?? [];
+
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -89,13 +92,13 @@ class _ToDoListPageState extends State<ToDoListPage>
               child: Container(
                   padding: EdgeInsets.all(16),
                   child: TabBarView(controller: _tabController, children: [
-                    ListPage(snapshot.data
+                    ListPage(todoList
                         .where((todo) => todo.deadline == "today")
                         .toList()),
-                    ListPage(snapshot.data
+                    ListPage(todoList
                         .where((todo) => todo.deadline == "tomorrow")
                         .toList()),
-                    ListPage(snapshot.data
+                    ListPage(todoList
                         .where((todo) => todo.deadline == "everyday")
                         .toList()),
                   ])),
