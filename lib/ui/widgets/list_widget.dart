@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/data/todo.dart';
-import '../bloc/todo_list_bloc.dart';
+import '../../bloc/todo_list_bloc.dart';
 
-class ListPage extends StatefulWidget {
+class ListWidget extends StatefulWidget {
   final List<ToDo> todoList;
 
-  ListPage(this.todoList);
+  ListWidget(this.todoList);
 
   @override
-  _ListPageState createState() => _ListPageState();
+  _ListWidgetState createState() => _ListWidgetState();
 }
 
-class _ListPageState extends State<ListPage> {
+class _ListWidgetState extends State<ListWidget> {
 
   @override
   void dispose() {

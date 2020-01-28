@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/bloc/todo_list_bloc.dart';
-import 'package:todooo/ui/create_todo_page.dart';
-import 'package:todooo/ui/list_page.dart';
+import 'package:todooo/ui/pages/create_todo_page.dart';
+import 'package:todooo/ui/widgets/list_widget.dart';
 import 'package:todooo/data/todo.dart';
 
 
@@ -91,13 +91,13 @@ class _ToDoListPageState extends State<ToDoListPage>
               child: Container(
                   padding: EdgeInsets.all(16),
                   child: TabBarView(controller: _tabController, children: [
-                    ListPage(todoList
+                    ListWidget(todoList
                         .where((todo) => todo.deadline == "today")
                         .toList()),
-                    ListPage(todoList
+                    ListWidget(todoList
                         .where((todo) => todo.deadline == "tomorrow")
                         .toList()),
-                    ListPage(todoList
+                    ListWidget(todoList
                         .where((todo) => todo.deadline == "everyday")
                         .toList()),
                   ])),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/bloc/todo_list_bloc.dart';
 import 'package:todooo/data/local_storage_client.dart';
-import 'package:todooo/ui/todo_list_page.dart';
+import 'package:todooo/ui/pages/todo_list_page.dart';
 
 void main() => runApp(MyApp());
 
