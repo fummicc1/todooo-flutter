@@ -9,7 +9,7 @@ class LocalStorageClientMock with LocalStorageRepository {
   @override
   Future<bool> deleteToDo(ToDo toDo) {
     int index = todoList.indexWhere((todo) => toDo.createDate == toDo.createDate);
-    if (index == null) return Future.value(false);
+    if (index == -1) return Future.value(false);
     todoList.removeAt(index);
     return Future.value(true);
   }
@@ -22,7 +22,7 @@ class LocalStorageClientMock with LocalStorageRepository {
   @override
   Future<bool> saveToDo(ToDo toDo) {
     int index = todoList.indexWhere((todo) => toDo.createDate == toDo.createDate);
-    if (index != null) return Future.value(false);
+    if (index != -1) return Future.value(false);
     todoList.add(toDo);
     return Future.value(true);
   }
