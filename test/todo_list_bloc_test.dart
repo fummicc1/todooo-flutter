@@ -20,4 +20,13 @@ void main() {
     var result = await bloc.deleteToDo(toDo);
     expect(result, false);
   });
+
+  test('test for existing todo deletion.', () async {
+    LocalStorageClientMock localStorageClientMock = LocalStorageClientMock();
+    ToDo toDo = ToDo("Test", "today", DateTime.now());
+    localStorageClientMock.todoList = [toDo];
+    ToDoListBloc bloc = ToDoListBloc(localStorageClientMock);
+    var result = await bloc.deleteToDo(toDo);
+    expect(result, true);
+  });
 }
