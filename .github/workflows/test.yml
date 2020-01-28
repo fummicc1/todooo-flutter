@@ -1,0 +1,12 @@
+name: Test Flutter.
+
+on: push
+
+jobs:
+  build:
+    name: Test Flutter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: flutter pub get
+      - run: flutter test
