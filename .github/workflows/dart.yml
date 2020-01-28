@@ -11,8 +11,11 @@ jobs:
       image:  google/dart:latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Install dependencies
-      run: pub get
-    - name: Run tests
-      run: pub run test
+      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Run tests
+        run: flutter test
+      - name: Build apk
+        run: flutter run apk
