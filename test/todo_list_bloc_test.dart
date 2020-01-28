@@ -6,10 +6,18 @@ import 'package:todooo/data/todo.dart';
 
 // ToDoListBloc Tests
 void main() {
+
   test('test for todo creation', () async {
+    ToDoListBloc bloc = ToDoListBloc(LocalStorageClientMock());
+    ToDo toDo = ToDo("", "everyday", DateTime.now());
+    var result = await bloc.createToDo(toDo);
+    expect(result, true);
+  });
+
+  test('test for todo deletion with empty todolist.', () async {
     ToDoListBloc bloc = ToDoListBloc(LocalStorageClientMock());
     ToDo toDo = ToDo("Test", "today", DateTime.now());
     var result = await bloc.deleteToDo(toDo);
-    expect(result, true);
+    expect(result, false);
   });
 }
