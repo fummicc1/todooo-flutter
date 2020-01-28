@@ -4,10 +4,9 @@ class ToDo {
   DateTime createDate;
   bool isDone;
 
-  ToDo(this.content, this.deadline, this.createDate, this.isDone);
+  ToDo(this.content, this.deadline, this.createDate, {this.isDone = false});
 
   bool get isOver {
-
     final current = DateTime.now();
 
     if (deadline != "today") {
@@ -35,11 +34,11 @@ class ToDo {
   }
 
   Map<String, dynamic> get json => {
-    "content": content,
-    "deadline": deadline,
-    "create_date": createDate.millisecondsSinceEpoch,
-    "is_done": isDone
-  };
+        "content": content,
+        "deadline": deadline,
+        "create_date": createDate.millisecondsSinceEpoch,
+        "is_done": isDone
+      };
 
   String get displayDeadline {
     if (deadline == "everyday") {

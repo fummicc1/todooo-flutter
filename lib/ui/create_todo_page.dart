@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/bloc/bloc.dart';
+import 'package:todooo/bloc/todo_list_bloc.dart';
 import 'package:todooo/data/todo.dart';
 
 class CreateToDoPage extends StatefulWidget {
@@ -16,7 +16,7 @@ class _CreateToDoPageState extends State<CreateToDoPage> {
   @override
   Widget build(BuildContext context) {
 
-    Bloc bloc = Provider.of(context);
+    ToDoListBloc bloc = Provider.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -93,7 +93,7 @@ class _CreateToDoPageState extends State<CreateToDoPage> {
               ),
               onPressed: () {
                 if (_content.isEmpty || _deadlineType.isEmpty) return;
-                final todo = ToDo(_content, _deadlineType, DateTime.now(), false);
+                final todo = ToDo(_content, _deadlineType, DateTime.now());
                 print(bloc);
                 bloc.createToDo(todo);
                 Navigator.of(context).pop();

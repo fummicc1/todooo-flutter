@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/bloc/bloc.dart';
+import 'package:todooo/bloc/todo_list_bloc.dart';
+import 'package:todooo/data/local_storage_client.dart';
 import 'package:todooo/ui/todo_list_page.dart';
 
 void main() => runApp(MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color(0xFF212ae0),
       ),
       home: Provider(
-          create: (_) => Bloc(),
+          create: (_) => ToDoListBloc(LocalStorageClient()),
           dispose: (_, bloc) => bloc.dispose,
           child: ToDoListPage()),
     );

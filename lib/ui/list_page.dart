@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/data/todo.dart';
-import '../bloc/bloc.dart';
+import '../bloc/todo_list_bloc.dart';
 
 class ListPage extends StatefulWidget {
   final List<ToDo> todoList;
@@ -21,7 +21,7 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    Bloc bloc = Provider.of(context);
+    ToDoListBloc bloc = Provider.of(context);
     return ListView.builder(
       itemCount: widget.todoList.length,
       itemBuilder: (context, index) {

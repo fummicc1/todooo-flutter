@@ -1,10 +1,15 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'todo.dart';
 
-class LocalStorageClient {
+mixin LocalStorageRepository {
+  Future<List<ToDo>> getToDos();
+  Future<bool> saveToDo(ToDo toDo);
+  Future<bool> updateToDo(ToDo toDo);
+  Future<bool> deleteToDo(ToDo toDo);
+}
+
+class LocalStorageClient with LocalStorageRepository {
 
   Future<List<ToDo>> getToDos() async {
 

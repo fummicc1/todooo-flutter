@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/bloc/bloc.dart';
+import 'package:todooo/bloc/todo_list_bloc.dart';
 import 'package:todooo/ui/create_todo_page.dart';
 import 'package:todooo/ui/list_page.dart';
 import 'package:todooo/data/todo.dart';
@@ -43,7 +43,7 @@ class _ToDoListPageState extends State<ToDoListPage>
 
   @override
   Widget build(BuildContext context) {
-    Bloc bloc = Provider.of(context);
+    ToDoListBloc bloc = Provider.of(context);
     return StreamBuilder<List<ToDo>>(
         stream: bloc.todoListStream,
         initialData: [],
