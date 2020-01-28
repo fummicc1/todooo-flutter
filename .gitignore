@@ -41,7 +41,7 @@ android/key.properties
 key.jks
 
 # FirebaseConfig
-## ioS
+## iOS
 GoogleService-Info.plist
 ## Android
 google-services.json
