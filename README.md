@@ -1,16 +1,23 @@
 # todooo
 
+## Install URL
+### Android
+https://play.google.com/store/apps/details?id=dev.fummicc1.todooo
+
+### iOS 
+まだ
+
 ## アプリのコア機能
-- 直近のToDoを作成・みることができるアプリ
+直近のToDoを作成・みることができるアプリ！
+日時を選択しないスタイルでToDoが作成
+期限がすぎたものは表示されない仕様になっている（多分）
 
-## 画面構成
-![scene](images/scene.png)
-
-## 途中経過（1/24）
 
 ### 一覧画面
 
-![list_scene](images/list_scene.png)
 
 ### 作成画面
-![create_scene](images/create_scene.png)
+
+
+### 画面構成
+![scene](images/scene.png)
