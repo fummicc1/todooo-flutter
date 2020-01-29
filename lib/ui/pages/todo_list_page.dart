@@ -52,15 +52,13 @@ class _ToDoListPageState extends State<ToDoListPage>
         stream: bloc.todoListStream,
         initialData: [],
         builder: (context, snapshot) {
-
-          var todoList = snapshot.data ?? [];
-
+          final todoList = snapshot.data;
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
               title: Text(
                 getAppbarTitle(),
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               ),
               leading: Container(),
               bottom: PreferredSize(
