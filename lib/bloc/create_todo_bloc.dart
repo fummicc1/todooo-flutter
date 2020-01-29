@@ -15,9 +15,10 @@ class CreateToDoBloc {
   Sink<void> get saveButtonTapSink => _saveButtonTapController.sink;
 
   BehaviorSubject<String> _contentTextController = BehaviorSubject();
-  Sink<String> get contentTextStream => _contentTextController.sink;
+  Sink<String> get contentTextSink => _contentTextController.sink;
   BehaviorSubject<String> _deadlineRadioButtonController = BehaviorSubject();
   Sink<String> get deadlineRadioButtonSink => _deadlineRadioButtonController.sink;
+  String get deadlineRadioButton => _deadlineRadioButtonController.value;
 
   CreateToDoBloc(this._repository) {
     _saveButtonTapController.stream.listen((_) async {
@@ -31,5 +32,12 @@ class CreateToDoBloc {
   Future<bool> createToDo(ToDo todo) {
     if (todo.content.isEmpty || todo.isDone || todo.isOver) return Future.value(false);
     return _repository.saveToDo(todo);
+  }
+
+  void dispose() {
+    _isPersistingSubject.close();
+    _saveButtonTapController.close();
+    _contentTextController.close();
+    _deadlineRadioButtonController.close();
   }
 }

@@ -5,6 +5,10 @@ import 'package:todooo/ui/pages/create_todo_page.dart';
 import 'package:todooo/ui/widgets/list_widget.dart';
 import 'package:todooo/data/todo.dart';
 
+import '../../bloc/create_todo_bloc.dart';
+import '../../bloc/create_todo_bloc.dart';
+import '../../data/local_storage_client.dart';
+
 
 class ToDoListPage extends StatefulWidget {
   @override
@@ -78,9 +82,9 @@ class _ToDoListPageState extends State<ToDoListPage>
                   ),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Provider(
-                          create: (_) => bloc,
-                          dispose: null,
+                      builder: (context) => Provider<CreateToDoBloc>(
+                          create: (_) => CreateToDoBloc(LocalStorageClient()),
+                          dispose: (_, bloc) => bloc.dispose(),
                           child: CreateToDoPage()),
                     ));
                   },

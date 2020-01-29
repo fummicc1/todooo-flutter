@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:rxdart/subjects.dart';
 import 'package:todooo/data/local_storage_client.dart';
 import 'package:todooo/data/todo.dart';
 
@@ -6,10 +7,19 @@ class ToDoListBloc {
 
   final LocalStorageRepository localStorageRepository;
 
-  StreamController<List<ToDo>> _controller = StreamController();
+  BehaviorSubject<List<ToDo>> _controller = BehaviorSubject();
   Stream<List<ToDo>> get todoListStream => _controller.stream;
+  BehaviorSubject<void> _updateToDoListController = BehaviorSubject();
+  Sink<void> get todoListSink => _updateToDoListController.sink;
 
   ToDoListBloc(this.localStorageRepository) {
+    _getToDoList();
+    _updateToDoListController.listen((_) {
+      _getToDoList();
+    });
+  }
+
+  void _getToDoList() {
     localStorageRepository.getToDos().then((list) {
       _controller.add(list);
     });
