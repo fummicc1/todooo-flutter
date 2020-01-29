@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/bloc/todo_list_bloc.dart';
-import 'package:todooo/data/todo.dart';
 
 import '../../bloc/create_todo_bloc.dart';
 
