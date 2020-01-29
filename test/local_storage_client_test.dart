@@ -13,4 +13,10 @@ void main() {
     await client.deleteToDo(todo);
     expect(afterToDoList.length, beforeToDoList.length + 1);
   });
+
+  test("test for LocalStorageClinet to delete todo properly", () {
+  });
+
+  test("test for LoalStorageClient to update todo properly", () {
+  });
 }
