@@ -10,7 +10,7 @@ class ToDoListBloc {
   BehaviorSubject<List<ToDo>> _controller = BehaviorSubject();
   Stream<List<ToDo>> get todoListStream => _controller.stream;
   BehaviorSubject<void> _updateToDoListController = BehaviorSubject();
-  Sink<void> get todoListSink => _updateToDoListController.sink;
+  Sink<void> get updateTodoListSink => _updateToDoListController.sink;
 
   ToDoListBloc(this.localStorageRepository) {
     _getToDoList();

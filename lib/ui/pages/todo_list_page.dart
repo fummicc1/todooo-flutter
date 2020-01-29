@@ -84,7 +84,10 @@ class _ToDoListPageState extends State<ToDoListPage>
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Provider<CreateToDoBloc>(
                           create: (_) => CreateToDoBloc(LocalStorageClient()),
-                          dispose: (_, bloc) => bloc.dispose(),
+                          dispose: (_, _bloc) {
+                            bloc.updateTodoListSink.add(null);
+                            _bloc.dispose();
+                          },
                           child: CreateToDoPage()),
                     ));
                   },
