@@ -4,7 +4,6 @@ import 'package:todooo/data/todo.dart';
 
 void main() {
 
-  // test環境だとうまく保存できないっぽい
   test("test for LocalStorageClient to save todo", () async {
     LocalStorageClient client = LocalStorageClient();
     List<ToDo> beforeToDoList = await client.getToDos(isTesting: true);

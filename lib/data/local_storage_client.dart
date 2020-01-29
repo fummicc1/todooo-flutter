@@ -62,7 +62,7 @@ class LocalStorageClient with LocalStorageRepository {
     final shared = await SharedPreferences.getInstance();
     final todoList = await getToDos();
     var index =
-        todoList.indexWhere((element) => element.createDate == todo.createDate);
+        todoList.indexWhere((element) => element.createDate.isAtSameMomentAs(todo.createDate));
     print("todo trying to delete is: $index");
     if (index >= 0) todoList.removeAt(index);
     List<Map<String, dynamic>> _json =
