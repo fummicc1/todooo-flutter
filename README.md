@@ -5,7 +5,7 @@
 https://play.google.com/store/apps/details?id=dev.fummicc1.todooo
 
 ### iOS 
-まだ
+https://apps.apple.com/jp/app/todooo/id1496331664
 
 ## アプリのコア機能
 直近のToDoを作成・みることができるアプリ！
