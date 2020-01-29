@@ -21,12 +21,12 @@ class ToDoCellWidget extends StatelessWidget {
           leading: todo.isDone ? Icon(Icons.done) : null,
           title: Text(
             todo.content,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline4,
             maxLines: 3,
           ),
           trailing: Text(
             todo.displayDeadline,
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           onTap: () {
             showModalBottomSheet(
@@ -35,7 +35,6 @@ class ToDoCellWidget extends StatelessWidget {
                 ),
                 context: context,
                 builder: (context) {
-
                   return Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
