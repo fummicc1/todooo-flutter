@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/bloc/bloc.dart';
-import 'package:todooo/ui/create_todo_page.dart';
-import 'package:todooo/ui/list_page.dart';
+import 'package:todooo/bloc/todo_list_bloc.dart';
+import 'package:todooo/ui/pages/create_todo_page.dart';
+import 'package:todooo/ui/widgets/list_widget.dart';
 import 'package:todooo/data/todo.dart';
+
+import '../../bloc/create_todo_bloc.dart';
+import '../../bloc/create_todo_bloc.dart';
+import '../../data/local_storage_client.dart';
 
 
 class ToDoListPage extends StatefulWidget {
@@ -43,7 +47,7 @@ class _ToDoListPageState extends State<ToDoListPage>
 
   @override
   Widget build(BuildContext context) {
-    Bloc bloc = Provider.of(context);
+    ToDoListBloc bloc = Provider.of(context);
     return StreamBuilder<List<ToDo>>(
         stream: bloc.todoListStream,
         initialData: [],
@@ -78,9 +82,12 @@ class _ToDoListPageState extends State<ToDoListPage>
                   ),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Provider(
-                          create: (_) => bloc,
-                          dispose: null,
+                      builder: (context) => Provider<CreateToDoBloc>(
+                          create: (_) => CreateToDoBloc(LocalStorageClient()),
+                          dispose: (_, _bloc) {
+                            bloc.updateTodoListSink.add(null);
+                            _bloc.dispose();
+                          },
                           child: CreateToDoPage()),
                     ));
                   },
@@ -91,13 +98,13 @@ class _ToDoListPageState extends State<ToDoListPage>
               child: Container(
                   padding: EdgeInsets.all(16),
                   child: TabBarView(controller: _tabController, children: [
-                    ListPage(todoList
+                    ListWidget(todoList
                         .where((todo) => todo.deadline == "today")
                         .toList()),
-                    ListPage(todoList
+                    ListWidget(todoList
                         .where((todo) => todo.deadline == "tomorrow")
                         .toList()),
-                    ListPage(todoList
+                    ListWidget(todoList
                         .where((todo) => todo.deadline == "everyday")
                         .toList()),
                   ])),

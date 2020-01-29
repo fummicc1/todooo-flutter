@@ -1,12 +1,17 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'todo.dart';
 
-class LocalStorageClient {
+mixin LocalStorageRepository {
+  Future<List<ToDo>> getToDos();
+  Future<bool> saveToDo(ToDo toDo);
+  Future<bool> updateToDo(ToDo toDo);
+  Future<bool> deleteToDo(ToDo toDo);
+}
 
-  Future<List<ToDo>> getToDos() async {
+class LocalStorageClient with LocalStorageRepository {
+  Future<List<ToDo>> getToDos({bool isTesting = false}) async {
+    if (isTesting) SharedPreferences.setMockInitialValues({});
 
     final shared = await SharedPreferences.getInstance();
 
@@ -33,7 +38,8 @@ class LocalStorageClient {
     final shared = await SharedPreferences.getInstance();
     final todoList = await getToDos();
     todoList.add(todo);
-    List<Map<String, dynamic>> _json = todoList.map((todo) => todo.json).toList();
+    List<Map<String, dynamic>> _json =
+        todoList.map((todo) => todo.json).toList();
     String jsonData = json.encode(_json);
     return shared.setString("todo_list", jsonData);
   }
@@ -41,11 +47,13 @@ class LocalStorageClient {
   Future<bool> updateToDo(ToDo todo) async {
     final shared = await SharedPreferences.getInstance();
     final todoList = await getToDos();
-    var index = todoList.indexWhere((element) => element.createDate == todo.createDate);
+    var index =
+        todoList.indexWhere((element) => element.createDate == todo.createDate);
     print(index);
     todoList.removeAt(index);
     todoList.add(todo);
-    List<Map<String, dynamic>> _json = todoList.map((todo) => todo.json).toList();
+    List<Map<String, dynamic>> _json =
+        todoList.map((todo) => todo.json).toList();
     String jsonData = json.encode(_json);
     return shared.setString("todo_list", jsonData);
   }
@@ -53,10 +61,12 @@ class LocalStorageClient {
   Future<bool> deleteToDo(ToDo todo) async {
     final shared = await SharedPreferences.getInstance();
     final todoList = await getToDos();
-    var index = todoList.indexWhere((element) => element.createDate == todo.createDate);
-    print(index);
-    todoList.removeAt(index);
-    List<Map<String, dynamic>> _json = todoList.map((todo) => todo.json).toList();
+    var index =
+        todoList.indexWhere((element) => element.createDate.isAtSameMomentAs(todo.createDate));
+    print("todo trying to delete is: $index");
+    if (index >= 0) todoList.removeAt(index);
+    List<Map<String, dynamic>> _json =
+        todoList.map((todo) => todo.json).toList();
     String jsonData = json.encode(_json);
     print(jsonData);
     return shared.setString("todo_list", jsonData);
