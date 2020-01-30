@@ -6,7 +6,10 @@ import 'package:todooo/ui/pages/todo_list_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(Provider(
+    create: (_) => null,
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

@@ -97,13 +97,13 @@ class _ToDoListPageState extends State<ToDoListPage>
                   padding: EdgeInsets.all(16),
                   child: TabBarView(controller: _tabController, children: [
                     ListWidget(todoList
-                        .where((todo) => todo.deadline == "today")
+                        .where((todo) => todo.deadline == "today" && !todo.isOver)
                         .toList()),
                     ListWidget(todoList
-                        .where((todo) => todo.deadline == "tomorrow")
+                        .where((todo) => todo.deadline == "tomorrow" && !todo.isOver)
                         .toList()),
                     ListWidget(todoList
-                        .where((todo) => todo.deadline == "everyday")
+                        .where((todo) => todo.deadline == "everyday" && !todo.isOver)
                         .toList()),
                   ])),
             ),
