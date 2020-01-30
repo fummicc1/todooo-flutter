@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFf3d91f),
         backgroundColor: Color(0xFF212ae0),
       ),
-      home: Provider(
+      home: Provider<ToDoListBloc>(
           create: (_) => ToDoListBloc(LocalStorageClient()),
           dispose: (_, bloc) => bloc.dispose,
           child: ToDoListPage()),

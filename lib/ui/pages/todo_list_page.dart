@@ -4,11 +4,11 @@ import 'package:todooo/bloc/todo_list_bloc.dart';
 import 'package:todooo/ui/pages/create_todo_page.dart';
 import 'package:todooo/ui/widgets/list_widget.dart';
 import 'package:todooo/data/todo.dart';
+import 'package:todooo/ui/widgets/todo_cell_widget.dart';
 
 import '../../bloc/create_todo_bloc.dart';
 import '../../bloc/create_todo_bloc.dart';
 import '../../data/local_storage_client.dart';
-
 
 class ToDoListPage extends StatefulWidget {
   @override
@@ -53,6 +53,13 @@ class _ToDoListPageState extends State<ToDoListPage>
         initialData: [],
         builder: (context, snapshot) {
           final todoList = snapshot.data;
+
+          final sortHotToDoList =
+              todoList.where((todo) => todo.deadline == "today").toList();
+          sortHotToDoList.sort((pre, next) => pre
+              .createDate.millisecondsSinceEpoch
+              .compareTo(next.createDate.millisecondsSinceEpoch));
+
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -93,19 +100,51 @@ class _ToDoListPageState extends State<ToDoListPage>
               ],
             ),
             body: SafeArea(
-              child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: TabBarView(controller: _tabController, children: [
-                    ListWidget(todoList
-                        .where((todo) => todo.deadline == "today" && !todo.isOver)
-                        .toList()),
-                    ListWidget(todoList
-                        .where((todo) => todo.deadline == "tomorrow" && !todo.isOver)
-                        .toList()),
-                    ListWidget(todoList
-                        .where((todo) => todo.deadline == "everyday" && !todo.isOver)
-                        .toList()),
-                  ])),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  sortHotToDoList == null || sortHotToDoList.isEmpty
+                      ? Container(
+                    height: 64,
+                          child: Center(
+                            child: Text(
+                            "ここには期限が近いToDoが表示されます",
+                            style: Theme.of(context).textTheme.caption.apply(fontWeightDelta: 3, fontSizeDelta: 1.5),
+                        ),
+                          ))
+                      : Material(
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(24), bottomRight: Radius.circular(24)),
+                    elevation: 8,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(16),
+                              alignment: Alignment.centerLeft,
+                              child: Text("直近のToDo"),
+                            ),
+                            ToDoCellWidget(sortHotToDoList.first),
+                          ],
+                        ),
+                      ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                      padding: EdgeInsets.all(16),
+                      child: TabBarView(controller: _tabController, children: [
+                        ListWidget(todoList
+                            .where((todo) =>
+                                todo.deadline == "today" && !todo.isOver)
+                            .toList()),
+                        ListWidget(todoList
+                            .where((todo) =>
+                                todo.deadline == "tomorrow" && !todo.isOver)
+                            .toList()),
+                        ListWidget(todoList
+                            .where((todo) =>
+                                todo.deadline == "everyday" && !todo.isOver)
+                            .toList()),
+                      ])),
+                ],
+              ),
             ),
           );
         });
