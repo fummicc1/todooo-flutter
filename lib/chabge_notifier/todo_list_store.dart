@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todooo/data/todo.dart';
+import 'package:todooo/models/todo.dart';
 
 class ToDoListStore with ChangeNotifier {
 
