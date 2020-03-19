@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/chabge_notifier/app_store.dart';
+import 'package:todooo/ui/pages/home_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xFFf3d91f),
           backgroundColor: Color(0xFF212ae0),
         ),
-      ),
+        home: HomePage(),
+    ),
     );
   }
 }
