@@ -19,7 +19,7 @@ class AddToDoStore extends ChangeNotifier {
   String deadline;
 
 
-  AddToDoStore({this.uid})
+  AddToDoStore({this.uid});
 
   void createToDo({String content, DateTime createDate, String deadline}) {
     final todo = ToDo(content: content, createDate: createDate, deadline: deadline, isDone: false, owner: uid);
