@@ -2,9 +2,10 @@ class ToDo {
   String content;
   String deadline;
   DateTime createDate;
+  String owner;
   bool isDone;
 
-  ToDo(this.content, this.deadline, this.createDate, this.isDone);
+  ToDo({this.content, this.deadline, this.createDate, this.isDone, this.owner});
 
   bool get isOver {
 
@@ -32,13 +33,15 @@ class ToDo {
     deadline = json["deadline"];
     createDate = DateTime.fromMillisecondsSinceEpoch(json["create_date"]);
     isDone = json["is_done"];
+    owner = json["owner"];
   }
 
   Map<String, dynamic> get json => {
     "content": content,
     "deadline": deadline,
     "create_date": createDate.millisecondsSinceEpoch,
-    "is_done": isDone
+    "is_done": isDone,
+    "owner": owner,
   };
 
   String get displayDeadline {
