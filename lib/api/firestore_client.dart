@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todooo/models/todo.dart';
 import 'package:todooo/models/user.dart';
 
 mixin FirestoreEntity {
@@ -45,7 +46,8 @@ class FirestoreClient {
               Firestore.instance.collection("users").document(firebaseUser.uid))
           .map((snapshot) {
         var data = snapshot.data;
-        data["signedInAt"] = Timestamp.fromDate(firebaseUser.metadata.lastSignInTime);
+        data["signedInAt"] =
+            Timestamp.fromDate(firebaseUser.metadata.lastSignInTime);
         return User.fromMap(data);
       });
 
@@ -62,4 +64,19 @@ class FirestoreClient {
           .map((snapshot) {
         return User.fromMap(snapshot.documents.first.data);
       });
+
+  Stream<List<ToDo>> listenToDoList({String ownerUID}) {
+    Firestore.instance
+        .collection("users")
+        .document(ownerUID)
+        .collection("todos")
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.documents.map((document) => ToDo.fromJSON(document.data)));
+  }
+
+  Future<void> persistToDo(ToDo todo) {
+    final ref = Firestore.instance.collection("users").document(todo.owner).collection("todos").document();
+    return _persist(todo.json, ref);
+  }
 }
