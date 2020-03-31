@@ -11,7 +11,15 @@ class ToDoListStore with ChangeNotifier {
   List<ToDo> todoList = [];
   String pageTitle;
 
-  ToDoListStore({this.pageTitle, this.user}) {
+  ToDoListStore({@required this.pageTitle, @required this.user}) {
+    _startFetchingToDoList();
+  }
+
+  void _startFetchingToDoList() {
+    _firestoreClient.listenToDoList(ownerUID: user.uid).listen((todos) {
+      this.todoList = todos;
+      notifyListeners();
+    });
   }
 
   void addToDo(ToDo value) {

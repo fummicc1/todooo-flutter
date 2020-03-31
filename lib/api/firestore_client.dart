@@ -66,7 +66,7 @@ class FirestoreClient {
       });
 
   Stream<List<ToDo>> listenToDoList({String ownerUID}) {
-    Firestore.instance
+    return Firestore.instance
         .collection("users")
         .document(ownerUID)
         .collection("todos")
