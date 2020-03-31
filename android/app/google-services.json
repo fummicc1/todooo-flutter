@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "157078773641",
+    "firebase_url": "https://todooo-d04c3.firebaseio.com",
+    "project_id": "todooo-d04c3",
+    "storage_bucket": "todooo-d04c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157078773641:android:fb90699e3d64d70b0e4b58",
+        "android_client_info": {
+          "package_name": "dev.fummicc1.todooo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "157078773641-9ksogmc4kpsnrv3gs5udftpimlvh6e3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpgAm3dqmsTURzjwGv3dSUgQbhO1WgiK8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "157078773641-9ksogmc4kpsnrv3gs5udftpimlvh6e3a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "157078773641-c2u06t5ldan7sisbbit3b311i73lnfmf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.fummicc1.todooo",
+                "app_store_id": "1496331664"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

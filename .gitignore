@@ -39,9 +39,3 @@ lib/generated_plugin_registrant.dart
 # keystore
 android/key.properties
 key.jks
-
-# FirebaseConfig
-## ioS
-GoogleService-Info.plist
-## Android
-google-services.json
