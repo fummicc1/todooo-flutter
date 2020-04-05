@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<AppStore>(
       create: (_) => AppStore(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'todooo',
         theme: ThemeData(
           primaryColor: Color(0xFFf3d91f),
