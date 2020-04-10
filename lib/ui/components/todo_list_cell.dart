@@ -30,7 +30,14 @@ class ToDoListCell extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text(toDo.content, style: Theme.of(context).textTheme.headline),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      direction: Axis.horizontal,
+                      children: <Widget>[
+                        Flexible(child: Text(toDo.content, style: Theme.of(context).textTheme.headline)),
+                        Text(toDo.displayDeadline)
+                      ],
+                    ),
                     SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
