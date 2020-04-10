@@ -14,9 +14,6 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'todooo',
-        theme: ThemeData(
-          primaryColor: Color(0xFF212ae0),
-        ),
         home: HomePage(),
     ),
     );
