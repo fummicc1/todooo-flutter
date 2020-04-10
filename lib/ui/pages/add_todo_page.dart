@@ -29,12 +29,21 @@ class AddToDoPage extends StatelessWidget {
                       top: 0,
                       right: 0,
                       height: 48,
+
+
                       child: IconButton(
                           icon: Icon(Icons.create, size: 32),
                           onPressed: addToDoStore.isDataInputted
                               ? () {
-                                  addToDoStore.createToDo(
-                                      createDate: DateTime.now());
+                                  addToDoStore.createToDo(createDate: DateTime.now()).then((success) {
+                                    if (success) {
+                                      Navigator.of(context).pop();
+                                    } else {
+                                      Scaffold.of(context).showSnackBar(SnackBar(
+                                        content: Text("保存に失敗しました。もう一度お試しください。"),
+                                      ));
+                                    }
+                                  });
                                 }
                               : null),
                     ),

@@ -8,7 +8,6 @@ class AddToDoStore extends ChangeNotifier {
 
   final deadlineList =
       Deadline.values.map((value) => value.toString().split('.')[1]).toList();
-  NetworkHandleState networkHandleState = NetworkHandleState.idel;
   Deadline get deadline {
     for (int i = 0; i < deadlineList.length; i++) {
       if (deadlineList[i] == _deadline) {
@@ -22,6 +21,8 @@ class AddToDoStore extends ChangeNotifier {
     return uid.isNotEmpty && (_content?.isNotEmpty ?? false);
   }
 
+  bool isProcessing = false;
+
   // ToDo Data
   final String uid;
   String _content;
@@ -31,21 +32,23 @@ class AddToDoStore extends ChangeNotifier {
   AddToDoStore({@required this.uid, @required this.pageTitle})
       : this._deadline = "today";
 
-  createToDo({DateTime createDate}) {
-    networkHandleState = NetworkHandleState.processing;
-    notifyListeners();
+  Future<bool> createToDo({DateTime createDate}) {
+    if (isProcessing) {
+      return null;
+    }
+    isProcessing = true;
     final todo = ToDo(
         content: _content,
         createDate: createDate,
         deadline: _deadline,
         isDone: false,
         owner: uid);
-    _firestoreClient.persistToDo(todo).catchError((error) {
-      networkHandleState = NetworkHandleState.fail;
-      notifyListeners();
+    return _firestoreClient.persistToDo(todo).catchError((error) {
+      isProcessing = false;
+      return false;
     }).then((v) {
-      networkHandleState = NetworkHandleState.success;
-      notifyListeners();
+      isProcessing = false;
+      return true;
     });
   }
 

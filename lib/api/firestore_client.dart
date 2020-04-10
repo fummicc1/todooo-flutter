@@ -72,7 +72,7 @@ class FirestoreClient {
         .collection("todos")
         .snapshots()
         .map((snapshot) =>
-            snapshot.documents.map((document) => ToDo.fromJSON(document.data)));
+            snapshot.documents.map((document) => ToDo.fromJSON(document.data)).toList());
   }
 
   Future<void> persistToDo(ToDo todo) {
