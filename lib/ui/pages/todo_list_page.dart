@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todooo/chabge_notifier/add_todo_store.dart';
+import 'package:todooo/chabge_notifier/app_store.dart';
 import 'package:todooo/chabge_notifier/todo_list_store.dart';
 import 'package:todooo/ui/components/todo_list_cell.dart';
 import 'package:todooo/ui/pages/add_todo_page.dart';
@@ -64,10 +66,14 @@ class ToDoListPage extends StatelessWidget {
   }
 
   void _moveToAddToDoPage(BuildContext context) {
+    final AppStore appStore = Provider.of(context, listen: false);
     Navigator.of(context).push(
       MaterialPageRoute(
         settings: const RouteSettings(name: "add_todo_page"),
-        builder: (_) => AddToDoPage()
+        builder: (_) => ChangeNotifierProvider(
+          create: (_) => AddToDoStore(uid: appStore.user.uid, pageTitle: "登録"),
+            child: AddToDoPage()
+        )
       )
     );
   }

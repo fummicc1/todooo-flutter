@@ -3,6 +3,13 @@ import 'package:todooo/api/auth_client.dart';
 import 'package:todooo/api/firestore_client.dart';
 import 'package:todooo/models/user.dart';
 
+enum NetworkHandleState {
+  idel,
+  processing,
+  success,
+  fail
+}
+
 class AppStore extends ChangeNotifier {
   User user;
   final _authClient = AuthClient();

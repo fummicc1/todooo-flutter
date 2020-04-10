@@ -1,3 +1,8 @@
+enum Deadline {
+  today,
+  tomorrow
+}
+
 class ToDo {
   String content;
   String deadline;
