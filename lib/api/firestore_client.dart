@@ -10,6 +10,9 @@ mixin FirestoreEntity {
 }
 
 class FirestoreClient {
+
+  Future<void> _delete(DocumentReference ref) => ref.delete();
+
   Future<void> _persist(Map<String, dynamic> data, DocumentReference ref) {
     if (data["createdAt"] == null) {
       data["createdAt"] = FieldValue.serverTimestamp();
@@ -77,6 +80,11 @@ class FirestoreClient {
 
   Future<void> persistToDo(ToDo todo) {
     final ref = Firestore.instance.collection("users").document(todo.owner).collection("todos").document();
+    todo.ref = ref;
     return _persist(todo.json, ref);
+  }
+
+  Future<void> deleteToDo(ToDo toDo) {
+    return _delete(toDo.ref);
   }
 }

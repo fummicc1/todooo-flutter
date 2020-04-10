@@ -22,8 +22,7 @@ class ToDoListStore with ChangeNotifier {
     });
   }
 
-  void addToDo(ToDo value) {
-    todoList.add(value);
-    notifyListeners();
+  Future<void> deleteToDo(ToDo todo) {
+    return _firestoreClient.deleteToDo(todo);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 enum Deadline {
   today,
   tomorrow
@@ -9,6 +11,7 @@ class ToDo {
   DateTime createDate;
   String owner;
   bool isDone;
+  DocumentReference ref;
 
   ToDo({this.content, this.deadline, this.createDate, this.isDone, this.owner});
 
@@ -39,6 +42,7 @@ class ToDo {
     createDate = DateTime.fromMillisecondsSinceEpoch(json["create_date"]);
     isDone = json["is_done"];
     owner = json["owner"];
+    ref = json["ref"];
   }
 
   Map<String, dynamic> get json => {
@@ -47,6 +51,7 @@ class ToDo {
     "create_date": createDate.millisecondsSinceEpoch,
     "is_done": isDone,
     "owner": owner,
+    "ref": ref,
   };
 
   String get displayDeadline {
