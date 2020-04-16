@@ -30,6 +30,13 @@ class FirestoreClient {
     return _persist(user.mapData, ref);
   }
 
+  Future<void> _update(Map<String, dynamic> data, DocumentReference ref) {
+    data["updatedAt"] = FieldValue.serverTimestamp();
+    return ref.setData(data, merge: true).catchError((error) {
+      debugPrint(error);
+    });
+  }
+
   Stream<DocumentSnapshot> _listenDocument(
           DocumentReference documentReference) =>
       documentReference.snapshots();
@@ -84,7 +91,15 @@ class FirestoreClient {
     return _persist(todo.json, ref);
   }
 
+  Future<void> updateToDo(ToDo toDo) {
+    return _update(toDo.json, toDo.ref);
+  }
+
   Future<void> deleteToDo(ToDo toDo) {
     return _delete(toDo.ref);
+  }
+
+  Stream<ToDo> getToDo(ToDo toDo) {
+    return _getDocument(documentReference: toDo.ref).asStream().map((document) => ToDo.fromJSON(document.data));
   }
 }

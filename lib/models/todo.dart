@@ -7,13 +7,14 @@ enum Deadline {
 
 class ToDo {
   String content;
+  String memo;
   String deadline;
   DateTime createDate;
   String owner;
   bool isDone;
   DocumentReference ref;
 
-  ToDo({this.content, this.deadline, this.createDate, this.isDone, this.owner});
+  ToDo({this.content, this.memo = "", this.deadline, this.createDate, this.isDone, this.owner});
 
   bool get isOver {
 
@@ -38,6 +39,7 @@ class ToDo {
 
   ToDo.fromJSON(Map<String, dynamic> json) {
     content = json["content"];
+    memo = json["memo"];
     deadline = json["deadline"];
     createDate = DateTime.fromMillisecondsSinceEpoch(json["create_date"]);
     isDone = json["is_done"];
@@ -47,6 +49,7 @@ class ToDo {
 
   Map<String, dynamic> get json => {
     "content": content,
+    "memo": memo,
     "deadline": deadline,
     "create_date": createDate.millisecondsSinceEpoch,
     "is_done": isDone,
@@ -56,11 +59,11 @@ class ToDo {
 
   String get displayDeadline {
     if (deadline == "everyday") {
-      return "毎日";
+      return "毎日続けて";
     } else if (deadline == "tomorrow") {
-      return "明日まで";
+      return "明日までに";
     } else if (deadline == "today") {
-      return "今日中";
+      return "今日までに";
     }
     return "";
   }

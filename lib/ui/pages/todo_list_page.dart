@@ -69,7 +69,7 @@ class ToDoListPage extends StatelessWidget {
     final AppStore appStore = Provider.of(context, listen: false);
     Navigator.of(context).push(
       MaterialPageRoute(
-        settings: const RouteSettings(name: "add_todo_page"),
+        settings: const RouteSettings(name: "/add_todo_page"),
         builder: (_) => ChangeNotifierProvider(
           create: (_) => AddToDoStore(uid: appStore.user.uid, pageTitle: "登録"),
             child: AddToDoPage()
