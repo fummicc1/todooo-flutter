@@ -25,7 +25,7 @@ class ToDoListPage extends StatelessWidget {
                       top: 48,
                       left: 0,
                       child: Text(toDoListStore.pageTitle,
-                          style: Theme.of(context).textTheme.display1),
+                          style: Theme.of(context).textTheme.headline4),
                     ),
                     Positioned(
                       top: 0,
@@ -51,7 +51,7 @@ class ToDoListPage extends StatelessWidget {
                     : Center(
                         child: FlatButton(
                           child: Text("最初のToDoを作成",
-                              style: Theme.of(context).textTheme.title),
+                              style: Theme.of(context).textTheme.headline6),
                           onPressed: () {
                             _moveToAddToDoPage(context);
                           },

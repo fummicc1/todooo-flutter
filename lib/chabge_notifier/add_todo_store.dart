@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todooo/api/firestore_client.dart';
-import 'package:todooo/chabge_notifier/app_store.dart';
 import 'package:todooo/models/todo.dart';
 
 class AddToDoStore extends ChangeNotifier {

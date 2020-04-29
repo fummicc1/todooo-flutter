@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/chabge_notifier/detail_todo_store.dart';
@@ -40,11 +41,14 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                                     child: Icon(Icons.check),
                                   )
                                 : Container(),
-                            Text(detailToDoStore.toDo.content,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .display1
-                                    .apply(fontWeightDelta: 2)),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: AutoSizeText(detailToDoStore.toDo.content,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4
+                                      .apply(fontWeightDelta: 2)),
+                            ),
                           ],
                         ),
                       ),
@@ -57,7 +61,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                         decoration: InputDecoration(
                             labelStyle: Theme.of(context)
                                 .textTheme
-                                .title
+                                .headline6
                                 .apply(fontWeightDelta: 2),
                             labelText: "フリースペース",
                             focusedBorder: OutlineInputBorder(
@@ -75,11 +79,12 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                       ),
                       SizedBox(height: 32),
                       Text(
-                        detailToDoStore.toDo.isOver ? "目標の日時を過ぎています。" :
-                        "${detailToDoStore.toDo.displayDeadline}達成することを目標としています。",
+                        detailToDoStore.toDo.isOver
+                            ? "目標の日時を過ぎています。"
+                            : "${detailToDoStore.toDo.displayDeadline}達成することを目標としています。",
                         style: Theme.of(context)
                             .textTheme
-                            .title
+                            .headline6
                             .apply(fontWeightDelta: 2),
                       ),
                     ],

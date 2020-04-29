@@ -23,7 +23,7 @@ class AddToDoPage extends StatelessWidget {
                       top: 48,
                       left: 0,
                       child: Text(addToDoStore.pageTitle,
-                          style: Theme.of(context).textTheme.display1),
+                          style: Theme.of(context).textTheme.headline4),
                     ),
                     Positioned(
                       top: 0,
@@ -64,7 +64,7 @@ class AddToDoPage extends StatelessWidget {
                 },
               ),
               SizedBox(height: 48),
-              Text("いつまでにやりますか？", style: Theme.of(context).textTheme.subhead),
+              Text("いつまでにやりますか？", style: Theme.of(context).textTheme.subtitle1),
               Wrap(
                 children: <Widget>[
                   RadioListTile(
