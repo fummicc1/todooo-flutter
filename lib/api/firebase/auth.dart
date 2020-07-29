@@ -37,10 +37,14 @@ class AuthClient {
     return _firebaseAuth.signOut();
   }
 
+  Future<FirebaseUser> getCurrentUser() async {
+    return _firebaseAuth.currentUser();
+  }
+
   Future<String> getUID() async {
     try {
       final currentUser = await _firebaseAuth.currentUser();
-      return Future.value(currentUser.uid);
+      return Future.value(currentUser?.uid);
     } catch (error) {
       return Future.error(error);
     }

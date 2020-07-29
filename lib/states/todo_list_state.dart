@@ -15,4 +15,15 @@ class ToDoListState with ChangeNotifier {
       notifyListeners();
     });
   }
+
+  Future updateToDos() async {
+    try {
+      final todos = await ToDoRepository.fetchToDos(cache: false);
+      this.todoList = todos;
+      notifyListeners();
+      return Future.value(todos);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
 }

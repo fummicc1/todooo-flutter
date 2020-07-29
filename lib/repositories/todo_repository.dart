@@ -17,7 +17,7 @@ class ToDoRepository {
     }
     try {
       final snapshot = await _firestoreClient.getCollectionWithQuery(collectionName: ToDo.CollectionName, fieldName: "owner", fieldValue: userID);
-      _todos = snapshot.documents.map((document) => ToDo.fromData(document.data));
+      _todos = snapshot.documents.map((document) => ToDo.fromData(document.data)).toList();
       return Future.value(_todos);
     } catch (error) {
       return Future.error(error);

@@ -13,7 +13,6 @@ class ToDo {
   DateTime createDate;
   String owner;
   bool isDone;
-  DocumentReference ref;
 
   static const CollectionName = "todos";
 
@@ -49,11 +48,6 @@ class ToDo {
     }
     isDone = data["is_done"];
     owner = data["owner"];
-
-    final ref = data["ref"];
-    if (ref != null) {
-      this.ref = ref;
-    }
   }
 
   Map<String, dynamic> get data => {
@@ -64,7 +58,6 @@ class ToDo {
     "create_date": createDate,
     "is_done": isDone,
     "owner": owner,
-    "ref": ref
   };
 
   String get deadlineText {

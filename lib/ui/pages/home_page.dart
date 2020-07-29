@@ -9,12 +9,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppState appState = Provider.of(context);
     if (appState.user == null) {
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
     } else {
-      return ChangeNotifierProvider<ToDoListState>(
-        create: (_) => ToDoListState(pageTitle: "リスト", user: appState.user),
-        child: ToDoListPage(),
-      );
+      return ToDoListPage();
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/states/detail_todo_state.dart';
+import 'package:todooo/states/todo_list_state.dart';
 
 class DetailToDoPage extends StatefulWidget {
   @override
@@ -12,85 +13,91 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
   @override
   Widget build(BuildContext context) {
     final DetailToDoState detailToDoState = Provider.of(context);
+    final ToDoListState todoListState =
+        Provider.of<ToDoListState>(context, listen: false);
     return Scaffold(
       backgroundColor: detailToDoState.toDo.isOver
           ? Colors.grey
           : Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: Builder(
-                builder: (context) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.only(top: 48),
-                        height: 96,
-                        child: Row(
-                          children: <Widget>[
-                            detailToDoState.toDo.isDone
-                                ? Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Icon(Icons.check),
-                                  )
-                                : Container(),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: AutoSizeText(detailToDoState.toDo.content,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4
-                                      .apply(fontWeightDelta: 2)),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 24),
-                      TextField(
-                        controller: detailToDoState.memoEditingController,
-                        toolbarOptions: ToolbarOptions(),
-                        focusNode: detailToDoState.focusNode,
-                        maxLines: 7,
-                        decoration: InputDecoration(
-                            labelStyle: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .apply(fontWeightDelta: 2),
-                            labelText: "フリースペース",
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor),
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(24),
-                            )),
-                        onChanged: (memo) {
-                          detailToDoState.editedMemo = memo;
-                        },
-                      ),
-                      SizedBox(height: 32),
-                      Text(
-                        detailToDoState.toDo.isOver
-                            ? "目標の日時を過ぎています。"
-                            : "${detailToDoState.toDo.deadlineText}達成することを目標としています。",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            .apply(fontWeightDelta: 2),
-                      ),
-                    ],
-                  );
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
                 },
-              )),
+                child: Builder(
+                  builder: (context) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.only(top: 48),
+                          height: 96,
+                          child: Row(
+                            children: <Widget>[
+                              detailToDoState.toDo.isDone
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.check),
+                                    )
+                                  : Container(),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: AutoSizeText(
+                                    detailToDoState.toDo.content,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4
+                                        .apply(fontWeightDelta: 2)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 24),
+                        TextField(
+                          controller: detailToDoState.memoEditingController,
+                          toolbarOptions: ToolbarOptions(),
+                          focusNode: detailToDoState.focusNode,
+                          maxLines: 7,
+                          decoration: InputDecoration(
+                              labelStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .apply(fontWeightDelta: 2),
+                              labelText: "フリースペース",
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(24),
+                              )),
+                          onChanged: (memo) {
+                            detailToDoState.editedMemo = memo;
+                          },
+                        ),
+                        SizedBox(height: 32),
+                        Text(
+                          detailToDoState.toDo.isOver
+                              ? "目標の日時を過ぎています。"
+                              : "${detailToDoState.toDo.deadlineText}達成することを目標としています。",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              .apply(fontWeightDelta: 2),
+                        ),
+                      ],
+                    );
+                  },
+                )),
+          ),
         ),
       ),
       floatingActionButton: Builder(
@@ -141,7 +148,9 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                     ),
                     onPressed: () {
                       detailToDoState.deleteToDo().then((_) {
-                        Navigator.of(context).pop();
+                        todoListState.updateToDos().then((_) {
+                          Navigator.of(context).pop();
+                        });
                       });
                     },
                   ),

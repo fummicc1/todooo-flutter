@@ -18,18 +18,18 @@ class AddToDoState extends ChangeNotifier {
   }
 
   bool get isDataInputted {
-    return uid.isNotEmpty && (content?.isNotEmpty ?? false);
+    return userID.isNotEmpty && (content?.isNotEmpty ?? false);
   }
 
   bool isProcessing = false;
 
   // ToDo Data
-  final String uid;
+  final String userID;
   String content;
   String _deadline;
   final String pageTitle;
 
-  AddToDoState({@required this.uid, @required this.pageTitle})
+  AddToDoState({@required this.userID, @required this.pageTitle})
       : this._deadline = "today";
 
   Future<bool> createToDo({DateTime createDate}) async {
@@ -42,8 +42,13 @@ class AddToDoState extends ChangeNotifier {
         createDate: createDate,
         deadline: _deadline,
         isDone: false,
-        owner: uid);
-    return ToDoRepository.createToDo(todo);
+        owner: userID);
+    try {
+      await ToDoRepository.createToDo(todo);
+      return Future.value(true);
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   updateSelectingDeadline(Deadline deadline) {

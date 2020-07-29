@@ -6,7 +6,6 @@ class User {
   String name;
   DateTime signedInAt;
   DateTime signedUpAt;
-  DocumentReference ref;
 
   static const CollectionName = "users";
 
@@ -14,9 +13,8 @@ class User {
   Map<String, dynamic> get data => {
         "uid": uid,
         "name": name,
-        "signedInAt": signedInAt,
-        "signedUpAt": signedUpAt,
-        "ref": ref
+        "signed_in_at": signedInAt,
+        "signed_up_at": signedUpAt,
       };
 
   User.fromFirebase(FirebaseUser firebaseUser) {
@@ -28,9 +26,8 @@ class User {
   User.fromMap(Map<String, dynamic> data) {
     uid = data["uid"];
     name = data["name"] ?? "";
-    signedUpAt = (data["signedUpAt"] as Timestamp).toDate();
-    signedInAt = (data["signedInAt"] as Timestamp).toDate();
-    ref = data["ref"];
+    signedUpAt = (data["signed_up_at"] as Timestamp).toDate();
+    signedInAt = (data["signed_in_at"] as Timestamp).toDate();
   }
 
   updateSignedInAt(DateTime dateTime) {

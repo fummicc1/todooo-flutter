@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todooo/api/firebase/auth.dart';
 import 'package:todooo/api/firebase/firestore.dart';
@@ -33,9 +34,16 @@ class UserRepository {
       String userID = await _authClient.getUID();
       if (userID == null) {
         final firebaseUser = await _authClient.signInAnonymously();
-        userID = firebaseUser.uid;
+        final User user = User.fromFirebase(firebaseUser);
+        userID = user.uid;
+        await _firestoreClient.setDocument(collectionName: User.CollectionName, documentName: user.uid, data: user.data);
       }
-      final snapshot = await _firestoreClient.getDocument(collectionName: User.CollectionName, documentName: userID);
+      DocumentSnapshot snapshot = await _firestoreClient.getDocument(collectionName: User.CollectionName, documentName: userID);
+      if (snapshot.data == null) {
+        final firebaseUser = await _authClient.getCurrentUser();
+        await _firestoreClient.setDocument(collectionName: User.CollectionName, documentName: userID, data: User.fromFirebase(firebaseUser).data);
+        snapshot = await _firestoreClient.getDocument(collectionName: User.CollectionName, documentName: userID);
+      }
       return Future.value(User.fromMap(snapshot.data));
     } catch (error) {
       return Future.error(error);

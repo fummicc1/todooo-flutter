@@ -71,7 +71,7 @@ class ToDoListPage extends StatelessWidget {
       MaterialPageRoute(
         settings: const RouteSettings(name: "/add_todo_page"),
         builder: (_) => ChangeNotifierProvider(
-          create: (_) => AddToDoState(uid: appState.user.uid, pageTitle: "登録"),
+          create: (_) => AddToDoState(userID: appState.user.uid, pageTitle: "登録"),
             child: AddToDoPage()
         )
       )
