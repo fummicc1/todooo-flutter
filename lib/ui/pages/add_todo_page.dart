@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/chabge_notifier/add_todo_store.dart';
 import 'package:todooo/models/todo.dart';
+import 'package:todooo/states/add_todo_state.dart';
 
 class AddToDoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AddToDoStore addToDoStore = Provider.of(context);
+    final AddToDoState addToDoState = Provider.of(context);
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -22,7 +22,7 @@ class AddToDoPage extends StatelessWidget {
                     Positioned(
                       top: 48,
                       left: 0,
-                      child: Text(addToDoStore.pageTitle,
+                      child: Text(addToDoState.pageTitle,
                           style: Theme.of(context).textTheme.headline4),
                     ),
                     Positioned(
@@ -33,9 +33,9 @@ class AddToDoPage extends StatelessWidget {
 
                       child: IconButton(
                           icon: Icon(Icons.create, size: 32),
-                          onPressed: addToDoStore.isDataInputted
+                          onPressed: addToDoState.isDataInputted
                               ? () {
-                                  addToDoStore.createToDo(createDate: DateTime.now()).then((success) {
+                                  addToDoState.createToDo(createDate: DateTime.now()).then((success) {
                                     if (success) {
                                       Navigator.of(context).pop();
                                     } else {
@@ -60,7 +60,7 @@ class AddToDoPage extends StatelessWidget {
                   labelText: "なにをしますか？",
                 ),
                 onChanged: (content) {
-                  addToDoStore.updateContent(content);
+                  addToDoState.updateContent(content);
                 },
               ),
               SizedBox(height: 48),
@@ -70,17 +70,17 @@ class AddToDoPage extends StatelessWidget {
                   RadioListTile(
                     title: Text("今日中"),
                     value: Deadline.values[0],
-                    groupValue: addToDoStore.deadline,
+                    groupValue: addToDoState.deadline,
                     onChanged: (deadline) {
-                      addToDoStore.updateSelectingDeadline(deadline);
+                      addToDoState.updateSelectingDeadline(deadline);
                     },
                   ),
                   RadioListTile(
                     title: Text("明日まで"),
                     value: Deadline.values[1],
-                    groupValue: addToDoStore.deadline,
+                    groupValue: addToDoState.deadline,
                     onChanged: (deadline) {
-                      addToDoStore.updateSelectingDeadline(deadline);
+                      addToDoState.updateSelectingDeadline(deadline);
                     },
                   ),
                 ],

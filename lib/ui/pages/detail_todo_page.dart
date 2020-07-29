@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/chabge_notifier/detail_todo_store.dart';
+import 'package:todooo/states/detail_todo_state.dart';
 
 class DetailToDoPage extends StatefulWidget {
   @override
@@ -11,9 +11,9 @@ class DetailToDoPage extends StatefulWidget {
 class _DetailToDoPageState extends State<DetailToDoPage> {
   @override
   Widget build(BuildContext context) {
-    final DetailToDoStore detailToDoStore = Provider.of(context);
+    final DetailToDoState detailToDoState = Provider.of(context);
     return Scaffold(
-      backgroundColor: detailToDoStore.toDo.isOver
+      backgroundColor: detailToDoState.toDo.isOver
           ? Colors.grey
           : Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -35,7 +35,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                         height: 96,
                         child: Row(
                           children: <Widget>[
-                            detailToDoStore.toDo.isDone
+                            detailToDoState.toDo.isDone
                                 ? Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: Icon(Icons.check),
@@ -43,7 +43,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                                 : Container(),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.8,
-                              child: AutoSizeText(detailToDoStore.toDo.content,
+                              child: AutoSizeText(detailToDoState.toDo.content,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline4
@@ -54,9 +54,9 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                       ),
                       SizedBox(height: 24),
                       TextField(
-                        controller: detailToDoStore.memoEditingController,
+                        controller: detailToDoState.memoEditingController,
                         toolbarOptions: ToolbarOptions(),
-                        focusNode: detailToDoStore.focusNode,
+                        focusNode: detailToDoState.focusNode,
                         maxLines: 7,
                         decoration: InputDecoration(
                             labelStyle: Theme.of(context)
@@ -74,14 +74,14 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                               borderRadius: BorderRadius.circular(24),
                             )),
                         onChanged: (memo) {
-                          detailToDoStore.editedMemo = memo;
+                          detailToDoState.editedMemo = memo;
                         },
                       ),
                       SizedBox(height: 32),
                       Text(
-                        detailToDoStore.toDo.isOver
+                        detailToDoState.toDo.isOver
                             ? "目標の日時を過ぎています。"
-                            : "${detailToDoStore.toDo.displayDeadline}達成することを目標としています。",
+                            : "${detailToDoState.toDo.deadlineText}達成することを目標としています。",
                         style: Theme.of(context)
                             .textTheme
                             .headline6
@@ -95,15 +95,15 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
       ),
       floatingActionButton: Builder(
         builder: (context) {
-          if (detailToDoStore.focusNode.hasFocus) {
+          if (detailToDoState.focusNode.hasFocus) {
             return Container(
               margin: const EdgeInsets.only(bottom: 48),
               child: FloatingActionButton.extended(
                   backgroundColor: Theme.of(context).backgroundColor,
                   heroTag: "hero3",
                   onPressed: () {
-                    detailToDoStore
-                        .updateMemo(detailToDoStore.editedMemo)
+                    detailToDoState
+                        .updateMemo(detailToDoState.editedMemo)
                         .then((_) {
                       Scaffold.of(context).showSnackBar(SnackBar(
                         content: Text("メモを更新しました"),
@@ -140,7 +140,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                           .apply(fontWeightDelta: 2, color: Colors.redAccent),
                     ),
                     onPressed: () {
-                      detailToDoStore.deleteToDo().then((_) {
+                      detailToDoState.deleteToDo().then((_) {
                         Navigator.of(context).pop();
                       });
                     },
@@ -150,21 +150,21 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                     backgroundColor: Theme.of(context).backgroundColor,
                     heroTag: "hero1",
                     icon: Icon(
-                      detailToDoStore.toDo.isDone ? Icons.restore : Icons.check,
+                      detailToDoState.toDo.isDone ? Icons.restore : Icons.check,
                       size: 24,
                       color: Colors.black,
                     ),
                     label: Text(
-                      detailToDoStore.toDo.isDone ? "未完了に戻す" : "完了",
+                      detailToDoState.toDo.isDone ? "未完了に戻す" : "完了",
                       style: Theme.of(context)
                           .textTheme
                           .button
                           .apply(color: Colors.black, fontWeightDelta: 2),
                     ),
                     onPressed: () {
-                      detailToDoStore.toggleToDo().then((_) {
+                      detailToDoState.toggleToDo().then((_) {
                         Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text(detailToDoStore.toDo.isDone
+                          content: Text(detailToDoState.toDo.isDone
                               ? "完了済み"
                               : "未完了に戻しました"),
                         ));

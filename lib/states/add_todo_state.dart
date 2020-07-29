@@ -1,11 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:todooo/api/firestore_client.dart';
 import 'package:todooo/models/todo.dart';
+import 'package:todooo/repositories/todo_repository.dart';
 
-class AddToDoStore extends ChangeNotifier {
-  FirestoreClient _firestoreClient = FirestoreClient();
+class AddToDoState extends ChangeNotifier {
 
-  final deadlineList =
+  final List<String> deadlineList =
       Deadline.values.map((value) => value.toString().split('.')[1]).toList();
   Deadline get deadline {
     for (int i = 0; i < deadlineList.length; i++) {
@@ -17,38 +18,32 @@ class AddToDoStore extends ChangeNotifier {
   }
 
   bool get isDataInputted {
-    return uid.isNotEmpty && (_content?.isNotEmpty ?? false);
+    return uid.isNotEmpty && (content?.isNotEmpty ?? false);
   }
 
   bool isProcessing = false;
 
   // ToDo Data
   final String uid;
-  String _content;
+  String content;
   String _deadline;
   final String pageTitle;
 
-  AddToDoStore({@required this.uid, @required this.pageTitle})
+  AddToDoState({@required this.uid, @required this.pageTitle})
       : this._deadline = "today";
 
-  Future<bool> createToDo({DateTime createDate}) {
+  Future<bool> createToDo({DateTime createDate}) async {
     if (isProcessing) {
-      return null;
+      return Future.error("processing");
     }
     isProcessing = true;
     final todo = ToDo(
-        content: _content,
+        content: content,
         createDate: createDate,
         deadline: _deadline,
         isDone: false,
         owner: uid);
-    return _firestoreClient.persistToDo(todo).catchError((error) {
-      isProcessing = false;
-      return false;
-    }).then((v) {
-      isProcessing = false;
-      return true;
-    });
+    return ToDoRepository.createToDo(todo);
   }
 
   updateSelectingDeadline(Deadline deadline) {
@@ -61,7 +56,7 @@ class AddToDoStore extends ChangeNotifier {
   }
 
   updateContent(String content) {
-    this._content = content;
+    this.content = content;
     notifyListeners();
   }
 }

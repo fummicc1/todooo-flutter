@@ -6,6 +6,7 @@ enum Deadline {
 }
 
 class ToDo {
+  String uid;
   String content;
   String memo;
   String deadline;
@@ -14,12 +15,12 @@ class ToDo {
   bool isDone;
   DocumentReference ref;
 
+  static const CollectionName = "todos";
+
   ToDo({this.content, this.memo = "", this.deadline, this.createDate, this.isDone, this.owner});
 
   bool get isOver {
-
     final current = DateTime.now();
-
     if (deadline != "today") {
       if (current.day > createDate.day) {
         return true;
@@ -37,27 +38,36 @@ class ToDo {
     }
   }
 
-  ToDo.fromJSON(Map<String, dynamic> json) {
-    content = json["content"];
-    memo = json["memo"];
-    deadline = json["deadline"];
-    createDate = DateTime.fromMillisecondsSinceEpoch(json["create_date"]);
-    isDone = json["is_done"];
-    owner = json["owner"];
-    ref = json["ref"];
+  ToDo.fromData(Map<String, dynamic> data) {
+    uid = data["uid"] ?? "";
+    content = data["content"];
+    memo = data["memo"];
+    deadline = data["deadline"];
+    final createDate = (data["create_date"] as Timestamp)?.toDate();
+    if (createDate != null) {
+      this.createDate = createDate;
+    }
+    isDone = data["is_done"];
+    owner = data["owner"];
+
+    final ref = data["ref"];
+    if (ref != null) {
+      this.ref = ref;
+    }
   }
 
-  Map<String, dynamic> get json => {
+  Map<String, dynamic> get data => {
+    "uid": uid,
     "content": content,
     "memo": memo,
     "deadline": deadline,
-    "create_date": createDate.millisecondsSinceEpoch,
+    "create_date": createDate,
     "is_done": isDone,
     "owner": owner,
-    "ref": ref,
+    "ref": ref
   };
 
-  String get displayDeadline {
+  String get deadlineText {
     if (deadline == "everyday") {
       return "毎日続けて";
     } else if (deadline == "tomorrow") {

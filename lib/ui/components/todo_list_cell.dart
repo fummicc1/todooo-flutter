@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/chabge_notifier/detail_todo_store.dart';
 import 'package:todooo/models/todo.dart';
+import 'package:todooo/states/detail_todo_state.dart';
 import 'package:todooo/ui/pages/detail_todo_page.dart';
 
 class ToDoListCell extends StatelessWidget {
@@ -39,7 +39,7 @@ class ToDoListCell extends StatelessWidget {
               settings: const RouteSettings(name: "/detail_todo_page"),
               builder: (context) {
                 return ChangeNotifierProvider(
-                  create: (_) => DetailToDoStore(toDo: toDo),
+                  create: (_) => DetailToDoState(toDo: toDo),
                   child: DetailToDoPage(),
                 );
               }));

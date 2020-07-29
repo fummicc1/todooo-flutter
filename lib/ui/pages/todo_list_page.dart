@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todooo/chabge_notifier/add_todo_store.dart';
-import 'package:todooo/chabge_notifier/app_store.dart';
-import 'package:todooo/chabge_notifier/todo_list_store.dart';
+import 'package:todooo/states/add_todo_state.dart';
+import 'package:todooo/states/app_state.dart';
+import 'package:todooo/states/todo_list_state.dart';
 import 'package:todooo/ui/components/todo_list_cell.dart';
 import 'package:todooo/ui/pages/add_todo_page.dart';
 
 class ToDoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ToDoListStore toDoListStore = Provider.of(context);
+    final ToDoListState toDoListState = Provider.of(context);
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -24,7 +24,7 @@ class ToDoListPage extends StatelessWidget {
                     Positioned(
                       top: 48,
                       left: 0,
-                      child: Text(toDoListStore.pageTitle,
+                      child: Text(toDoListState.pageTitle,
                           style: Theme.of(context).textTheme.headline4),
                     ),
                     Positioned(
@@ -40,12 +40,12 @@ class ToDoListPage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: toDoListStore.todoList.isNotEmpty
+                child: toDoListState.todoList.isNotEmpty
                     ? ListView.builder(
                         shrinkWrap: true,
-                        itemCount: toDoListStore.todoList.length,
+                        itemCount: toDoListState.todoList.length,
                         itemBuilder: (context, index) {
-                          final todo = toDoListStore.todoList[index];
+                          final todo = toDoListState.todoList[index];
                           return ToDoListCell(toDo: todo);
                         })
                     : Center(
@@ -66,12 +66,12 @@ class ToDoListPage extends StatelessWidget {
   }
 
   void _moveToAddToDoPage(BuildContext context) {
-    final AppStore appStore = Provider.of(context, listen: false);
+    final AppState appState = Provider.of(context, listen: false);
     Navigator.of(context).push(
       MaterialPageRoute(
         settings: const RouteSettings(name: "/add_todo_page"),
         builder: (_) => ChangeNotifierProvider(
-          create: (_) => AddToDoStore(uid: appStore.user.uid, pageTitle: "登録"),
+          create: (_) => AddToDoState(uid: appState.user.uid, pageTitle: "登録"),
             child: AddToDoPage()
         )
       )
