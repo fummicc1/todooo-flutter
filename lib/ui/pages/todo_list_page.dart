@@ -25,16 +25,20 @@ class ToDoListPage extends StatelessWidget {
                       top: 48,
                       left: 0,
                       child: Text(toDoListState.pageTitle,
-                          style: Theme.of(context).textTheme.headline4),
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headline4),
                     ),
                     Positioned(
                       top: 0,
                       right: 0,
                       height: 48,
                       child: IconButton(
-                          icon: Icon(Icons.add, size: 32), onPressed: () {
+                          icon: Icon(Icons.add, size: 32),
+                          onPressed: () {
                             _moveToAddToDoPage(context);
-                      }),
+                          }),
                     )
                   ],
                 ),
@@ -42,21 +46,24 @@ class ToDoListPage extends StatelessWidget {
               Expanded(
                 child: toDoListState.todoList.isNotEmpty
                     ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: toDoListState.todoList.length,
-                        itemBuilder: (context, index) {
-                          final todo = toDoListState.todoList[index];
-                          return ToDoListCell(toDo: todo);
-                        })
+                    shrinkWrap: true,
+                    itemCount: toDoListState.todoList.length,
+                    itemBuilder: (context, index) {
+                      final todo = toDoListState.todoList[index];
+                      return ToDoListCell(toDo: todo);
+                    })
                     : Center(
-                        child: FlatButton(
-                          child: Text("最初のToDoを作成",
-                              style: Theme.of(context).textTheme.headline6),
-                          onPressed: () {
-                            _moveToAddToDoPage(context);
-                          },
-                        ),
-                      ),
+                  child: FlatButton(
+                    child: Text("最初のToDoを作成",
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline6),
+                    onPressed: () {
+                      _moveToAddToDoPage(context);
+                    },
+                  ),
+                ),
               )
             ],
           ),
@@ -67,14 +74,18 @@ class ToDoListPage extends StatelessWidget {
 
   void _moveToAddToDoPage(BuildContext context) {
     final AppState appState = Provider.of(context, listen: false);
-    Navigator.of(context).push(
-      MaterialPageRoute(
+
+    Navigator.of(context).push(MaterialPageRoute(
         settings: const RouteSettings(name: "/add_todo_page"),
-        builder: (_) => ChangeNotifierProvider(
-          create: (_) => AddToDoState(userID: appState.user.uid, pageTitle: "登録"),
-            child: AddToDoPage()
-        )
-      )
-    );
+        builder: (_) =>
+            ChangeNotifierProvider(
+                create: (_) {
+                  if (appState.user == null) {
+                    return null;
+                  }
+                  return AddToDoState(
+                      userID: appState.user!.uid, pageTitle: "登録");
+                },
+                child: AddToDoPage())));
   }
 }

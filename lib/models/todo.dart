@@ -1,22 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum Deadline {
-  today,
-  tomorrow
-}
+enum Deadline { today, tomorrow }
 
 class ToDo {
-  String uid;
-  String content;
-  String memo;
-  String deadline;
-  DateTime createDate;
-  String owner;
-  bool isDone;
+  late String uid;
+  late String content;
+  late String memo;
+  late String deadline;
+  late DateTime createDate;
+  late String owner;
+  late bool isDone;
 
   static const CollectionName = "todos";
 
-  ToDo({this.content, this.memo = "", this.deadline, this.createDate, this.isDone, this.owner});
+  ToDo(
+      {required this.content,
+      this.memo = "",
+      required this.deadline,
+      required this.createDate,
+      required this.isDone,
+      required this.owner});
 
   bool get isOver {
     final current = DateTime.now();
@@ -51,14 +54,14 @@ class ToDo {
   }
 
   Map<String, dynamic> get data => {
-    "uid": uid,
-    "content": content,
-    "memo": memo,
-    "deadline": deadline,
-    "create_date": createDate,
-    "is_done": isDone,
-    "owner": owner,
-  };
+        "uid": uid,
+        "content": content,
+        "memo": memo,
+        "deadline": deadline,
+        "create_date": createDate,
+        "is_done": isDone,
+        "owner": owner,
+      };
 
   String get deadlineText {
     if (deadline == "everyday") {

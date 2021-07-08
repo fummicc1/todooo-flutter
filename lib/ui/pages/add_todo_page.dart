@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/models/todo.dart';
-import 'package:todooo/repositories/todo_repository.dart';
 import 'package:todooo/states/add_todo_state.dart';
 import 'package:todooo/states/todo_list_state.dart';
 
@@ -46,14 +45,14 @@ class AddToDoPage extends StatelessWidget {
                                         await todoListState.updateToDos();
                                         Navigator.of(context).pop();
                                       } else {
-                                        Scaffold.of(context)
+                                        ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                           content:
                                               Text("保存に失敗しました。もう一度お試しください。"),
                                         ));
                                       }
                                     } catch (erorr) {
-                                      Scaffold.of(context)
+                                      ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content: Text("保存に失敗しました。もう一度お試しください。"),
                                       ));
@@ -87,7 +86,7 @@ class AddToDoPage extends StatelessWidget {
                       value: Deadline.values[0],
                       groupValue: addToDoState.deadline,
                       onChanged: (deadline) {
-                        addToDoState.updateSelectingDeadline(deadline);
+                        addToDoState.updateSelectingDeadline(deadline as Deadline);
                       },
                     ),
                     RadioListTile(
@@ -95,7 +94,7 @@ class AddToDoPage extends StatelessWidget {
                       value: Deadline.values[1],
                       groupValue: addToDoState.deadline,
                       onChanged: (deadline) {
-                        addToDoState.updateSelectingDeadline(deadline);
+                        addToDoState.updateSelectingDeadline(deadline as Deadline);
                       },
                     ),
                   ],

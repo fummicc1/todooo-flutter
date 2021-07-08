@@ -8,13 +8,13 @@ class DetailToDoState extends ChangeNotifier {
   final FocusNode focusNode;
   final TextEditingController memoEditingController;
 
-  DetailToDoState({@required this.toDo})
+  DetailToDoState({required this.toDo, this.editedMemo = ""})
       : focusNode = FocusNode(),
         memoEditingController = TextEditingController() {
     focusNode.addListener(() {
       notifyListeners();
     });
-    if (toDo.memo?.isNotEmpty ?? false) {
+    if (toDo.memo.isNotEmpty) {
       memoEditingController.text = toDo.memo;
     }
   }

@@ -18,7 +18,7 @@ class AddToDoState extends ChangeNotifier {
   }
 
   bool get isDataInputted {
-    return userID.isNotEmpty && (content?.isNotEmpty ?? false);
+    return userID.isNotEmpty && (content.isNotEmpty);
   }
 
   bool isProcessing = false;
@@ -29,10 +29,10 @@ class AddToDoState extends ChangeNotifier {
   String _deadline;
   final String pageTitle;
 
-  AddToDoState({@required this.userID, @required this.pageTitle})
+  AddToDoState({required this.userID, this.content = "", required this.pageTitle})
       : this._deadline = "today";
 
-  Future<bool> createToDo({DateTime createDate}) async {
+  Future<bool> createToDo({required DateTime createDate}) async {
     if (isProcessing) {
       return Future.error("processing");
     }

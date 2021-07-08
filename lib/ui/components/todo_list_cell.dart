@@ -9,7 +9,7 @@ import 'package:todooo/ui/pages/detail_todo_page.dart';
 class ToDoListCell extends StatelessWidget {
   final ToDo toDo;
 
-  ToDoListCell({this.toDo});
+  ToDoListCell({required this.toDo});
 
   @override
   Widget build(BuildContext context) {

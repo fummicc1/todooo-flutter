@@ -53,7 +53,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline4
-                                        .apply(fontWeightDelta: 2)),
+                                        ?.apply(fontWeightDelta: 2)),
                               ),
                             ],
                           ),
@@ -68,7 +68,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                               labelStyle: Theme.of(context)
                                   .textTheme
                                   .headline6
-                                  .apply(fontWeightDelta: 2),
+                                  ?.apply(fontWeightDelta: 2),
                               labelText: "フリースペース",
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -91,7 +91,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                           style: Theme.of(context)
                               .textTheme
                               .headline6
-                              .apply(fontWeightDelta: 2),
+                              ?.apply(fontWeightDelta: 2),
                         ),
                       ],
                     );
@@ -122,7 +122,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                     style: Theme.of(context)
                         .textTheme
                         .button
-                        .apply(fontWeightDelta: 2, color: Colors.black),
+                        ?.apply(fontWeightDelta: 2, color: Colors.black),
                   ),
                   icon: Icon(
                     Icons.arrow_downward,
@@ -144,7 +144,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                       style: Theme.of(context)
                           .textTheme
                           .button
-                          .apply(fontWeightDelta: 2, color: Colors.redAccent),
+                          ?.apply(fontWeightDelta: 2, color: Colors.redAccent),
                     ),
                     onPressed: () {
                       detailToDoState.deleteToDo().then((_) {
@@ -168,7 +168,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                       style: Theme.of(context)
                           .textTheme
                           .button
-                          .apply(color: Colors.black, fontWeightDelta: 2),
+                          ?.apply(color: Colors.black, fontWeightDelta: 2),
                     ),
                     onPressed: () {
                       detailToDoState.toggleToDo().then((_) {
