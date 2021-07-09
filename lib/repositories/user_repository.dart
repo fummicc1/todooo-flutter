@@ -8,19 +8,19 @@ import 'package:todooo/api/firebase/firestore.dart';
 import '../models/user.dart';
 
 class UserRepository {
+  late AuthClient _authClient = AuthClient();
 
-  static final FirestoreClient _firestoreClient = FirestoreClient();
-  static final AuthClient _authClient = AuthClient();
+  User? _user;
 
-  static User? _user;
-
-  static initialize() {
-    _authClient.getCurrentUser().then((response) {
-      _user = response;
+  UserRepository(Function(User?) onUpdateUser) {
+    _authClient.signInAnonymously();
+    _authClient.onAuthStateChanged().listen((user) {
+      _user = user;
+      onUpdateUser(user);
     });
   }
-  
-  static Future<User?> fetchUser({bool cache = true}) async {
+
+  Future<User?> fetchUser({bool cache = true}) async {
     if (cache) {
       return Future.value(_user);
     }
@@ -31,11 +31,11 @@ class UserRepository {
     }
   }
 
-  static Future updateDisplayName(User user) {
+  Future updateDisplayName(User user) {
     return _authClient.updateUser(displayName: user.displayName);
   }
 
-  static Future deleteUser() {
+  Future deleteUser() {
     return _authClient.signOut();
   }
 }

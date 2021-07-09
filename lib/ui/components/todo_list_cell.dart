@@ -1,8 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/models/todo.dart';
+import 'package:todooo/states/app_state.dart';
 import 'package:todooo/states/detail_todo_state.dart';
 import 'package:todooo/ui/pages/detail_todo_page.dart';
 
@@ -26,20 +26,23 @@ class ToDoListCell extends StatelessWidget {
                     child: Icon(Icons.check, color: Colors.black),
                   )
                 : Container(),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-                child: AutoSizeText(
-                  toDo.content,
-                  style: Theme.of(context).textTheme.headline6,
-                ))
+            Flexible(
+              child: Text(
+                toDo.content,
+                style: Theme.of(context).textTheme.headline6,
+                overflow: TextOverflow.ellipsis,
+              ),
+            )
           ],
         ),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
               settings: const RouteSettings(name: "/detail_todo_page"),
               builder: (context) {
+                final AppState appState = Provider.of(context, listen: false);
                 return ChangeNotifierProvider(
-                  create: (_) => DetailToDoState(toDo: toDo),
+                  create: (_) => DetailToDoState(
+                      toDoRepository: appState.toDoRepository, toDo: toDo),
                   child: DetailToDoPage(),
                 );
               }));

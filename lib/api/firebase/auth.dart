@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class AuthClient {
-
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Stream<User?> onAuthStateChanged() => _firebaseAuth.authStateChanges();
 
   Future<User> signInAnonymously() async {
     try {
@@ -16,7 +18,8 @@ class AuthClient {
 
   Future<User> signUp({required String email, required String password}) async {
     try {
-      final response = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      final response = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
       final firebaseUser = response.user;
       return Future.value(firebaseUser);
     } catch (error) {
@@ -26,7 +29,8 @@ class AuthClient {
 
   Future<User> signIn({required String email, required String password}) async {
     try {
-      final response = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      final response = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       return Future.value(response.user);
     } catch (error) {
       return Future.error(error);

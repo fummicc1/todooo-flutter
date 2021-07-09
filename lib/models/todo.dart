@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 enum Deadline { today, tomorrow }
 
 class ToDo {
-  late String uid;
+  String? uid;
   late String content;
   late String memo;
   late String deadline;
@@ -45,10 +45,7 @@ class ToDo {
     content = data["content"];
     memo = data["memo"];
     deadline = data["deadline"];
-    final createDate = (data["create_date"] as Timestamp)?.toDate();
-    if (createDate != null) {
-      this.createDate = createDate;
-    }
+    createDate = (data["create_date"] as Timestamp).toDate();
     isDone = data["is_done"];
     owner = data["owner"];
   }
