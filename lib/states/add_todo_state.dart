@@ -7,7 +7,8 @@ import 'package:todooo/repositories/todo_repository.dart';
 class AddToDoState extends ChangeNotifier {
 
   final List<String> deadlineList =
-      Deadline.values.map((value) => value.toString().split('.')[1]).toList();
+  Deadline.values.map((value) => value.toString().split('.')[1]).toList();
+
   Deadline get deadline {
     for (int i = 0; i < deadlineList.length; i++) {
       if (deadlineList[i] == _deadline) {
@@ -18,10 +19,12 @@ class AddToDoState extends ChangeNotifier {
   }
 
   bool get isDataInputted {
-    return userID.isNotEmpty && (content?.isNotEmpty ?? false);
+    return userID.isNotEmpty && (content.isNotEmpty);
   }
 
   bool isProcessing = false;
+
+  final ToDoRepository toDoRepository;
 
   // ToDo Data
   final String userID;
@@ -29,10 +32,11 @@ class AddToDoState extends ChangeNotifier {
   String _deadline;
   final String pageTitle;
 
-  AddToDoState({@required this.userID, @required this.pageTitle})
+  AddToDoState(
+      {required this.userID, this.content = "", required this.pageTitle, required this.toDoRepository})
       : this._deadline = "today";
 
-  Future<bool> createToDo({DateTime createDate}) async {
+  Future<bool> createToDo({required DateTime createDate}) async {
     if (isProcessing) {
       return Future.error("processing");
     }
@@ -44,7 +48,7 @@ class AddToDoState extends ChangeNotifier {
         isDone: false,
         owner: userID);
     try {
-      await ToDoRepository.createToDo(todo);
+      await toDoRepository.createToDo(todo);
       return Future.value(true);
     } catch (error) {
       return Future.error(error);

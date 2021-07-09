@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/states/detail_todo_state.dart';
@@ -46,14 +45,15 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                                       child: Icon(Icons.check),
                                     )
                                   : Container(),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                child: AutoSizeText(
-                                    detailToDoState.toDo.content,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4
-                                        .apply(fontWeightDelta: 2)),
+                              Flexible(
+                                child: Text(
+                                  detailToDoState.toDo.content,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4
+                                      ?.apply(fontWeightDelta: 2),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),
@@ -68,7 +68,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                               labelStyle: Theme.of(context)
                                   .textTheme
                                   .headline6
-                                  .apply(fontWeightDelta: 2),
+                                  ?.apply(fontWeightDelta: 2),
                               labelText: "フリースペース",
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -91,7 +91,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                           style: Theme.of(context)
                               .textTheme
                               .headline6
-                              .apply(fontWeightDelta: 2),
+                              ?.apply(fontWeightDelta: 2),
                         ),
                       ],
                     );
@@ -122,7 +122,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                     style: Theme.of(context)
                         .textTheme
                         .button
-                        .apply(fontWeightDelta: 2, color: Colors.black),
+                        ?.apply(fontWeightDelta: 2, color: Colors.black),
                   ),
                   icon: Icon(
                     Icons.arrow_downward,
@@ -138,13 +138,13 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                   FloatingActionButton.extended(
                     backgroundColor: Theme.of(context).backgroundColor,
                     heroTag: "hero2",
-                    icon: Icon(Icons.delete, size: 24, color: Colors.redAccent),
+                    icon: Icon(Icons.delete,
+                        size: 24, color: Theme.of(context).primaryColor),
                     label: Text(
                       "削除",
-                      style: Theme.of(context)
-                          .textTheme
-                          .button
-                          .apply(fontWeightDelta: 2, color: Colors.redAccent),
+                      style: Theme.of(context).textTheme.button?.apply(
+                          fontWeightDelta: 2,
+                          color: Theme.of(context).primaryColor),
                     ),
                     onPressed: () {
                       detailToDoState.deleteToDo().then((_) {
@@ -168,11 +168,11 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                       style: Theme.of(context)
                           .textTheme
                           .button
-                          .apply(color: Colors.black, fontWeightDelta: 2),
+                          ?.apply(color: Colors.black, fontWeightDelta: 2),
                     ),
                     onPressed: () {
                       detailToDoState.toggleToDo().then((_) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(detailToDoState.toDo.isDone
                               ? "完了済み"
                               : "未完了に戻しました"),

@@ -2,66 +2,122 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class FirestoreClient {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<DocumentSnapshot> getDocumentOfSubCollection(
-  {@required String collectionName, @required String documentID, @required String subCollectionName, @required String subDocumentID}) {
-    return _firestore.collection(collectionName).document(documentID).collection(subCollectionName).document(subDocumentID).get();
+      {required String collectionName,
+      required String documentID,
+      required String subCollectionName,
+      required String subDocumentID}) {
+    return _firestore
+        .collection(collectionName)
+        .doc(documentID)
+        .collection(subCollectionName)
+        .doc(subDocumentID)
+        .get();
   }
 
   Future<DocumentSnapshot> getDocument(
-      {@required String collectionName, @required String documentName}) {
-    return _firestore.collection(collectionName).document(documentName).get();
+      {required String collectionName, required String documentName}) {
+    return _firestore.collection(collectionName).doc(documentName).get();
   }
 
-  Future<QuerySnapshot> getCollection({@required String collectionName}) {
-    return _firestore.collection(collectionName).getDocuments();
+  Future<QuerySnapshot> getCollection({required String collectionName}) {
+    return _firestore.collection(collectionName).get();
   }
 
-  Future<QuerySnapshot> getCollectionWithQuery({@required String collectionName, @required String fieldName, @required dynamic fieldValue}) {
-    return _firestore.collection(collectionName).where(fieldName, isEqualTo: fieldValue).getDocuments();
+  Future<QuerySnapshot> getCollectionWithQuery(
+      {required String collectionName,
+      required String fieldName,
+      required dynamic fieldValue}) {
+    return _firestore
+        .collection(collectionName)
+        .where(fieldName, isEqualTo: fieldValue)
+        .get();
   }
 
-  Future<QuerySnapshot> getSubCollection({@required String collectionName, @required String documentID, @required String subCollectionName}) {
-    return _firestore.collection(collectionName).document(documentID).collection(subCollectionName).getDocuments();
+  Future<QuerySnapshot> getSubCollection(
+      {required String collectionName,
+      required String documentID,
+      required String subCollectionName}) {
+    return _firestore
+        .collection(collectionName)
+        .doc(documentID)
+        .collection(subCollectionName)
+        .get();
   }
 
-  Stream<QuerySnapshot> listenCollection({@required String collectionName}) {
+  Stream<QuerySnapshot> listenCollection({required String collectionName}) {
     return _firestore.collection(collectionName).snapshots();
   }
 
-  Stream<QuerySnapshot> listenCollectionWithQuery({@required String collectionName, @required String fieldName, @required dynamic fieldValue}) {
-    return _firestore.collection(collectionName).where(fieldName, isEqualTo: fieldValue).snapshots();
+  Stream<QuerySnapshot> listenCollectionWithQuery(
+      {required String collectionName,
+      required String fieldName,
+      required dynamic fieldValue}) {
+    return _firestore
+        .collection(collectionName)
+        .where(fieldName, isEqualTo: fieldValue)
+        .snapshots();
   }
 
-  Stream<QuerySnapshot> listenSubCollection({@required String collectionName, @required String documentID, @required String subCollectionName}) {
-    return _firestore.collection(collectionName).document(documentID).collection(subCollectionName).snapshots();
+  Stream<QuerySnapshot> listenSubCollection(
+      {required String collectionName,
+      required String documentID,
+      required String subCollectionName}) {
+    return _firestore
+        .collection(collectionName)
+        .doc(documentID)
+        .collection(subCollectionName)
+        .snapshots();
   }
 
-  Stream<DocumentSnapshot> listenDocument({ @required String collectionName, @required String documentName}) {
-    return _firestore.collection(collectionName).document(documentName).snapshots();
+  Stream<DocumentSnapshot> listenDocument(
+      {required String collectionName, required String documentName}) {
+    return _firestore.collection(collectionName).doc(documentName).snapshots();
   }
 
-  Future setDocument({@required String collectionName, @required String documentName, @required Map<String, dynamic> data, bool merge = true}) {
-    return _firestore.collection(collectionName).document(documentName).setData(data, merge: merge);
+  Future setDocument(
+      {required String collectionName,
+      required String documentName,
+      required Map<String, dynamic> data,
+      bool merge = true}) {
+    return _firestore
+        .collection(collectionName)
+        .doc(documentName)
+        .set(data, SetOptions(merge: true));
   }
 
-  Future<String> createDocument({@required String collectionName, @required Map<String, dynamic> data}) async {
-    final document = _firestore.collection(collectionName).document();
-    data["uid"] = document.documentID;
+  Future<String> createDocument(
+      {required String collectionName,
+      required Map<String, dynamic> data}) async {
+    final document = _firestore.collection(collectionName).doc();
+    data["uid"] = document.id;
     try {
-      await document.setData(data);
-      return Future.value(document.documentID);
+      await document.set(data);
+      return Future.value(document.id);
     } catch (error) {
       return Future.error(error);
     }
   }
 
-  Future setDocumentWithinSubCollection({@required String collectionName, @required String documentName, @required String subCollectionName, @required String subCollectionDocumentName, Map<String, dynamic> data, bool merge = true}) {
-    return _firestore.collection(collectionName).document(documentName).collection(subCollectionName).document(subCollectionDocumentName).setData(data, merge: true);
+  Future setDocumentWithinSubCollection(
+      {required String collectionName,
+      required String documentName,
+      required String subCollectionName,
+      required String subCollectionDocumentName,
+      required Map<String, dynamic> data,
+      bool merge = true}) {
+    return _firestore
+        .collection(collectionName)
+        .doc(documentName)
+        .collection(subCollectionName)
+        .doc(subCollectionDocumentName)
+        .set(data, SetOptions(merge: true));
   }
 
-  Future deleteDocument({@required String collectionName, @required String documentName}) {
-    return _firestore.collection(collectionName).document(documentName).delete();
+  Future deleteDocument(
+      {required String collectionName, required String documentName}) {
+    return _firestore.collection(collectionName).doc(documentName).delete();
   }
 }

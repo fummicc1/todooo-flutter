@@ -7,22 +7,24 @@ class DetailToDoState extends ChangeNotifier {
   String editedMemo;
   final FocusNode focusNode;
   final TextEditingController memoEditingController;
+  final ToDoRepository toDoRepository;
 
-  DetailToDoState({@required this.toDo})
+  DetailToDoState(
+      {required this.toDoRepository, required this.toDo, this.editedMemo = ""})
       : focusNode = FocusNode(),
         memoEditingController = TextEditingController() {
     focusNode.addListener(() {
       notifyListeners();
     });
-    if (toDo.memo?.isNotEmpty ?? false) {
+    if (toDo.memo.isNotEmpty) {
       memoEditingController.text = toDo.memo;
     }
   }
 
   Future<void> deleteToDo() async {
     try {
-      await ToDoRepository.deleteToDo(toDo);
-      await ToDoRepository.fetchToDos(cache: false);
+      await toDoRepository.deleteToDo(toDo);
+      await toDoRepository.fetchToDos(cache: false);
       return Future.value(null);
     } catch (error) {
       return Future.error(error);
@@ -32,8 +34,8 @@ class DetailToDoState extends ChangeNotifier {
   Future<void> toggleToDo() async {
     toDo.isDone = !toDo.isDone;
     try {
-      await ToDoRepository.updateToDo(this.toDo);
-      final toDo = await ToDoRepository.fetchToDo(uid: this.toDo.uid);
+      await toDoRepository.updateToDo(this.toDo);
+      final toDo = await toDoRepository.fetchToDo(uid: this.toDo.uid!);
       this.toDo = toDo;
       notifyListeners();
       return Future.value(null);
@@ -45,8 +47,8 @@ class DetailToDoState extends ChangeNotifier {
   Future<void> updateMemo(String memo) async {
     toDo.memo = memo;
     try {
-      await ToDoRepository.updateToDo(this.toDo);
-      final toDo = await ToDoRepository.fetchToDo(uid: this.toDo.uid);
+      await toDoRepository.updateToDo(this.toDo);
+      final toDo = await toDoRepository.fetchToDo(uid: this.toDo.uid!);
       this.toDo = toDo;
       notifyListeners();
       return Future.value(null);

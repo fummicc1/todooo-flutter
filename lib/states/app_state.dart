@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todooo/api/firebase/firestore.dart';
 import 'package:todooo/models/user.dart';
 import 'package:todooo/repositories/todo_repository.dart';
 import 'package:todooo/repositories/user_repository.dart';
@@ -11,12 +13,16 @@ enum NetworkHandleState {
 }
 
 class AppState extends ChangeNotifier {
-  User user;
+  User? user;
+
+  late UserRepository userRepository;
+  late ToDoRepository toDoRepository;
 
   AppState() {
-    UserRepository.fetchUser(cache: false).then((user) {
+    toDoRepository = ToDoRepository(firestoreClient: FirestoreClient());
+    userRepository = UserRepository((user) {
       this.user = user;
-      ToDoRepository.userID = user.uid;
+      toDoRepository.userID = user?.uid;
       notifyListeners();
     });
   }
