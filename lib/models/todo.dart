@@ -10,6 +10,8 @@ class ToDo {
   late DateTime createDate;
   late String owner;
   late bool isDone;
+  late bool shouldDeleteAutomatically;
+  late bool shouldNotificate;
 
   static const CollectionName = "todos";
 
@@ -19,7 +21,9 @@ class ToDo {
       required this.deadline,
       required this.createDate,
       required this.isDone,
-      required this.owner});
+      required this.owner,
+      required this.shouldDeleteAutomatically,
+      required this.shouldNotificate});
 
   bool get isOver {
     final current = DateTime.now();
@@ -48,6 +52,8 @@ class ToDo {
     createDate = (data["create_date"] as Timestamp).toDate();
     isDone = data["is_done"];
     owner = data["owner"];
+    shouldDeleteAutomatically = data["should_delete_automatically"];
+    shouldNotificate = data["should_notificate"];
   }
 
   Map<String, dynamic> get data => {
@@ -58,6 +64,8 @@ class ToDo {
         "create_date": createDate,
         "is_done": isDone,
         "owner": owner,
+        "should_delete_automatically": shouldDeleteAutomatically,
+        "should_notificate": shouldNotificate
       };
 
   String get deadlineText {

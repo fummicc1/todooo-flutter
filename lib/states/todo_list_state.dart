@@ -4,16 +4,19 @@ import 'package:todooo/models/todo.dart';
 import 'package:todooo/repositories/todo_repository.dart';
 
 class ToDoListState with ChangeNotifier {
-
   ToDoRepository toDoRepository;
   User? user;
   List<ToDo> todoList = [];
   String pageTitle;
 
-  ToDoListState({required this.toDoRepository, required this.pageTitle, required this.user}) {
+  ToDoListState(
+      {required this.toDoRepository,
+      required this.pageTitle,
+      required this.user}) {
     toDoRepository.listenTodoList(cache: false).listen((todos) {
       if (this.hasListeners) {
-        this.todoList = todos;
+        this.todoList =
+            todos.where((todo) => !todo.shouldDeleteAutomatically).toList();
         notifyListeners();
       }
     });
