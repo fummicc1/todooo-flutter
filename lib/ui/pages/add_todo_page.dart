@@ -98,7 +98,51 @@ class AddToDoPage extends StatelessWidget {
                       },
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: 24),
+                Text("期限が過ぎたら自動で削除をする", style: Theme.of(context).textTheme.subtitle1,),
+                Wrap(
+                  children: <Widget>[
+                    RadioListTile(
+                      title: Text("はい"),
+                      value: true,
+                      groupValue: addToDoState.shouldDeleteAutomatically,
+                      onChanged: (shouldDeleteAutomatically) {
+                        addToDoState.updateShouldDeleteAutomatically(shouldDeleteAutomatically as bool);
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text("いいえ"),
+                      value: false,
+                      groupValue: addToDoState.shouldDeleteAutomatically,
+                      onChanged: (shouldDeleteAutomatically) {
+                        addToDoState.updateShouldDeleteAutomatically(shouldDeleteAutomatically as bool);
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24),
+                Text("通知をする", style: Theme.of(context).textTheme.subtitle1,),
+                Wrap(
+                  children: <Widget>[
+                    RadioListTile(
+                      title: Text("はい"),
+                      value: true,
+                      groupValue: addToDoState.shouldNotificate,
+                      onChanged: (shouldDeleteAutomatically) {
+                        addToDoState.updateShouldNotificate(shouldDeleteAutomatically as bool);
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text("いいえ"),
+                      value: false,
+                      groupValue: addToDoState.shouldNotificate,
+                      onChanged: (shouldDeleteAutomatically) {
+                        addToDoState.updateShouldNotificate(shouldDeleteAutomatically as bool);
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
