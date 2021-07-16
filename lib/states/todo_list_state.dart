@@ -4,18 +4,18 @@ import 'package:todooo/models/todo.dart';
 import 'package:todooo/repositories/todo_repository.dart';
 
 class ToDoListState with ChangeNotifier {
-
   ToDoRepository toDoRepository;
   User? user;
   List<ToDo> todoList = [];
   String pageTitle;
 
-  ToDoListState({required this.toDoRepository, required this.pageTitle, required this.user}) {
+  ToDoListState(
+      {required this.toDoRepository,
+      required this.pageTitle,
+      required this.user}) {
     toDoRepository.listenTodoList(cache: false).listen((todos) {
-      if (this.hasListeners) {
-        this.todoList = todos;
-        notifyListeners();
-      }
+      this.todoList = todos;
+      notifyListeners();
     });
   }
 
@@ -23,7 +23,10 @@ class ToDoListState with ChangeNotifier {
     try {
       final todos = await toDoRepository.fetchToDos(cache: false);
       this.todoList = todos;
-      notifyListeners();
+
+      if (hasListeners) {
+        notifyListeners();
+      }
       return Future.value(todos);
     } catch (error) {
       return Future.error(error);

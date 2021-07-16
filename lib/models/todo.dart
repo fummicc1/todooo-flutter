@@ -10,6 +10,8 @@ class ToDo {
   late DateTime createDate;
   late String owner;
   late bool isDone;
+  late int? notificationDateTimeFromEpoch;
+
 
   static const CollectionName = "todos";
 
@@ -19,7 +21,8 @@ class ToDo {
       required this.deadline,
       required this.createDate,
       required this.isDone,
-      required this.owner});
+      required this.owner,
+      required this.notificationDateTimeFromEpoch});
 
   bool get isOver {
     final current = DateTime.now();
@@ -48,6 +51,7 @@ class ToDo {
     createDate = (data["create_date"] as Timestamp).toDate();
     isDone = data["is_done"];
     owner = data["owner"];
+    notificationDateTimeFromEpoch = data["notification_date_time_from_epoch"];
   }
 
   Map<String, dynamic> get data => {
@@ -58,6 +62,7 @@ class ToDo {
         "create_date": createDate,
         "is_done": isDone,
         "owner": owner,
+        "notification_date_time_from_epoch": notificationDateTimeFromEpoch
       };
 
   String get deadlineText {

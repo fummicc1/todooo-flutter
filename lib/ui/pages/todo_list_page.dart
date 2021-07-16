@@ -12,7 +12,6 @@ class ToDoListPage extends StatefulWidget {
 }
 
 class _ToDoListPageState extends State<ToDoListPage> {
-
   late ScrollController _scrollController;
 
   Size topLeftCircleSize = Size(200, 200);
@@ -24,8 +23,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
     _scrollController.addListener(() {
       topLeftCircleSize = Size(200 + _scrollController.position.pixels * 0.3,
           200 + _scrollController.position.pixels * 0.3);
-      setState(() {
-      });
+      setState(() {});
     });
   }
 
@@ -44,9 +42,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
               child: Container(
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Theme
-                        .of(context)
-                        .primaryColor),
+                    color: Theme.of(context).primaryColor),
               )),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -60,10 +56,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                         top: 48,
                         left: 0,
                         child: Text(toDoListState.pageTitle,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline4),
+                            style: Theme.of(context).textTheme.headline4),
                       ),
                       Positioned(
                         top: 0,
@@ -81,26 +74,23 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 Expanded(
                   child: toDoListState.todoList.isNotEmpty
                       ? ListView.builder(
-                    physics: AlwaysScrollableScrollPhysics(),
-                      controller: _scrollController,
-                      shrinkWrap: true,
-                      itemCount: toDoListState.todoList.length,
-                      itemBuilder: (context, index) {
-                        final todo = toDoListState.todoList[index];
-                        return ToDoListCell(toDo: todo);
-                      })
+                          physics: AlwaysScrollableScrollPhysics(),
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          itemCount: toDoListState.todoList.length,
+                          itemBuilder: (context, index) {
+                            final todo = toDoListState.todoList[index];
+                            return ToDoListCell(toDo: todo);
+                          })
                       : Center(
-                    child: FlatButton(
-                      child: Text("最初のToDoを作成",
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .headline6),
-                      onPressed: () {
-                        _moveToAddToDoPage(context);
-                      },
-                    ),
-                  ),
+                          child: TextButton(
+                            child: Text("最初のToDoを作成",
+                                style: Theme.of(context).textTheme.headline6),
+                            onPressed: () {
+                              _moveToAddToDoPage(context);
+                            },
+                          ),
+                        ),
                 )
               ],
             ),
@@ -121,9 +111,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
             decoration: BoxDecoration(
                 boxShadow: [BoxShadow(offset: Offset(0, 1), blurRadius: 2)],
                 shape: BoxShape.circle,
-                color: Theme
-                    .of(context)
-                    .scaffoldBackgroundColor),
+                color: Theme.of(context).scaffoldBackgroundColor),
           )),
       Positioned(
           right: 32,
@@ -134,9 +122,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 icon: Icon(
                   Icons.calendar_today,
                   size: 56,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
                 onPressed: () {},
               ),
@@ -145,9 +131,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 icon: Icon(
                   Icons.online_prediction,
                   size: 56,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
                 onPressed: () {},
               )
@@ -161,15 +145,15 @@ class _ToDoListPageState extends State<ToDoListPage> {
 
     Navigator.of(context).push(MaterialPageRoute(
         settings: const RouteSettings(name: "/add_todo_page"),
-        builder: (_) =>
-            ChangeNotifierProvider(
-                create: (_) {
-                  final AppState appState = Provider.of(context, listen: false);
-                  return AddToDoState(
-                      toDoRepository: appState.toDoRepository,
-                      userID: appState.user!.uid,
-                      pageTitle: "登録");
-                },
-                child: AddToDoPage())));
+        builder: (_) => ChangeNotifierProvider(
+            create: (_) {
+              final AppState appState = Provider.of(context, listen: false);
+              return AddToDoState(
+                  toDoRepository: appState.toDoRepository,
+                  userID: appState.user!.uid,
+                  pageTitle: "登録",
+                  localNotificationService: appState.localNotificationService);
+            },
+            child: AddToDoPage())));
   }
 }

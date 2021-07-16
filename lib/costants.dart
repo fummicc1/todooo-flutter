@@ -1,0 +1,1 @@
+const TokyoLocation = 'Asia/Tokyo';
