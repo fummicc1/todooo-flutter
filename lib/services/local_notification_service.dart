@@ -28,14 +28,19 @@ class LocalNotificationService {
       {required String title,
       required String body,
       required tz.TZDateTime scheduledDate,
-      required NotificationDetails details}) async {
+      required NotificationDetails details,
+      required String payload}) async {
     final pendingNotifications =
         await _flutterLocalNotificationPlugin.pendingNotificationRequests();
-    final lastId = pendingNotifications.last.id ?? 0;
+    int newId = 0;
+    if (pendingNotifications.isNotEmpty) {
+      newId = 1 + pendingNotifications.last.id ?? 0;
+    }
     return _flutterLocalNotificationPlugin.zonedSchedule(
-        lastId + 1, title, body, scheduledDate, details,
+        newId, title, body, scheduledDate, details,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle: true);
+        androidAllowWhileIdle: true,
+        payload: payload);
   }
 }

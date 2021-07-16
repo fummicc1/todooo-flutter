@@ -27,8 +27,6 @@ class AppState extends ChangeNotifier {
   }
 
   Future<ToDo> fetchToDo({required id}) async {
-    final Map<String, dynamic> result = await toDoRepository.fetchToDo(uid: id);
-    final ToDo toDo = ToDo.fromData(result);
-    return toDo;
+    return await toDoRepository.fetchToDo(uid: id);
   }
 }

@@ -60,11 +60,11 @@ class ToDoRepository {
         collectionName: ToDo.CollectionName, documentName: toDo.uid!);
   }
 
-  Future createToDo(ToDo toDo) async {
+  Future<String> createToDo(ToDo toDo) async {
     try {
-      await firestoreClient.createDocument(
+      String docId = await firestoreClient.createDocument(
           collectionName: ToDo.CollectionName, data: toDo.data);
-      return Future.value(null);
+      return Future.value(docId);
     } catch (error) {
       return Future.error(error);
     }

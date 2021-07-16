@@ -54,7 +54,12 @@ class AddToDoPage extends StatelessWidget {
                                               Text("保存に失敗しました。もう一度お試しください。"),
                                         ));
                                       }
-                                    } catch (erorr) {
+                                    } catch (error) {
+                                      if (error == "Processing") {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(content: Text("処理中ですので少しお待ちください。")));
+                                        return;
+                                      }
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content: Text("保存に失敗しました。もう一度お試しください。"),

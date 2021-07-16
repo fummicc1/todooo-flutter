@@ -60,12 +60,13 @@ class AddToDoState extends ChangeNotifier {
         owner: userID,
         notificationDateTimeFromEpoch: notificateDate?.millisecondsSinceEpoch);
     try {
-      await toDoRepository.createToDo(todo);
+      final String todoId = await toDoRepository.createToDo(todo);
       if (notificateDate != null) {
         await localNotificationService.sendNotification(
             title: "「${content}」を完了しましょう！",
             body: "",
             scheduledDate: notificateDate!,
+            payload: "{ \"todo_id\": \"$todoId\" }",
             details: NotificationDetails(
                 android:
                     AndroidNotificationDetails("0", "TOD_NOTIFICATION", "")));
