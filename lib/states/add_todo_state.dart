@@ -1,8 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:todooo/costants.dart';
 import 'package:todooo/models/todo.dart';
 import 'package:todooo/repositories/todo_repository.dart';
+import 'package:todooo/services/local_notification_service.dart';
+import "package:timezone/timezone.dart" as tz;
 
 class AddToDoState extends ChangeNotifier {
   final List<String> deadlineList =
@@ -24,22 +29,22 @@ class AddToDoState extends ChangeNotifier {
   bool isProcessing = false;
 
   final ToDoRepository toDoRepository;
+  final LocalNotificationService localNotificationService;
 
   // ToDo Data
   final String userID;
   String content;
   String _deadline;
-  bool shouldDeleteAutomatically;
-  bool shouldNotificate;
+  tz.TZDateTime? notificateDate;
   final String pageTitle;
 
   AddToDoState(
       {required this.userID,
       this.content = "",
-      this.shouldDeleteAutomatically = false,
-      this.shouldNotificate = true,
+      this.notificateDate,
       required this.pageTitle,
-      required this.toDoRepository})
+      required this.toDoRepository,
+      required this.localNotificationService})
       : this._deadline = "today";
 
   Future<bool> createToDo({required DateTime createDate}) async {
@@ -53,10 +58,18 @@ class AddToDoState extends ChangeNotifier {
         deadline: _deadline,
         isDone: false,
         owner: userID,
-        shouldDeleteAutomatically: shouldDeleteAutomatically,
-        shouldNotificate: shouldNotificate);
+        notificationDateTimeFromEpoch: notificateDate?.millisecondsSinceEpoch);
     try {
       await toDoRepository.createToDo(todo);
+      if (notificateDate != null) {
+        await localNotificationService.sendNotification(
+            title: "「${content}」を完了しましょう！",
+            body: "",
+            scheduledDate: notificateDate!,
+            details: NotificationDetails(
+                android:
+                    AndroidNotificationDetails("0", "TOD_NOTIFICATION", "")));
+      }
       return Future.value(true);
     } catch (error) {
       return Future.error(error);
@@ -77,13 +90,13 @@ class AddToDoState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateShouldDeleteAutomatically(bool automatically) {
-    this.shouldDeleteAutomatically = automatically;
-    notifyListeners();
-  }
+  updateNotificationDate(DateTime? dateTime) async {
 
-  updateShouldNotificate(bool should) {
-    this.shouldNotificate = should;
+    if (dateTime == null) {
+      this.notificateDate = null;
+    } else {
+      this.notificateDate = tz.TZDateTime.from(dateTime, tz.getLocation(TokyoLocation));
+    }
     notifyListeners();
   }
 }

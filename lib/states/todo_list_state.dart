@@ -14,11 +14,8 @@ class ToDoListState with ChangeNotifier {
       required this.pageTitle,
       required this.user}) {
     toDoRepository.listenTodoList(cache: false).listen((todos) {
-      if (this.hasListeners) {
-        this.todoList =
-            todos.where((todo) => !todo.shouldDeleteAutomatically).toList();
-        notifyListeners();
-      }
+      this.todoList = todos;
+      notifyListeners();
     });
   }
 
@@ -26,7 +23,10 @@ class ToDoListState with ChangeNotifier {
     try {
       final todos = await toDoRepository.fetchToDos(cache: false);
       this.todoList = todos;
-      notifyListeners();
+
+      if (hasListeners) {
+        notifyListeners();
+      }
       return Future.value(todos);
     } catch (error) {
       return Future.error(error);

@@ -83,7 +83,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                             return ToDoListCell(toDo: todo);
                           })
                       : Center(
-                          child: FlatButton(
+                          child: TextButton(
                             child: Text("最初のToDoを作成",
                                 style: Theme.of(context).textTheme.headline6),
                             onPressed: () {
@@ -151,7 +151,8 @@ class _ToDoListPageState extends State<ToDoListPage> {
               return AddToDoState(
                   toDoRepository: appState.toDoRepository,
                   userID: appState.user!.uid,
-                  pageTitle: "登録");
+                  pageTitle: "登録",
+                  localNotificationService: appState.localNotificationService);
             },
             child: AddToDoPage())));
   }
