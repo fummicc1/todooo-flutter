@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:todooo/costants.dart';
 import 'package:todooo/models/todo.dart';
@@ -69,7 +70,7 @@ class AddToDoState extends ChangeNotifier {
             payload: "{ \"todo_id\": \"$todoId\" }",
             details: NotificationDetails(
                 android:
-                    AndroidNotificationDetails("0", "TOD_NOTIFICATION", "")));
+                    AndroidNotificationDetails("0", "TOD_NOTIFICATION", "", importance: Importance.high)));
       }
       return Future.value(true);
     } catch (error) {

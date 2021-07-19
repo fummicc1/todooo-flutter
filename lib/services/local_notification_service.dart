@@ -34,7 +34,7 @@ class LocalNotificationService {
         await _flutterLocalNotificationPlugin.pendingNotificationRequests();
     int newId = 0;
     if (pendingNotifications.isNotEmpty) {
-      newId = 1 + pendingNotifications.last.id ?? 0;
+      newId = 1 + pendingNotifications.last.id;
     }
     return _flutterLocalNotificationPlugin.zonedSchedule(
         newId, title, body, scheduledDate, details,

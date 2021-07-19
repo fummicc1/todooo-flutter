@@ -14,7 +14,7 @@ class ToDoListPage extends StatefulWidget {
 class _ToDoListPageState extends State<ToDoListPage> {
   late ScrollController _scrollController;
 
-  Size topLeftCircleSize = Size(200, 200);
+  Size topLeftCircleSize = Size(200, 240);
 
   @override
   void initState() {
@@ -32,6 +32,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
     final ToDoListState toDoListState = Provider.of(context);
     return Scaffold(
       body: SafeArea(
+        top: false,
         bottom: false,
         child: Stack(children: [
           Positioned(
@@ -59,7 +60,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                             style: Theme.of(context).textTheme.headline4),
                       ),
                       Positioned(
-                        top: 0,
+                        top: 48,
                         right: 0,
                         height: 48,
                         child: IconButton(
