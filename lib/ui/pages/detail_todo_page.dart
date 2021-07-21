@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/states/detail_todo_state.dart';
 import 'package:todooo/states/todo_list_state.dart';
@@ -93,6 +94,18 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                               .headline6
                               ?.apply(fontWeightDelta: 2),
                         ),
+                        SizedBox(height: 32,),
+                        Row(
+                          children: [
+                            Text("• 通知時刻"),
+                            detailToDoState
+                                        .toDo.notificationDateTimeFromEpoch !=
+                                    null
+                                ? Text(
+                                    "\t ${convertDateTimeFromEpoch(timeInterval: detailToDoState.toDo.notificationDateTimeFromEpoch!!)}")
+                                : Text("未設定")
+                          ],
+                        )
                       ],
                     );
                   },
@@ -186,5 +199,11 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  String convertDateTimeFromEpoch({required int timeInterval}) {
+    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeInterval);
+    final format = DateFormat.yMd().add_jm();
+    return format.format(dateTime);
   }
 }

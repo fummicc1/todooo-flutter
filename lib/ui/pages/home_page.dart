@@ -43,6 +43,7 @@ class HomePage extends StatelessWidget {
                   create: (_) {
                     final AppState appState = Provider.of(context, listen: false);
                     return DetailToDoState(
+                      localNotificationService: appState.localNotificationService,
                         toDoRepository: appState.toDoRepository, toDo: todo);
                   },
                   child: DetailToDoPage())));

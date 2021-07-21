@@ -121,14 +121,21 @@ class AddToDoPage extends StatelessWidget {
                         border: Border(
                             bottom: BorderSide(
                                 color: Theme.of(context).colorScheme.primary))),
-                    child: Row(
-                      children: [
-                        Text("通知時刻: "),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        DateTextLabelIfNeeded(addToDoState.notificateDate)
-                      ],
+                    child: InkWell(
+                      onTap: () {
+                        onChangeNotificationRadioButton(context, shouldNotificate: true, onSelectDate: (dateTime) {
+                          addToDoState.updateNotificationDate(dateTime);
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Text("通知時刻: "),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          DateTextLabelIfNeeded(addToDoState.notificateDate)
+                        ],
+                      ),
                     ),
                   ),
                 ),

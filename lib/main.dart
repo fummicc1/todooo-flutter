@@ -38,14 +38,21 @@ class MyApp extends StatelessWidget {
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate
                 ],
-                supportedLocales: [
-                  Locale("ja"),
-                  Locale("en")
-                ],
+                supportedLocales: [Locale("ja"), Locale("en")],
                 title: 'todooo',
                 theme: ThemeData(
-                    primaryColor: Color(0xFFF2938A),
-                    accentColor: Color(0xFFF04F40),
+                    primarySwatch: MaterialColor(Color(0xFFF2938A).value, {
+                      50: Color(0xFFffe9eb),
+                      100: Color(0xFFffc8c9),
+                      200: Color(0xFFf2938a),
+                      300: Color(0xFFe5695e),
+                      400: Color(0xFFea4935),
+                      500: Color(0xFFeb3b11),
+                      600: Color(0xFFdd2f14),
+                      700: Color(0xFFcc240f),
+                      800: Color(0xFFbf1c07),
+                      900: Color(0xFFaf0f00),
+                    }),
                     backgroundColor: Color(0xFFF0F0F0),
                     highlightColor: Colors.white70),
                 home: HomePage(),
