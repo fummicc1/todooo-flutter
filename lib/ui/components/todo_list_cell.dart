@@ -42,7 +42,10 @@ class ToDoListCell extends StatelessWidget {
                 final AppState appState = Provider.of(context, listen: false);
                 return ChangeNotifierProvider(
                   create: (_) => DetailToDoState(
-                      toDoRepository: appState.toDoRepository, toDo: toDo),
+                      localNotificationService:
+                          appState.localNotificationService,
+                      toDoRepository: appState.toDoRepository,
+                      toDo: toDo),
                   child: DetailToDoPage(),
                 );
               }));

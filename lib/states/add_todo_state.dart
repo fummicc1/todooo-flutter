@@ -50,27 +50,33 @@ class AddToDoState extends ChangeNotifier {
 
   Future<bool> createToDo({required DateTime createDate}) async {
     if (isProcessing) {
+      isProcessing = false;
       return Future.error("processing");
     }
     isProcessing = true;
     final todo = ToDo(
+        uid: null,
         content: content,
         createDate: createDate,
         deadline: _deadline,
         isDone: false,
         owner: userID,
-        notificationDateTimeFromEpoch: notificateDate?.millisecondsSinceEpoch);
+        notificationDateTimeFromEpoch: notificateDate?.millisecondsSinceEpoch, notificationId: null
+    );
     try {
       final String todoId = await toDoRepository.createToDo(todo);
+      todo.uid = todoId;
       if (notificateDate != null) {
-        await localNotificationService.sendNotification(
+       final notificationId = await localNotificationService.sendNotification(
             title: "「${content}」を完了しましょう！",
             body: "",
             scheduledDate: notificateDate!,
             payload: "{ \"todo_id\": \"$todoId\" }",
             details: NotificationDetails(
-                android:
-                    AndroidNotificationDetails("0", "TOD_NOTIFICATION", "", importance: Importance.high)));
+                android: AndroidNotificationDetails("0", "TOD_NOTIFICATION", "",
+                    importance: Importance.high)));
+        todo.notificationId = notificationId;
+        await toDoRepository.updateToDo(todo);
       }
       return Future.value(true);
     } catch (error) {
@@ -93,11 +99,11 @@ class AddToDoState extends ChangeNotifier {
   }
 
   updateNotificationDate(DateTime? dateTime) async {
-
     if (dateTime == null) {
       this.notificateDate = null;
     } else {
-      this.notificateDate = tz.TZDateTime.from(dateTime, tz.getLocation(TokyoLocation));
+      this.notificateDate =
+          tz.TZDateTime.from(dateTime, tz.getLocation(TokyoLocation));
     }
     notifyListeners();
   }

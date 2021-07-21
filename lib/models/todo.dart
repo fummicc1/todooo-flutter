@@ -4,25 +4,27 @@ enum Deadline { today, tomorrow }
 
 class ToDo {
   String? uid;
-  late String content;
-  late String memo;
-  late String deadline;
-  late DateTime createDate;
-  late String owner;
-  late bool isDone;
-  late int? notificationDateTimeFromEpoch;
-
+  String content;
+  String memo;
+  String deadline;
+  final DateTime createDate;
+  final String owner;
+  bool isDone;
+  int? notificationDateTimeFromEpoch;
+  int? notificationId;
 
   static const CollectionName = "todos";
 
   ToDo(
-      {required this.content,
+      {String? this.uid,
+      required this.content,
       this.memo = "",
       required this.deadline,
       required this.createDate,
       required this.isDone,
       required this.owner,
-      required this.notificationDateTimeFromEpoch});
+      required this.notificationDateTimeFromEpoch,
+      required this.notificationId});
 
   bool get isOver {
     final current = DateTime.now();
@@ -43,15 +45,28 @@ class ToDo {
     }
   }
 
-  ToDo.fromData(Map<String, dynamic> data) {
-    uid = data["uid"] ?? "";
-    content = data["content"];
-    memo = data["memo"];
-    deadline = data["deadline"];
-    createDate = (data["create_date"] as Timestamp).toDate();
-    isDone = data["is_done"];
-    owner = data["owner"];
-    notificationDateTimeFromEpoch = data["notification_date_time_from_epoch"];
+  factory ToDo.fromData(Map<String, dynamic> data) {
+    final uid = data["uid"] ?? "";
+    final content = data["content"];
+    final memo = data["memo"];
+    final deadline = data["deadline"];
+    final createDate = (data["create_date"] as Timestamp).toDate();
+    final isDone = data["is_done"];
+    final owner = data["owner"];
+    final notificationDateTimeFromEpoch =
+        data["notification_date_time_from_epoch"];
+    final notificationId = data["notification_id"];
+
+    return ToDo(
+        uid: uid,
+        content: content,
+        memo: memo,
+        deadline: deadline,
+        createDate: createDate,
+        isDone: isDone,
+        owner: owner,
+        notificationDateTimeFromEpoch: notificationDateTimeFromEpoch,
+        notificationId: notificationId);
   }
 
   Map<String, dynamic> get data => {
@@ -62,7 +77,8 @@ class ToDo {
         "create_date": createDate,
         "is_done": isDone,
         "owner": owner,
-        "notification_date_time_from_epoch": notificationDateTimeFromEpoch
+        "notification_date_time_from_epoch": notificationDateTimeFromEpoch,
+        "notification_id": notificationId ?? -1
       };
 
   String get deadlineText {

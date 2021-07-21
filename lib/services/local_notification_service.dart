@@ -24,7 +24,7 @@ class LocalNotificationService {
         onSelectNotification: onSelectNotification);
   }
 
-  Future sendNotification(
+  Future<int> sendNotification(
       {required String title,
       required String body,
       required tz.TZDateTime scheduledDate,
@@ -36,11 +36,16 @@ class LocalNotificationService {
     if (pendingNotifications.isNotEmpty) {
       newId = 1 + pendingNotifications.last.id;
     }
-    return _flutterLocalNotificationPlugin.zonedSchedule(
+    await _flutterLocalNotificationPlugin.zonedSchedule(
         newId, title, body, scheduledDate, details,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         payload: payload);
+    return newId;
+  }
+
+  Future deleteNotification({ required int id }) {
+    return _flutterLocalNotificationPlugin.cancel(id);
   }
 }
