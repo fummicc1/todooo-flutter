@@ -102,7 +102,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                                         .toDo.notificationDateTimeFromEpoch !=
                                     null
                                 ? Text(
-                                    "\t ${convertDateTimeFromEpoch(timeInterval: detailToDoState.toDo.notificationDateTimeFromEpoch!!)}")
+                                    "\t ${convertDateTimeFromEpoch(timeInterval: detailToDoState.toDo.notificationDateTimeFromEpoch!)}")
                                 : Text("未設定")
                           ],
                         )

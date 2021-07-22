@@ -13,7 +13,6 @@ class UserRepository {
   User? _user;
 
   UserRepository(Function(User?) onUpdateUser) {
-    _authClient.signInAnonymously();
     _authClient.onAuthStateChanged().listen((user) {
       _user = user;
       onUpdateUser(user);
@@ -37,5 +36,15 @@ class UserRepository {
 
   Future deleteUser() {
     return _authClient.signOut();
+  }
+
+  Future<User> signInAnonymously() => _authClient.signInAnonymously();
+
+  Future<User> signInWithEmail({required String email, required String password}) async {
+    return _authClient.signIn(email: email, password: password);
+  }
+
+  Future<User> signUpWithEmail({required String email, required String password}) async {
+    return _authClient.signUp(email: email, password: password);
   }
 }

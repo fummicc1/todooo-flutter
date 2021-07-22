@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todooo/states/app_state.dart';
+import 'package:todooo/states/on_boarding_state.dart';
 import 'package:todooo/states/todo_list_state.dart';
 import 'package:todooo/ui/pages/home_page.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -32,30 +33,37 @@ class MyApp extends StatelessWidget {
                     pageTitle: "リスト",
                     user: appState.user);
               },
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate
-                ],
-                supportedLocales: [Locale("ja"), Locale("en")],
-                title: 'todooo',
-                theme: ThemeData(
-                    primarySwatch: MaterialColor(Color(0xFFF2938A).value, {
-                      50: Color(0xFFffe9eb),
-                      100: Color(0xFFffc8c9),
-                      200: Color(0xFFf2938a),
-                      300: Color(0xFFe5695e),
-                      400: Color(0xFFea4935),
-                      500: Color(0xFFeb3b11),
-                      600: Color(0xFFdd2f14),
-                      700: Color(0xFFcc240f),
-                      800: Color(0xFFbf1c07),
-                      900: Color(0xFFaf0f00),
-                    }),
-                    backgroundColor: Color(0xFFF0F0F0),
-                    highlightColor: Colors.white70),
-                home: HomePage(),
+              child: ChangeNotifierProvider(
+                create: (context) {
+                  final AppState appState = Provider.of(context, listen: false);
+                  return OnBoardingState(appState.userRepository);
+                },
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  localizationsDelegates: [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate
+                  ],
+                  supportedLocales: [Locale("ja"), Locale("en")],
+                  title: 'todooo',
+                  theme: ThemeData(
+                      primarySwatch: MaterialColor(Color(0xFFF2938A).value, {
+                        50: Color(0xFFffe9eb),
+                        100: Color(0xFFffc8c9),
+                        200: Color(0xFFf2938a),
+                        300: Color(0xFFe5695e),
+                        400: Color(0xFFea4935),
+                        500: Color(0xFFeb3b11),
+                        600: Color(0xFFdd2f14),
+                        700: Color(0xFFcc240f),
+                        800: Color(0xFFbf1c07),
+                        900: Color(0xFFaf0f00),
+                      }),
+                      accentColor: Color(0xFF8AF2B8),
+                      backgroundColor: Color(0xFFFEEAE6),
+                      highlightColor: Colors.white70),
+                  home: HomePage(),
+                ),
               ),
             ),
           );

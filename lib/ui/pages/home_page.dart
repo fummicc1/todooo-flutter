@@ -7,6 +7,7 @@ import 'package:todooo/services/local_notification_service.dart';
 import 'package:todooo/states/app_state.dart';
 import 'package:todooo/states/detail_todo_state.dart';
 import 'package:todooo/ui/pages/detail_todo_page.dart';
+import 'package:todooo/ui/pages/on_boarding_page.dart';
 import 'package:todooo/ui/pages/todo_list_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
     });
 
     if (appState.user == null) {
-      return Center(child: CircularProgressIndicator());
+      return OnBoardingPage();
     } else {
       return ToDoListPage();
     }
