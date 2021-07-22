@@ -12,13 +12,13 @@ https://apps.apple.com/jp/app/todooo/id1496331664
 
 ## Demo
 
-### OnBoarding
+### Notification
 
 |iOS|Android|
 |---|---|
 |<img src="https://user-images.githubusercontent.com/44002126/125949392-a6d07225-d1aa-4e1a-a8fb-7065475aa093.gif" width=240px>|<img src="https://user-images.githubusercontent.com/44002126/125951263-b6ea263a-3fcb-44ed-ada5-e9d7c3d07794.gif" width=240px>|
 
-### Notification
+### OnBoarding
 
 |Android|
 |---|
