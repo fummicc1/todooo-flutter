@@ -1,18 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todooo/models/todo.dart';
+import 'package:todooo/models/user.dart';
 import 'package:todooo/repositories/todo_repository.dart';
 
 class ToDoListState with ChangeNotifier {
   ToDoRepository toDoRepository;
-  User? user;
   List<ToDo> todoList = [];
   String pageTitle;
 
   ToDoListState(
       {required this.toDoRepository,
-      required this.pageTitle,
-      required this.user}) {
+      required this.pageTitle}) {
     toDoRepository.listenTodoList(cache: false).listen((todos) {
       this.todoList = todos;
       notifyListeners();

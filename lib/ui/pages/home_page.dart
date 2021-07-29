@@ -9,6 +9,7 @@ import 'package:todooo/states/detail_todo_state.dart';
 import 'package:todooo/ui/pages/detail_todo_page.dart';
 import 'package:todooo/ui/pages/on_boarding_page.dart';
 import 'package:todooo/ui/pages/todo_list_page.dart';
+import 'package:todooo/ui/pages/walk_through_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -24,8 +25,10 @@ class HomePage extends StatelessWidget {
 
     if (appState.user == null) {
       return OnBoardingPage();
-    } else {
+    } else if (appState.user!.isCompleteWalkThrough) {
       return ToDoListPage();
+    } else {
+      return WalkThroughPage();
     }
   }
 
