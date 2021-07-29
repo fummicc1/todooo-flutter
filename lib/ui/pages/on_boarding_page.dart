@@ -77,7 +77,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   opacity: 0.6,
                   child: ClipPath(
                     child: Container(
-                      height: 240,
+                      height: 220,
                       color: Theme.of(context).primaryColor,
                     ),
                     clipper: CurvedCurtain(),
@@ -91,7 +91,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   clipper: CurvedCurtain(),
                 ),
                 Positioned(
-                    top: 64,
+                    top: 56,
                     child: AnimatedOpacity(
                       duration: Duration(seconds: 1),
                       opacity: opacity,
@@ -110,7 +110,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               right: 32,
               left: 32,
               bottom: 80,
-              top: height == 0 ? 96 : null,
+              top: height == 0 ? 48 : null,
               child: AnimatedContainer(
                 height: bottomHeight,
                 duration: Duration(milliseconds: 700),
@@ -122,7 +122,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
-                            height: 150,
+                            height: 120,
                             child: Image.asset("assets/icon/icon_clear.png")),
                         SizedBox(
                           height: 16,

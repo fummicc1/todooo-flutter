@@ -29,9 +29,9 @@ class MyApp extends StatelessWidget {
               create: (context) {
                 final AppState appState = Provider.of(context, listen: false);
                 return ToDoListState(
-                    toDoRepository: appState.toDoRepository,
-                    pageTitle: "リスト",
-                    user: appState.user);
+                  toDoRepository: appState.toDoRepository,
+                  pageTitle: "リスト",
+                );
               },
               child: ChangeNotifierProvider(
                 create: (context) {

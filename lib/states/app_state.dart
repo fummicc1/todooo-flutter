@@ -10,7 +10,7 @@ import 'package:todooo/services/local_notification_service.dart';
 enum NetworkHandleState { idel, processing, success, fail }
 
 class AppState extends ChangeNotifier {
-  User? user;
+  AppUser? user;
 
   late UserRepository userRepository;
   late ToDoRepository toDoRepository;
@@ -23,10 +23,20 @@ class AppState extends ChangeNotifier {
       toDoRepository.userID = user?.uid;
       notifyListeners();
     });
+
     localNotificationService = LocalNotificationService();
   }
 
   Future<ToDo> fetchToDo({required id}) async {
     return await toDoRepository.fetchToDo(uid: id);
+  }
+
+  Future updateCompleteWalkThroughStatus({required bool isCompleted}) async {
+    final user = this.user;
+    if (user == null) {
+      return Future.error("No user found");
+    }
+    user.isCompleteWalkThrough = isCompleted;
+    return userRepository.updateUser(newUser: user);
   }
 }

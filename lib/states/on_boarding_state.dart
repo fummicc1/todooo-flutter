@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todooo/models/user.dart';
 import 'package:todooo/repositories/user_repository.dart';
 
 class OnBoardingState extends ChangeNotifier {
@@ -23,7 +24,14 @@ class OnBoardingState extends ChangeNotifier {
     if (email == null || password == null) {
       return;
     }
-    await _userRepository.signInWithEmail(email: email, password: password);
+    final user = await _userRepository.signInWithEmail(email: email, password: password);
+    final AppUser? appUser = await _userRepository.fetchUser(cache: false);
+    if (appUser == null) {
+      await _userRepository.createUser(user: user);
+    } else {
+      appUser.signedInAt = user.metadata.lastSignInTime;
+      await await _userRepository.updateUser(newUser: appUser);
+    }
   }
 
   Future signUpWithEmail() async {
@@ -35,6 +43,8 @@ class OnBoardingState extends ChangeNotifier {
     if (confirmPassword != password) {
       return Future.error("入力されたパスワードが一致しません");
     }
-    return await _userRepository.signUpWithEmail(email: email, password: password);
+    final user = await _userRepository.signUpWithEmail(email: email, password: password);
+    await _userRepository.createUser(user: user);
+    return user;
   }
 }
