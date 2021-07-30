@@ -15,7 +15,8 @@ class OnBoardingState extends ChangeNotifier {
   String? confirmPassword = null;
 
   signInAsGuest() async {
-    await _userRepository.signInAnonymously();
+    final user = await _userRepository.signInAnonymously();
+    await _userRepository.createUser(user: user);
   }
 
   signInWithEmail() async {

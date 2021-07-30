@@ -8,10 +8,24 @@ import 'package:todooo/states/app_state.dart';
 import 'package:todooo/states/detail_todo_state.dart';
 import 'package:todooo/ui/pages/detail_todo_page.dart';
 import 'package:todooo/ui/pages/on_boarding_page.dart';
+import 'package:todooo/ui/pages/setting_page.dart';
 import 'package:todooo/ui/pages/todo_list_page.dart';
 import 'package:todooo/ui/pages/walk_through_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  int _selectedIndex = 0;
+
+  final List<Widget> pages = [
+    ToDoListPage(),
+    SettingPage()
+  ];
+
   @override
   Widget build(BuildContext context) {
     final AppState appState = Provider.of(context);
@@ -26,7 +40,22 @@ class HomePage extends StatelessWidget {
     if (appState.user == null) {
       return OnBoardingPage();
     } else if (appState.user!.isCompleteWalkThrough) {
-      return ToDoListPage();
+      return Scaffold(
+        body: pages[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.list), title: Text("一覧")),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), title: Text("設定")),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+        ),
+      );
     } else {
       return WalkThroughPage();
     }
@@ -45,10 +74,13 @@ class HomePage extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => ChangeNotifierProvider(
                   create: (_) {
-                    final AppState appState = Provider.of(context, listen: false);
+                    final AppState appState =
+                        Provider.of(context, listen: false);
                     return DetailToDoState(
-                      localNotificationService: appState.localNotificationService,
-                        toDoRepository: appState.toDoRepository, toDo: todo);
+                        localNotificationService:
+                            appState.localNotificationService,
+                        toDoRepository: appState.toDoRepository,
+                        toDo: todo);
                   },
                   child: DetailToDoPage())));
     } catch (e) {

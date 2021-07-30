@@ -34,6 +34,16 @@ class AddToDoPage extends StatelessWidget {
                       ),
                       Positioned(
                         top: 0,
+                        left: 0,
+                        height: 48,
+                        child: BackButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
                         right: 0,
                         height: 48,
                         child: IconButton(
@@ -57,7 +67,9 @@ class AddToDoPage extends StatelessWidget {
                                     } catch (error) {
                                       if (error == "Processing") {
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(content: Text("処理中ですので少しお待ちください。")));
+                                            .showSnackBar(SnackBar(
+                                                content:
+                                                    Text("処理中ですので少しお待ちください。")));
                                         return;
                                       }
                                       ScaffoldMessenger.of(context)
@@ -123,7 +135,8 @@ class AddToDoPage extends StatelessWidget {
                                 color: Theme.of(context).colorScheme.primary))),
                     child: InkWell(
                       onTap: () {
-                        onChangeNotificationRadioButton(context, shouldNotificate: true, onSelectDate: (dateTime) {
+                        onChangeNotificationRadioButton(context,
+                            shouldNotificate: true, onSelectDate: (dateTime) {
                           addToDoState.updateNotificationDate(dateTime);
                         });
                       },

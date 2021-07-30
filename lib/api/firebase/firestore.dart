@@ -90,8 +90,13 @@ class FirestoreClient {
 
   Future<String> createDocument(
       {required String collectionName,
-      required Map<String, dynamic> data}) async {
-    final document = _firestore.collection(collectionName).doc();
+      required Map<String, dynamic> data, String? uid}) async {
+    final document;
+    if (uid != null) {
+      document = _firestore.collection(collectionName).doc(uid);;
+    } else {
+      document = _firestore.collection(collectionName).doc();
+    }
     data["uid"] = document.id;
     try {
       await document.set(data);
