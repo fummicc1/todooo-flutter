@@ -21,14 +21,16 @@ class UserRepository {
         onUpdateUser(null);
       } else if (!_hasUserListener) {
         _hasUserListener = true;
-        _firestoreClient.listenDocument(
-            collectionName: UserCollectionName, documentName: user.uid).listen((snapshot) {
-              final data = snapshot.data() as Map<String, dynamic>?;
-              if (data == null) return;
-              data["uid"] = user.uid;
-              final appUser = AppUser.fromMap(map: data);
-              _user = appUser;
-              onUpdateUser(_user);
+        _firestoreClient
+            .listenDocument(
+                collectionName: UserCollectionName, documentName: user.uid)
+            .listen((snapshot) {
+          final data = snapshot.data() as Map<String, dynamic>?;
+          if (data == null) return;
+          data["uid"] = user.uid;
+          final appUser = AppUser.fromMap(map: data);
+          _user = appUser;
+          onUpdateUser(_user);
         });
       }
     });
@@ -37,7 +39,9 @@ class UserRepository {
   Future createUser({required User user}) async {
     final AppUser appUser = AppUser.fromUser(user: user);
     return _firestoreClient.createDocument(
-        collectionName: UserCollectionName, data: appUser.data);
+        collectionName: UserCollectionName,
+        data: appUser.data,
+        uid: appUser.uid);
   }
 
   Future<AppUser?> fetchUser({bool cache = true}) async {
@@ -50,7 +54,8 @@ class UserRepository {
       if (uid != null) {
         final snapshot = await _firestoreClient.getDocument(
             collectionName: UserCollectionName, documentName: uid);
-        final response = snapshot.data() as Map<String, dynamic>? ?? {"uid": uid};
+        final response =
+            snapshot.data() as Map<String, dynamic>? ?? {"uid": uid};
         final appUser = AppUser.fromMap(map: response);
 
         this._user = appUser;

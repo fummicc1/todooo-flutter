@@ -59,7 +59,6 @@ class MyApp extends StatelessWidget {
                         800: Color(0xFFbf1c07),
                         900: Color(0xFFaf0f00),
                       }),
-                      accentColor: Color(0xFF72DB84),
                       backgroundColor: Color(0xFFFEEAE6),
                       scaffoldBackgroundColor: Color(0xFFFEEAE6),
                       highlightColor: Colors.white70),

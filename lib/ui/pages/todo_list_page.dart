@@ -30,74 +30,72 @@ class _ToDoListPageState extends State<ToDoListPage> {
   @override
   Widget build(BuildContext context) {
     final ToDoListState toDoListState = Provider.of(context);
-    return Scaffold(
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: Stack(children: [
-          Positioned(
-              left: -64,
-              height: topLeftCircleSize.height,
-              width: topLeftCircleSize.width,
-              top: -80,
-              child: Container(
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).primaryColor),
-              )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 96,
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        top: 48,
-                        left: 0,
-                        child: Text(toDoListState.pageTitle,
-                            style: Theme.of(context).textTheme.headline4),
-                      ),
-                      Positioned(
-                        top: 48,
-                        right: 0,
-                        height: 48,
-                        child: IconButton(
-                            icon: Icon(Icons.add, size: 32),
-                            onPressed: () {
-                              _moveToAddToDoPage(context);
-                            }),
-                      )
-                    ],
-                  ),
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Stack(children: [
+        Positioned(
+            left: -64,
+            height: topLeftCircleSize.height,
+            width: topLeftCircleSize.width,
+            top: -80,
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor),
+            )),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 96,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      top: 48,
+                      left: 0,
+                      child: Text(toDoListState.pageTitle,
+                          style: Theme.of(context).textTheme.headline4),
+                    ),
+                    Positioned(
+                      top: 48,
+                      right: 0,
+                      height: 48,
+                      child: IconButton(
+                          icon: Icon(Icons.add, size: 32),
+                          onPressed: () {
+                            _moveToAddToDoPage(context);
+                          }),
+                    )
+                  ],
                 ),
-                Expanded(
-                  child: toDoListState.todoList.isNotEmpty
-                      ? ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemCount: toDoListState.todoList.length,
-                          itemBuilder: (context, index) {
-                            final todo = toDoListState.todoList[index];
-                            return ToDoListCell(toDo: todo);
-                          })
-                      : Center(
-                          child: TextButton(
-                            child: Text("最初のToDoを作成",
-                                style: Theme.of(context).textTheme.headline6),
-                            onPressed: () {
-                              _moveToAddToDoPage(context);
-                            },
-                          ),
+              ),
+              Expanded(
+                child: toDoListState.todoList.isNotEmpty
+                    ? ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        itemCount: toDoListState.todoList.length,
+                        itemBuilder: (context, index) {
+                          final todo = toDoListState.todoList[index];
+                          return ToDoListCell(toDo: todo);
+                        })
+                    : Center(
+                        child: TextButton(
+                          child: Text("最初のToDoを作成",
+                              style: Theme.of(context).textTheme.headline6),
+                          onPressed: () {
+                            _moveToAddToDoPage(context);
+                          },
                         ),
-                )
-              ],
-            ),
+                      ),
+              )
+            ],
           ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 
@@ -146,6 +144,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
 
     Navigator.of(context).push(MaterialPageRoute(
         settings: const RouteSettings(name: "/add_todo_page"),
+        fullscreenDialog: true,
         builder: (_) => ChangeNotifierProvider(
             create: (_) {
               final AppState appState = Provider.of(context, listen: false);
