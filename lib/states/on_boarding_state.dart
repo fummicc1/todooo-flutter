@@ -10,9 +10,9 @@ class OnBoardingState extends ChangeNotifier {
 
   OnBoardingState(this._userRepository);
 
-  String? email = null;
-  String? password = null;
-  String? confirmPassword = null;
+  String? email;
+  String? password;
+  String? confirmPassword;
 
   signInAsGuest() async {
     final user = await _userRepository.signInAnonymously();

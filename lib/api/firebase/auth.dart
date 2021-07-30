@@ -37,21 +37,21 @@ class AuthClient {
     }
   }
 
-  Future signOut() {
-    return _firebaseAuth.signOut();
+  Future signOut() async {
+    await _firebaseAuth.signOut();
+  }
+
+  Future delete() {
+    return _firebaseAuth.currentUser!.delete();
   }
 
   Future<User?> getCurrentUser() async {
     return _firebaseAuth.currentUser;
   }
 
-  Future<String> getUID() async {
-    try {
-      final currentUser = await _firebaseAuth.currentUser;
-      return Future.value(currentUser?.uid);
-    } catch (error) {
-      return Future.error(error);
-    }
+  String? getUID() {
+    final currentUser = _firebaseAuth.currentUser;
+    return currentUser?.uid;
   }
 
   Future updateUser({String? displayName}) async {
