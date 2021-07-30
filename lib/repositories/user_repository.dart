@@ -76,8 +76,11 @@ class UserRepository {
         data: newUser.data);
   }
 
-  Future deleteUser() {
-    return _authClient.signOut();
+  Future deleteUser() async {
+    await _firestoreClient.deleteDocument(
+        collectionName: UserCollectionName, documentName: _user!.uid);
+    await _authClient.delete();
+    _hasUserListener = false;
   }
 
   Future<User> signInAnonymously() => _authClient.signInAnonymously();

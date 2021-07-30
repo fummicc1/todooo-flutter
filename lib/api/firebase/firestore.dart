@@ -72,6 +72,20 @@ class FirestoreClient {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> listenSubCollectionWithQuery(
+      {required String collectionName,
+      required String documentID,
+      required String subCollectionName,
+      required String fieldName,
+      required dynamic fieldValue}) {
+    return _firestore
+        .collection(collectionName)
+        .doc(documentID)
+        .collection(subCollectionName)
+        .where(fieldName, isEqualTo: fieldValue)
+        .snapshots();
+  }
+
   Stream<DocumentSnapshot> listenDocument(
       {required String collectionName, required String documentName}) {
     return _firestore.collection(collectionName).doc(documentName).snapshots();
@@ -90,12 +104,36 @@ class FirestoreClient {
 
   Future<String> createDocument(
       {required String collectionName,
-      required Map<String, dynamic> data, String? uid}) async {
+      required Map<String, dynamic> data,
+      String? uid}) async {
     final document;
     if (uid != null) {
-      document = _firestore.collection(collectionName).doc(uid);;
+      document = _firestore.collection(collectionName).doc(uid);
+      ;
     } else {
       document = _firestore.collection(collectionName).doc();
+    }
+    data["uid"] = document.id;
+    try {
+      await document.set(data);
+      return Future.value(document.id);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  Future<String> createDocumentOfSubCollection(
+      {required String collectionName,
+      required String documentName,
+      required String subCollectionName,
+      required Map<String, dynamic> data,
+      String? uid}) async {
+    final document;
+    if (uid != null) {
+      document = _firestore.collection(collectionName).doc(documentName).collection(subCollectionName).doc(uid);
+      ;
+    } else {
+      document = _firestore.collection(collectionName).doc(documentName).collection(subCollectionName).doc();
     }
     data["uid"] = document.id;
     try {
@@ -124,5 +162,19 @@ class FirestoreClient {
   Future deleteDocument(
       {required String collectionName, required String documentName}) {
     return _firestore.collection(collectionName).doc(documentName).delete();
+  }
+
+  Future deleteDocumentOfSubCollection({
+    required String collectionName,
+    required String documentName,
+    required String subCollectionName,
+    required String subCollectionDocumentName,
+  }) {
+    return _firestore
+        .collection(collectionName)
+        .doc(documentName)
+        .collection(subCollectionName)
+        .doc(subCollectionDocumentName)
+        .delete();
   }
 }

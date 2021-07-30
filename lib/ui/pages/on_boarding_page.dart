@@ -42,10 +42,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text(
           "アカウント登録のメリット",
+          style: Theme.of(context).textTheme.button,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         elevation: 2,
-        icon: Icon(Icons.info_outline),
+        icon: Icon(Icons.info_outline, color: Colors.black),
         onPressed: () {
           showModalBottomSheet(
               context: context,

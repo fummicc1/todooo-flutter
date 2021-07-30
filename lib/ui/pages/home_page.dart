@@ -45,8 +45,8 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.list), title: Text("一覧")),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), title: Text("設定")),
+            BottomNavigationBarItem(icon: Icon(Icons.list), label: "一覧"),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), label: "設定"),
           ],
           currentIndex: _selectedIndex,
           onTap: (index) {

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:todooo/api/firebase/firestore.dart';
+import 'package:todooo/models/user.dart';
 
 import '../models/todo.dart';
 
@@ -13,15 +14,16 @@ class ToDoRepository {
   List<ToDo> _todos = [];
   String? userID;
 
-  Stream<List<ToDo>> listenTodoList({@required bool cache = true}) {
+  Stream<List<ToDo>> listenTodoList({bool cache = true}) {
     if (cache) {
       return Stream.value(_todos);
     }
     try {
-      final snapshot = firestoreClient.listenCollectionWithQuery(
-          collectionName: ToDo.CollectionName,
-          fieldName: "owner",
-          fieldValue: userID);
+      final snapshot = firestoreClient.listenSubCollection(
+        collectionName: UserCollectionName,
+        documentID: userID!,
+        subCollectionName: ToDo.CollectionName,
+      );
       return snapshot.map((query) {
         return query.docs
             .map((document) {
@@ -36,15 +38,16 @@ class ToDoRepository {
     }
   }
 
-  Future<List<ToDo>> fetchToDos({@required bool cache = true}) async {
+  Future<List<ToDo>> fetchToDos({bool cache = true}) async {
     if (cache) {
       return Future.value(_todos);
     }
     try {
-      final snapshot = await firestoreClient.getCollectionWithQuery(
-          collectionName: ToDo.CollectionName,
-          fieldName: "owner",
-          fieldValue: userID);
+      final snapshot = await firestoreClient.getSubCollection(
+        collectionName: UserCollectionName,
+        documentID: userID!,
+        subCollectionName: ToDo.CollectionName,
+      );
       _todos = snapshot.docs
           .map((document) =>
               ToDo.fromData(document.data() as Map<String, dynamic>))
@@ -56,14 +59,20 @@ class ToDoRepository {
   }
 
   Future deleteToDo(ToDo toDo) {
-    return firestoreClient.deleteDocument(
-        collectionName: ToDo.CollectionName, documentName: toDo.uid!);
+    return firestoreClient.deleteDocumentOfSubCollection(
+        collectionName: UserCollectionName,
+        documentName: userID!,
+        subCollectionName: ToDo.CollectionName,
+        subCollectionDocumentName: toDo.uid!);
   }
 
   Future<String> createToDo(ToDo toDo) async {
     try {
-      String docId = await firestoreClient.createDocument(
-          collectionName: ToDo.CollectionName, data: toDo.data);
+      String docId = await firestoreClient.createDocumentOfSubCollection(
+          collectionName: UserCollectionName,
+          documentName: userID!,
+          subCollectionName: ToDo.CollectionName,
+          data: toDo.data);
       return Future.value(docId);
     } catch (error) {
       return Future.error(error);
@@ -72,8 +81,11 @@ class ToDoRepository {
 
   Future fetchToDo({required String uid}) async {
     try {
-      final response = await firestoreClient.getDocument(
-          collectionName: ToDo.CollectionName, documentName: uid);
+      final response = await firestoreClient.getDocumentOfSubCollection(
+          collectionName: UserCollectionName,
+          documentID: userID!,
+          subCollectionName: ToDo.CollectionName,
+          subDocumentID: uid);
       return Future.value(
           ToDo.fromData(response.data() as Map<String, dynamic>));
     } catch (error) {
@@ -83,9 +95,11 @@ class ToDoRepository {
 
   Future updateToDo(ToDo toDo) async {
     try {
-      await firestoreClient.setDocument(
-          collectionName: ToDo.CollectionName,
-          documentName: toDo.uid!,
+      await firestoreClient.setDocumentWithinSubCollection(
+          collectionName: UserCollectionName,
+          documentName: userID!,
+          subCollectionName: ToDo.CollectionName,
+          subCollectionDocumentName: toDo.uid!,
           data: toDo.data);
       return Future.value(null);
     } catch (error) {

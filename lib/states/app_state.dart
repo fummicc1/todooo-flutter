@@ -21,7 +21,9 @@ class AppState extends ChangeNotifier {
     userRepository = UserRepository((user) {
       this.user = user;
       toDoRepository.userID = user?.uid;
-      notifyListeners();
+      if (hasListeners) {
+        notifyListeners();
+      }
     });
 
     localNotificationService = LocalNotificationService();
