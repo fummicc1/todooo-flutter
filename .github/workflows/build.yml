@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        uses: ./.github/workflows/build/action.yml
+        uses: ./.github/workflows/build
       - name: Build iOS App
         run: flutter build ios --simulator
   build_android:
@@ -23,6 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        uses: ./.github/workflows/build/action.yml
+        uses: ./.github/workflows/build
       - name: Build Android App
         run: flutter build appbundle --debug
