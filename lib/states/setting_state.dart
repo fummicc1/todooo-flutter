@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:todooo/repositories/user_repository.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SettingState extends ChangeNotifier {
+part 'setting_state.freezed.dart';
 
-  final UserRepository userRepository;
-
-  SettingState({required this.userRepository});
-
-  Future deleteUser() => userRepository.deleteUser();
-
+@freezed
+abstract class SettingState with _$SettingState {
+  const factory SettingState() = _SettingState;
 }

@@ -7,33 +7,34 @@ import 'package:todooo/api/firebase/firestore.dart';
 import '../models/user.dart';
 
 class UserRepository {
-  final AuthClient _authClient = AuthClient();
-  final FirestoreClient _firestoreClient = FirestoreClient();
+  final AuthClient _authClient;
+  final FirestoreClient _firestoreClient;
 
   AppUser? _user;
 
   bool _hasUserListener = false;
 
-  UserRepository(Function(AppUser?) onUpdateUser) {
-    _authClient.onAuthStateChanged().listen((user) async {
-      if (user == null) {
-        _user = null;
-        onUpdateUser(null);
-      } else if (!_hasUserListener) {
-        _hasUserListener = true;
-        _firestoreClient
-            .listenDocument(
-                collectionName: UserCollectionName, documentName: user.uid)
-            .listen((snapshot) {
-          final data = snapshot.data() as Map<String, dynamic>?;
-          if (data == null) return;
-          data["uid"] = user.uid;
-          final appUser = AppUser.fromMap(map: data);
-          _user = appUser;
-          onUpdateUser(_user);
+  UserRepository(this._authClient, this._firestoreClient);
+
+  Stream<AppUser?> listenUser() {
+
+    final stream = _authClient.onAuthStateChanged();
+
+    final appUserStream = stream.asyncExpand((authUser) {
+      if (authUser == null) {
+        return null;
+      }
+      if (!_hasUserListener) {
+        return _firestoreClient.listenDocument(collectionName: UserCollectionName, documentName: authUser.uid).map((snashot) {
+          final data = snashot.data() as Map<String, dynamic>?;
+          if (data == null) return null;
+          return AppUser.fromMap(map: data);
         });
       }
     });
+
+    return appUserStream;
+
   }
 
   Future createUser({required User user}) async {

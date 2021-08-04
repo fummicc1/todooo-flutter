@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
+@immutable
 class AppUser {
-  String uid;
-  String? name;
-  DateTime? signedInAt;
-  DateTime? signedUpAt;
-  bool isCompleteWalkThrough;
+  final String uid;
+  final String? name;
+  final DateTime? signedInAt;
+  final DateTime? signedUpAt;
+  final bool isCompleteWalkThrough;
 
-  AppUser(
+  const AppUser(
       {required this.uid,
       required this.name,
       required this.signedUpAt,
@@ -29,7 +31,8 @@ class AppUser {
     final name = map["name"] as String?;
     final signedUpAt = (map["signed_up_at"] as Timestamp?)?.toDate();
     final signedInAt = (map["signed_in_at"] as Timestamp?)?.toDate();
-    final isCompleteWalkThrough = map["is_complete_walk_through"] as bool? ?? false;
+    final isCompleteWalkThrough =
+        map["is_complete_walk_through"] as bool? ?? false;
 
     return AppUser(
         uid: uid,

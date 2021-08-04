@@ -1,18 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:todooo/states/app_state.dart';
-import 'package:todooo/states/on_boarding_state.dart';
 import 'package:todooo/states/setting_state.dart';
-import 'package:todooo/states/todo_list_state.dart';
 import 'package:todooo/ui/pages/home_page.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:todooo/ui/pages/setting_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
   Intl.defaultLocale = "ja_JP";
   tz.initializeTimeZones();
 }
