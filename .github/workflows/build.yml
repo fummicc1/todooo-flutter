@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        uses: fummicc1/flutter_setup_action@v1.1
+        uses: fummicc1/flutter_setup_action@v1.2
       - name: Build iOS App
         run: flutter build ios --simulator
         shell: bash
@@ -24,6 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        uses: fummicc1/flutter_setup_action@v1.1
+        uses: fummicc1/flutter_setup_action@v1.2
       - name: Build Android App
         run: flutter build appbundle --debug
