@@ -7,9 +7,6 @@ on:
   pull_request:
     branches:
       - main
-defaults:
-  run:
-    shell: bash
 jobs:
   build_ios:
     runs-on: macos-latest
@@ -20,6 +17,7 @@ jobs:
         uses: fummicc1/flutter_setup_action@v1.1
       - name: Build iOS App
         run: flutter build ios --simulator
+        shell: bash
   build_android:
     runs-on: macos-latest
     steps:
