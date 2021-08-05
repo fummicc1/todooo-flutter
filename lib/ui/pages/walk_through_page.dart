@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:todooo/states/app_state.dart';
+import 'package:todooo/ui/providers/walkthrough_viewmodel_provider.dart';
 
-class WalkThroughPage extends StatelessWidget {
+class WalkThroughPage extends HookConsumerWidget {
   const WalkThroughPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
     return Scaffold(
       body: SafeArea(
         child: IntroductionScreen(
@@ -36,8 +37,7 @@ class WalkThroughPage extends StatelessWidget {
             ),
           ),
           onDone: () {
-            final appState = Provider.of<AppState>(context, listen: false);
-            appState.updateCompleteWalkThroughStatus(isCompleted: true);
+            ref.read(walkThroughViewModelProvider.notifier).updateIsCompleteWalkThrough(isCompleteWalkthrough: true);
           },
           showDoneButton: true,
           showNextButton: true,

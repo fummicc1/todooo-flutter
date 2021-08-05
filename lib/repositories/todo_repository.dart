@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:todooo/api/firebase/auth.dart';
 import 'package:todooo/api/firebase/firestore.dart';
 import 'package:todooo/models/user.dart';
 
@@ -13,7 +14,6 @@ class ToDoRepository {
   ToDoRepository({required this.firestoreClient});
 
   Map<String, Todo> _caches = {};
-  String? userID;
 
   DocumentReference generateDocumentRef(
       {required String collectionName,
@@ -29,14 +29,14 @@ class ToDoRepository {
     return FirebaseFirestore.instance.collection(collectionName).doc();
   }
 
-  Stream<List<Todo>> listenTodoList({bool cache = true}) {
+  Stream<List<Todo>> listenTodoList({required String userID, bool cache = true}) {
     if (cache) {
       return Stream.value(_caches.values.toList());
     }
     try {
       final snapshot = firestoreClient.listenSubCollection(
         collectionName: UserCollectionName,
-        documentID: userID!,
+        documentID: userID,
         subCollectionName: Todo.CollectionName,
       );
       final listStream = snapshot.map((query) {
@@ -56,14 +56,14 @@ class ToDoRepository {
     }
   }
 
-  Future<List<Todo>> fetchToDos({bool cache = true}) async {
+  Future<List<Todo>> fetchToDos({required String userID, bool cache = true}) async {
     if (cache) {
       return Future.value(_caches.values.toList());
     }
     try {
       final snapshot = await firestoreClient.getSubCollection(
         collectionName: UserCollectionName,
-        documentID: userID!,
+        documentID: userID,
         subCollectionName: Todo.CollectionName,
       );
       _caches = snapshot.docs
@@ -78,20 +78,20 @@ class ToDoRepository {
     }
   }
 
-  Future deleteToDo(Todo toDo) async {
+  Future deleteToDo(String userID, Todo toDo) async {
     await firestoreClient.deleteDocumentOfSubCollection(
         collectionName: UserCollectionName,
-        documentName: userID!,
+        documentName: userID,
         subCollectionName: Todo.CollectionName,
         subCollectionDocumentName: toDo.uid!);
     _caches.remove(toDo.uid);
   }
 
-  Future<String> createToDo({required Todo todo}) async {
+  Future<String> createToDo({required String userID, required Todo todo}) async {
     try {
       String docId = await firestoreClient.createDocumentOfSubCollection(
           collectionName: UserCollectionName,
-          documentName: userID!,
+          documentName: userID,
           subCollectionName: Todo.CollectionName,
           data: todo.data);
       final _todo = Todo.updateId(todo, uid: docId);
@@ -102,7 +102,7 @@ class ToDoRepository {
     }
   }
 
-  Future<Todo> fetchToDo({required String uid, required bool preferCache}) async {
+  Future<Todo> fetchToDo({required String uid, required String userID,  required bool preferCache}) async {
 
     if (preferCache) {
       final todo = _caches[uid];
@@ -114,7 +114,7 @@ class ToDoRepository {
     try {
       final response = await firestoreClient.getDocumentOfSubCollection(
           collectionName: UserCollectionName,
-          documentID: userID!,
+          documentID: userID,
           subCollectionName: Todo.CollectionName,
           subDocumentID: uid);
       return Future.value(
@@ -124,11 +124,11 @@ class ToDoRepository {
     }
   }
 
-  Future updateToDo(Todo toDo) async {
+  Future updateToDo(String userID, Todo toDo) async {
     try {
       await firestoreClient.setDocumentWithinSubCollection(
           collectionName: UserCollectionName,
-          documentName: userID!,
+          documentName: userID,
           subCollectionName: Todo.CollectionName,
           subCollectionDocumentName: toDo.uid!,
           data: toDo.data);
@@ -138,11 +138,11 @@ class ToDoRepository {
     }
   }
 
-  Future createTodoWithId(Todo toDo) async {
+  Future createTodoWithId(String userID, Todo toDo) async {
     try {
       await firestoreClient.setDocumentWithinSubCollection(
           collectionName: UserCollectionName,
-          documentName: userID!,
+          documentName: userID,
           subCollectionName: Todo.CollectionName,
           subCollectionDocumentName: toDo.uid!,
           data: toDo.data);

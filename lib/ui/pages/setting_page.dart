@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todooo/states/setting_state.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todooo/ui/components/setting_card_widget.dart';
+import 'package:todooo/ui/providers/setting_viewmodel_provider.dart';
 
-class SettingPage extends StatelessWidget {
-  const SettingPage({Key? key}) : super(key: key);
+class SettingPage extends HookConsumerWidget {
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final settingState = Provider.of<SettingState>(context);
+    final settingState = ref.read(settingViewModelProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(

@@ -12,28 +12,29 @@ class UserRepository {
 
   AppUser? _user;
 
-  bool _hasUserListener = false;
+  Stream<AppUser?>? _appUserStream;
 
-  UserRepository(this._authClient, this._firestoreClient);
-
-  Stream<AppUser?> listenUser() {
-
+  UserRepository(this._authClient, this._firestoreClient) {
     final stream = _authClient.onAuthStateChanged();
-
-    final appUserStream = stream.asyncExpand((authUser) {
+    _appUserStream = stream.asyncExpand((authUser) {
       if (authUser == null) {
         return null;
       }
-      if (!_hasUserListener) {
-        return _firestoreClient.listenDocument(collectionName: UserCollectionName, documentName: authUser.uid).map((snashot) {
-          final data = snashot.data() as Map<String, dynamic>?;
-          if (data == null) return null;
-          return AppUser.fromMap(map: data);
-        });
-      }
+      return _firestoreClient.listenDocument(collectionName: UserCollectionName, documentName: authUser.uid).map((snashot) {
+        final data = snashot.data() as Map<String, dynamic>?;
+        if (data == null) return null;
+        final appUser = AppUser.fromMap(map: data);
+        this._user = appUser;
+        return appUser;
+      });
     });
+  }
 
-    return appUserStream;
+  String? get uid => _user?.uid;
+
+  Stream<AppUser?> listenUser() {
+
+    return _appUserStream ?? Stream.error("No UserStream");
 
   }
 
@@ -46,7 +47,7 @@ class UserRepository {
   }
 
   Future<AppUser?> fetchUser({bool cache = true}) async {
-    if (cache) {
+    if (cache && _user != null) {
       return Future.value(_user);
     }
     try {
@@ -81,7 +82,6 @@ class UserRepository {
     await _firestoreClient.deleteDocument(
         collectionName: UserCollectionName, documentName: _user!.uid);
     await _authClient.delete();
-    _hasUserListener = false;
   }
 
   Future<User> signInAnonymously() => _authClient.signInAnonymously();

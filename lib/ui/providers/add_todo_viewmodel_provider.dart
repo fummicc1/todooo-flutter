@@ -5,8 +5,9 @@ import 'package:todooo/ui/providers/todo_repository_provider.dart';
 import 'package:todooo/ui/providers/user_repository_provider.dart';
 import 'package:todooo/viewmodels/add_todo_viewmodel.dart';
 
-final addTodoViewModelProvider = Provider<AddTodoViewModel>((ref) {
+final addTodoViewModelProvider = StateNotifierProvider<AddTodoViewModel, AddTodoState>((ref) {
   final localNotificationService = ref.read(localNotificationServiceProvider);
   final todoRepository = ref.read(todoRepositoryProvider);
-  return AddTodoViewModel(todoRepository, localNotificationService);
+  final userRepository = ref.read(userRepositoryProvider);
+  return AddTodoViewModel(todoRepository, userRepository, localNotificationService);
 });

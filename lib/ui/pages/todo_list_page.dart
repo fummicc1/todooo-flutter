@@ -1,43 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todooo/states/add_todo_state.dart';
-import 'package:todooo/states/app_state.dart';
-import 'package:todooo/states/todo_list_state.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todooo/ui/components/todo_list_cell.dart';
 import 'package:todooo/ui/pages/add_todo_page.dart';
+import 'package:todooo/ui/providers/add_todo_viewmodel_provider.dart';
+import 'package:todooo/ui/providers/todo_list_viewmodel_provider.dart';
+import 'package:todooo/ui/providers/user_repository_provider.dart';
 
-class ToDoListPage extends StatefulWidget {
-  @override
-  _ToDoListPageState createState() => _ToDoListPageState();
-}
-
-class _ToDoListPageState extends State<ToDoListPage> {
-  late ScrollController _scrollController;
-
-  Size topLeftCircleSize = Size(200, 240);
+class TodoListPage extends HookConsumerWidget {
 
   @override
-  void initState() {
-    _scrollController = ScrollController();
-    super.initState();
-    _scrollController.addListener(() {
-      topLeftCircleSize = Size(200 + _scrollController.position.pixels * 0.3,
-          200 + _scrollController.position.pixels * 0.3);
-      setState(() {});
-    });
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
 
-  @override
-  Widget build(BuildContext context) {
-    final ToDoListState toDoListState = Provider.of(context);
+    final todoListState = ref.watch(todoListViewModelProvider);
+
+    final scrollController = useScrollController();
+    if (!scrollController.hasListeners) {
+      scrollController.addListener(() {
+        ref.read(todoListViewModelProvider.notifier).onScroll(scrollController.position.pixels);
+      });
+    }
+
     return SafeArea(
       top: false,
       bottom: false,
       child: Stack(children: [
         Positioned(
             left: -64,
-            height: topLeftCircleSize.height,
-            width: topLeftCircleSize.width,
+            height: todoListState.topLeftCircleSize.height,
+            width: todoListState.topLeftCircleSize.width,
             top: -80,
             child: Container(
               decoration: BoxDecoration(
@@ -55,7 +46,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                     Positioned(
                       top: 48,
                       left: 0,
-                      child: Text(toDoListState.pageTitle,
+                      child: Text("一覧",
                           style: Theme.of(context).textTheme.headline4),
                     ),
                     Positioned(
@@ -72,25 +63,25 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 ),
               ),
               Expanded(
-                child: toDoListState.todoList.isNotEmpty
+                child: todoListState.todoList.isNotEmpty
                     ? ListView.builder(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        controller: _scrollController,
-                        shrinkWrap: true,
-                        itemCount: toDoListState.todoList.length,
-                        itemBuilder: (context, index) {
-                          final todo = toDoListState.todoList[index];
-                          return ToDoListCell(toDo: todo);
-                        })
+                    physics: AlwaysScrollableScrollPhysics(),
+                    controller: scrollController,
+                    shrinkWrap: true,
+                    itemCount: todoListState.todoList.length,
+                    itemBuilder: (context, index) {
+                      final todo = todoListState.todoList[index];
+                      return ToDoListCell(todo: todo);
+                    })
                     : Center(
-                        child: TextButton(
-                          child: Text("最初のToDoを作成",
-                              style: Theme.of(context).textTheme.headline6),
-                          onPressed: () {
-                            _moveToAddToDoPage(context);
-                          },
-                        ),
-                      ),
+                  child: TextButton(
+                    child: Text("最初のToDoを作成",
+                        style: Theme.of(context).textTheme.headline6),
+                    onPressed: () {
+                      _moveToAddToDoPage(context);
+                    },
+                  ),
+                ),
               )
             ],
           ),
@@ -98,6 +89,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
       ]),
     );
   }
+
 
   List<Widget> additionalWidgets(BuildContext context) {
     return [
@@ -140,20 +132,9 @@ class _ToDoListPageState extends State<ToDoListPage> {
   }
 
   void _moveToAddToDoPage(BuildContext context) {
-    final AppState appState = Provider.of(context, listen: false);
-
     Navigator.of(context).push(MaterialPageRoute(
         settings: const RouteSettings(name: "/add_todo_page"),
         fullscreenDialog: true,
-        builder: (_) => ChangeNotifierProvider(
-            create: (_) {
-              final AppState appState = Provider.of(context, listen: false);
-              return AddToDoState(
-                  toDoRepository: appState.toDoRepository,
-                  userID: appState.user!.uid,
-                  pageTitle: "登録",
-                  localNotificationService: appState.localNotificationService);
-            },
-            child: AddToDoPage())));
+        builder: (_) => AddTodoPage()));
   }
 }

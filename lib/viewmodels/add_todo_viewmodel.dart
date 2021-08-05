@@ -12,11 +12,10 @@ import 'package:timezone/timezone.dart' as tz;
 
 class AddTodoViewModel extends StateNotifier<AddTodoState> {
   final ToDoRepository _toDoRepository;
+  final UserRepository _userRepository;
   final LocalNotificationService _localNotificationService;
 
-  bool get isDataInputted => state.userId!.isNotEmpty && state.content.isNotEmpty;
-
-  AddTodoViewModel(this._toDoRepository, this._localNotificationService)
+  AddTodoViewModel(this._toDoRepository, this._userRepository, this._localNotificationService)
       : super(const AddTodoState());
 
   updateContent(String content) {
@@ -33,14 +32,14 @@ class AddTodoViewModel extends StateNotifier<AddTodoState> {
 
   Future create() async {
     if (state.isProcessing) {
-      return Future.error("isProcessing = true");
+      return Future.error("isProcessing");
     }
 
     state = state.copyWith(isProcessing: true);
 
     final todoRef = _toDoRepository.generateDocumentRef(
         collectionName: UserCollectionName,
-        documentId: state.userId!,
+        documentId: _userRepository.uid,
         subCollectionName: Todo.CollectionName);
 
     int? notificationId;
@@ -58,7 +57,9 @@ class AddTodoViewModel extends StateNotifier<AddTodoState> {
                 android: AndroidNotificationDetails("0", "TOD_NOTIFICATION", "",
                     importance: Importance.high)),
             payload: '{ "todo_id": "${todoRef.id}" }');
+        state = state.copyWith(isProcessing: false);
       } catch (e) {
+        state = state.copyWith(isProcessing: false);
         return Future.error(e);
       }
     }
@@ -70,11 +71,11 @@ class AddTodoViewModel extends StateNotifier<AddTodoState> {
         deadline: state.deadline.toString(),
         createDate: DateTime.now(),
         isDone: false,
-        owner: state.userId!,
+        owner: _userRepository.uid!,
         notificationDateTimeFromEpoch:
             state.notificationDate?.millisecondsSinceEpoch,
         notificationId: notificationId);
 
-    await _toDoRepository.createTodoWithId(todo);
+    await _toDoRepository.createTodoWithId(_userRepository.uid!, todo);
   }
 }

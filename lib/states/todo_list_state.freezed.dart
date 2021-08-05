@@ -16,9 +16,12 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$TodoListStateTearOff {
   const _$TodoListStateTearOff();
 
-  _TodoListState call({List<Todo> todoList = const []}) {
+  _TodoListState call(
+      {List<Todo> todoList = const [],
+      dynamic topLeftCircleSize = const Size(200, 240)}) {
     return _TodoListState(
       todoList: todoList,
+      topLeftCircleSize: topLeftCircleSize,
     );
   }
 }
@@ -29,6 +32,7 @@ const $TodoListState = _$TodoListStateTearOff();
 /// @nodoc
 mixin _$TodoListState {
   List<Todo> get todoList => throw _privateConstructorUsedError;
+  dynamic get topLeftCircleSize => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TodoListStateCopyWith<TodoListState> get copyWith =>
@@ -40,7 +44,7 @@ abstract class $TodoListStateCopyWith<$Res> {
   factory $TodoListStateCopyWith(
           TodoListState value, $Res Function(TodoListState) then) =
       _$TodoListStateCopyWithImpl<$Res>;
-  $Res call({List<Todo> todoList});
+  $Res call({List<Todo> todoList, dynamic topLeftCircleSize});
 }
 
 /// @nodoc
@@ -55,12 +59,17 @@ class _$TodoListStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? todoList = freezed,
+    Object? topLeftCircleSize = freezed,
   }) {
     return _then(_value.copyWith(
       todoList: todoList == freezed
           ? _value.todoList
           : todoList // ignore: cast_nullable_to_non_nullable
               as List<Todo>,
+      topLeftCircleSize: topLeftCircleSize == freezed
+          ? _value.topLeftCircleSize
+          : topLeftCircleSize // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -72,7 +81,7 @@ abstract class _$TodoListStateCopyWith<$Res>
           _TodoListState value, $Res Function(_TodoListState) then) =
       __$TodoListStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<Todo> todoList});
+  $Res call({List<Todo> todoList, dynamic topLeftCircleSize});
 }
 
 /// @nodoc
@@ -89,12 +98,16 @@ class __$TodoListStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? todoList = freezed,
+    Object? topLeftCircleSize = freezed,
   }) {
     return _then(_TodoListState(
       todoList: todoList == freezed
           ? _value.todoList
           : todoList // ignore: cast_nullable_to_non_nullable
               as List<Todo>,
+      topLeftCircleSize: topLeftCircleSize == freezed
+          ? _value.topLeftCircleSize
+          : topLeftCircleSize,
     ));
   }
 }
@@ -102,15 +115,20 @@ class __$TodoListStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_TodoListState implements _TodoListState {
-  const _$_TodoListState({this.todoList = const []});
+  const _$_TodoListState(
+      {this.todoList = const [],
+      this.topLeftCircleSize = const Size(200, 240)});
 
   @JsonKey(defaultValue: const [])
   @override
   final List<Todo> todoList;
+  @JsonKey(defaultValue: const Size(200, 240))
+  @override
+  final dynamic topLeftCircleSize;
 
   @override
   String toString() {
-    return 'TodoListState(todoList: $todoList)';
+    return 'TodoListState(todoList: $todoList, topLeftCircleSize: $topLeftCircleSize)';
   }
 
   @override
@@ -119,12 +137,17 @@ class _$_TodoListState implements _TodoListState {
         (other is _TodoListState &&
             (identical(other.todoList, todoList) ||
                 const DeepCollectionEquality()
-                    .equals(other.todoList, todoList)));
+                    .equals(other.todoList, todoList)) &&
+            (identical(other.topLeftCircleSize, topLeftCircleSize) ||
+                const DeepCollectionEquality()
+                    .equals(other.topLeftCircleSize, topLeftCircleSize)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(todoList);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(todoList) ^
+      const DeepCollectionEquality().hash(topLeftCircleSize);
 
   @JsonKey(ignore: true)
   @override
@@ -133,10 +156,13 @@ class _$_TodoListState implements _TodoListState {
 }
 
 abstract class _TodoListState implements TodoListState {
-  const factory _TodoListState({List<Todo> todoList}) = _$_TodoListState;
+  const factory _TodoListState(
+      {List<Todo> todoList, dynamic topLeftCircleSize}) = _$_TodoListState;
 
   @override
   List<Todo> get todoList => throw _privateConstructorUsedError;
+  @override
+  dynamic get topLeftCircleSize => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$TodoListStateCopyWith<_TodoListState> get copyWith =>

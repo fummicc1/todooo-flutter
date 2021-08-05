@@ -17,14 +17,12 @@ class _$AddTodoStateTearOff {
   const _$AddTodoStateTearOff();
 
   _AddTodoState call(
-      {String? userId = null,
-      String content = "",
+      {String content = "",
       bool isProcessing = false,
       Deadline deadline = Deadline.today,
       DateTime? createDate = null,
       DateTime? notificationDate = null}) {
     return _AddTodoState(
-      userId: userId,
       content: content,
       isProcessing: isProcessing,
       deadline: deadline,
@@ -39,7 +37,6 @@ const $AddTodoState = _$AddTodoStateTearOff();
 
 /// @nodoc
 mixin _$AddTodoState {
-  String? get userId => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
   Deadline get deadline => throw _privateConstructorUsedError;
@@ -57,8 +54,7 @@ abstract class $AddTodoStateCopyWith<$Res> {
           AddTodoState value, $Res Function(AddTodoState) then) =
       _$AddTodoStateCopyWithImpl<$Res>;
   $Res call(
-      {String? userId,
-      String content,
+      {String content,
       bool isProcessing,
       Deadline deadline,
       DateTime? createDate,
@@ -75,7 +71,6 @@ class _$AddTodoStateCopyWithImpl<$Res> implements $AddTodoStateCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? userId = freezed,
     Object? content = freezed,
     Object? isProcessing = freezed,
     Object? deadline = freezed,
@@ -83,10 +78,6 @@ class _$AddTodoStateCopyWithImpl<$Res> implements $AddTodoStateCopyWith<$Res> {
     Object? notificationDate = freezed,
   }) {
     return _then(_value.copyWith(
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String?,
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -119,8 +110,7 @@ abstract class _$AddTodoStateCopyWith<$Res>
       __$AddTodoStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? userId,
-      String content,
+      {String content,
       bool isProcessing,
       Deadline deadline,
       DateTime? createDate,
@@ -139,7 +129,6 @@ class __$AddTodoStateCopyWithImpl<$Res> extends _$AddTodoStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? userId = freezed,
     Object? content = freezed,
     Object? isProcessing = freezed,
     Object? deadline = freezed,
@@ -147,10 +136,6 @@ class __$AddTodoStateCopyWithImpl<$Res> extends _$AddTodoStateCopyWithImpl<$Res>
     Object? notificationDate = freezed,
   }) {
     return _then(_AddTodoState(
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String?,
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -179,16 +164,12 @@ class __$AddTodoStateCopyWithImpl<$Res> extends _$AddTodoStateCopyWithImpl<$Res>
 
 class _$_AddTodoState implements _AddTodoState {
   const _$_AddTodoState(
-      {this.userId = null,
-      this.content = "",
+      {this.content = "",
       this.isProcessing = false,
       this.deadline = Deadline.today,
       this.createDate = null,
       this.notificationDate = null});
 
-  @JsonKey(defaultValue: null)
-  @override
-  final String? userId;
   @JsonKey(defaultValue: "")
   @override
   final String content;
@@ -207,15 +188,13 @@ class _$_AddTodoState implements _AddTodoState {
 
   @override
   String toString() {
-    return 'AddTodoState(userId: $userId, content: $content, isProcessing: $isProcessing, deadline: $deadline, createDate: $createDate, notificationDate: $notificationDate)';
+    return 'AddTodoState(content: $content, isProcessing: $isProcessing, deadline: $deadline, createDate: $createDate, notificationDate: $notificationDate)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _AddTodoState &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)) &&
             (identical(other.content, content) ||
                 const DeepCollectionEquality()
                     .equals(other.content, content)) &&
@@ -236,7 +215,6 @@ class _$_AddTodoState implements _AddTodoState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(content) ^
       const DeepCollectionEquality().hash(isProcessing) ^
       const DeepCollectionEquality().hash(deadline) ^
@@ -251,15 +229,12 @@ class _$_AddTodoState implements _AddTodoState {
 
 abstract class _AddTodoState implements AddTodoState {
   const factory _AddTodoState(
-      {String? userId,
-      String content,
+      {String content,
       bool isProcessing,
       Deadline deadline,
       DateTime? createDate,
       DateTime? notificationDate}) = _$_AddTodoState;
 
-  @override
-  String? get userId => throw _privateConstructorUsedError;
   @override
   String get content => throw _privateConstructorUsedError;
   @override

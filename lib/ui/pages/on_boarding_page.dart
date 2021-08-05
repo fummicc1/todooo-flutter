@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todooo/states/on_boarding_state.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todooo/ui/components/curved_curtain.dart';
 import 'package:todooo/ui/components/props_account_widget.dart';
+import 'package:todooo/ui/providers/onboarding_viewmodel_provider.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -36,131 +36,136 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final OnBoardingState onBoardingState = Provider.of(context);
+    return Consumer(
+      builder: (context, ref, child) {
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text(
-          "アカウント登録のメリット",
-          style: Theme.of(context).textTheme.button,
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        elevation: 2,
-        icon: Icon(Icons.info_outline, color: Colors.black),
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              barrierColor: Theme.of(context).primaryColor.withAlpha(120),
-              backgroundColor: Colors.transparent,
-              builder: (context) {
-                return Wrap(
-                  children: [
-                    PropsAccountWidget()
-                  ],
-                );
-              });
-        },
-      ),
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            color: Theme.of(context).backgroundColor,
-          ),
-          AnimatedContainer(
-            height: height,
-            duration: Duration(seconds: 1),
-            curve: Curves.easeOut,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Opacity(
-                  opacity: 0.6,
-                  child: ClipPath(
-                    child: Container(
-                      height: 220,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    clipper: CurvedCurtain(),
-                  ),
-                ),
-                ClipPath(
-                  child: Container(
-                    height: 200,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  clipper: CurvedCurtain(),
-                ),
-                Positioned(
-                    top: 56,
-                    child: AnimatedOpacity(
-                      duration: Duration(seconds: 1),
-                      opacity: opacity,
-                      child: Text(
-                        "Welcome to Todooo",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.apply(fontWeightDelta: 2, color: Colors.white),
-                      ),
-                    )),
-              ],
+        final onboardingState = ref.watch(onboardingViewModelProvider);
+
+        return Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+            label: Text(
+              "アカウント登録のメリット",
+              style: Theme.of(context).textTheme.button,
             ),
-          ),
-          Positioned(
-              right: 32,
-              left: 32,
-              bottom: 80,
-              top: height == 0 ? 48 : null,
-              child: AnimatedContainer(
-                height: bottomHeight,
-                duration: Duration(milliseconds: 700),
-                child: AnimatedOpacity(
-                  duration: Duration(milliseconds: 700),
-                  opacity: opacity,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+            backgroundColor: Theme.of(context).backgroundColor,
+            elevation: 2,
+            icon: Icon(Icons.info_outline, color: Colors.black),
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  barrierColor: Theme.of(context).primaryColor.withAlpha(120),
+                  backgroundColor: Colors.transparent,
+                  builder: (context) {
+                    return Wrap(
                       children: [
-                        Container(
-                            height: 120,
-                            child: Image.asset("assets/icon/icon_clear.png")),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: buildForm(context, onDecide: () async {
-                            if (formType == FormType.SignIn) {
-                              try {
-                                await onBoardingState.signInWithEmail();
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text("$e")));
-                              }
-                            } else if (formType == FormType.SignUp) {
-                              try {
-                                await onBoardingState.signUpWithEmail();
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text("$e")));
-                              }
-                            }
-                          }),
-                        ),
-                        buildSelection(context)
+                        PropsAccountWidget()
                       ],
+                    );
+                  });
+            },
+          ),
+          body: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Container(
+                color: Theme.of(context).backgroundColor,
+              ),
+              AnimatedContainer(
+                height: height,
+                duration: Duration(seconds: 1),
+                curve: Curves.easeOut,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Opacity(
+                      opacity: 0.6,
+                      child: ClipPath(
+                        child: Container(
+                          height: 220,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        clipper: CurvedCurtain(),
+                      ),
                     ),
-                  ),
+                    ClipPath(
+                      child: Container(
+                        height: 200,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      clipper: CurvedCurtain(),
+                    ),
+                    Positioned(
+                        top: 56,
+                        child: AnimatedOpacity(
+                          duration: Duration(seconds: 1),
+                          opacity: opacity,
+                          child: Text(
+                            "Welcome to Todooo",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4
+                                ?.apply(fontWeightDelta: 2, color: Colors.white),
+                          ),
+                        )),
+                  ],
                 ),
-              ))
-        ],
-      ),
+              ),
+              Positioned(
+                  right: 32,
+                  left: 32,
+                  bottom: 80,
+                  top: height == 0 ? 48 : null,
+                  child: AnimatedContainer(
+                    height: bottomHeight,
+                    duration: Duration(milliseconds: 700),
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 700),
+                      opacity: opacity,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                                height: 120,
+                                child: Image.asset("assets/icon/icon_clear.png")),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: buildForm(context, ref, onDecide: () async {
+                                if (formType == FormType.SignIn) {
+                                  try {
+                                    await ref.read(onboardingViewModelProvider.notifier).signInWithEmail();
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text("$e")));
+                                  }
+                                } else if (formType == FormType.SignUp) {
+                                  try {
+                                    await ref.read(onboardingViewModelProvider.notifier).signUpWithEmail();
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text("$e")));
+                                  }
+                                }
+                              }),
+                            ),
+                            buildSelection(context, ref)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ))
+            ],
+          ),
+        );
+      },
     );
   }
 
-  List<Widget> buildForm(BuildContext context, {required Function() onDecide}) {
-    final OnBoardingState state = Provider.of(context);
+  List<Widget> buildForm(BuildContext context, WidgetRef ref, {required Function() onDecide}) {
+    final viewModel = ref.watch(onboardingViewModelProvider.notifier);
 
     final spacer = SizedBox(
       height: 24,
@@ -180,20 +185,20 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     final emailInput = TextField(
       decoration: InputDecoration(labelText: "メールアドレス"),
       onChanged: (text) {
-        state.email = text;
+        viewModel.updateEmail(text);
       },
     );
     final passwordInput = TextField(
       decoration: InputDecoration(labelText: "パスワード"),
       onChanged: (text) {
-        state.password = text;
+        viewModel.updatePassword(text);
       },
     );
     if (formType == FormType.SignUp) {
       final confirmPasswordInput = TextField(
         decoration: InputDecoration(labelText: "確認用パスワード"),
         onChanged: (text) {
-          state.confirmPassword = text;
+          viewModel.updateConfirmPassword(text);
         },
       );
       return [
@@ -213,8 +218,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return [emailInput, spacer, passwordInput, spacer, decideButton];
   }
 
-  Widget buildSelection(BuildContext context) {
-    final OnBoardingState onBoardingState = Provider.of(context);
+  Widget buildSelection(BuildContext context, WidgetRef ref) {
+
+    final viewModel = ref.read(onboardingViewModelProvider.notifier);
 
     if (formType != FormType.None) {
       return Padding(
@@ -280,7 +286,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
         ElevatedButton(
             onPressed: () {
-              onBoardingState.signInAsGuest();
+              viewModel.signInAsGuest();
             },
             style: ElevatedButton.styleFrom(
                 onPrimary: Theme.of(context).backgroundColor,

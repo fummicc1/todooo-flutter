@@ -18,12 +18,18 @@ class _$DetailTodoStateTearOff {
 
   _DetailTodoState call(
       {required String? todoId,
-      required String editMemo,
-      required bool isDone}) {
+      required String memo,
+      required bool isDone,
+      required Deadline deadline,
+      required String? notificationDate,
+      required bool isOver}) {
     return _DetailTodoState(
       todoId: todoId,
-      editMemo: editMemo,
+      memo: memo,
       isDone: isDone,
+      deadline: deadline,
+      notificationDate: notificationDate,
+      isOver: isOver,
     );
   }
 }
@@ -34,8 +40,11 @@ const $DetailTodoState = _$DetailTodoStateTearOff();
 /// @nodoc
 mixin _$DetailTodoState {
   String? get todoId => throw _privateConstructorUsedError;
-  String get editMemo => throw _privateConstructorUsedError;
+  String get memo => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
+  Deadline get deadline => throw _privateConstructorUsedError;
+  String? get notificationDate => throw _privateConstructorUsedError;
+  bool get isOver => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DetailTodoStateCopyWith<DetailTodoState> get copyWith =>
@@ -47,7 +56,13 @@ abstract class $DetailTodoStateCopyWith<$Res> {
   factory $DetailTodoStateCopyWith(
           DetailTodoState value, $Res Function(DetailTodoState) then) =
       _$DetailTodoStateCopyWithImpl<$Res>;
-  $Res call({String? todoId, String editMemo, bool isDone});
+  $Res call(
+      {String? todoId,
+      String memo,
+      bool isDone,
+      Deadline deadline,
+      String? notificationDate,
+      bool isOver});
 }
 
 /// @nodoc
@@ -62,21 +77,36 @@ class _$DetailTodoStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? todoId = freezed,
-    Object? editMemo = freezed,
+    Object? memo = freezed,
     Object? isDone = freezed,
+    Object? deadline = freezed,
+    Object? notificationDate = freezed,
+    Object? isOver = freezed,
   }) {
     return _then(_value.copyWith(
       todoId: todoId == freezed
           ? _value.todoId
           : todoId // ignore: cast_nullable_to_non_nullable
               as String?,
-      editMemo: editMemo == freezed
-          ? _value.editMemo
-          : editMemo // ignore: cast_nullable_to_non_nullable
+      memo: memo == freezed
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
               as String,
       isDone: isDone == freezed
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
+              as bool,
+      deadline: deadline == freezed
+          ? _value.deadline
+          : deadline // ignore: cast_nullable_to_non_nullable
+              as Deadline,
+      notificationDate: notificationDate == freezed
+          ? _value.notificationDate
+          : notificationDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isOver: isOver == freezed
+          ? _value.isOver
+          : isOver // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -89,7 +119,13 @@ abstract class _$DetailTodoStateCopyWith<$Res>
           _DetailTodoState value, $Res Function(_DetailTodoState) then) =
       __$DetailTodoStateCopyWithImpl<$Res>;
   @override
-  $Res call({String? todoId, String editMemo, bool isDone});
+  $Res call(
+      {String? todoId,
+      String memo,
+      bool isDone,
+      Deadline deadline,
+      String? notificationDate,
+      bool isOver});
 }
 
 /// @nodoc
@@ -106,21 +142,36 @@ class __$DetailTodoStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? todoId = freezed,
-    Object? editMemo = freezed,
+    Object? memo = freezed,
     Object? isDone = freezed,
+    Object? deadline = freezed,
+    Object? notificationDate = freezed,
+    Object? isOver = freezed,
   }) {
     return _then(_DetailTodoState(
       todoId: todoId == freezed
           ? _value.todoId
           : todoId // ignore: cast_nullable_to_non_nullable
               as String?,
-      editMemo: editMemo == freezed
-          ? _value.editMemo
-          : editMemo // ignore: cast_nullable_to_non_nullable
+      memo: memo == freezed
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
               as String,
       isDone: isDone == freezed
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
+              as bool,
+      deadline: deadline == freezed
+          ? _value.deadline
+          : deadline // ignore: cast_nullable_to_non_nullable
+              as Deadline,
+      notificationDate: notificationDate == freezed
+          ? _value.notificationDate
+          : notificationDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isOver: isOver == freezed
+          ? _value.isOver
+          : isOver // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -130,18 +181,29 @@ class __$DetailTodoStateCopyWithImpl<$Res>
 
 class _$_DetailTodoState implements _DetailTodoState {
   const _$_DetailTodoState(
-      {required this.todoId, required this.editMemo, required this.isDone});
+      {required this.todoId,
+      required this.memo,
+      required this.isDone,
+      required this.deadline,
+      required this.notificationDate,
+      required this.isOver});
 
   @override
   final String? todoId;
   @override
-  final String editMemo;
+  final String memo;
   @override
   final bool isDone;
+  @override
+  final Deadline deadline;
+  @override
+  final String? notificationDate;
+  @override
+  final bool isOver;
 
   @override
   String toString() {
-    return 'DetailTodoState(todoId: $todoId, editMemo: $editMemo, isDone: $isDone)';
+    return 'DetailTodoState(todoId: $todoId, memo: $memo, isDone: $isDone, deadline: $deadline, notificationDate: $notificationDate, isOver: $isOver)';
   }
 
   @override
@@ -150,19 +212,29 @@ class _$_DetailTodoState implements _DetailTodoState {
         (other is _DetailTodoState &&
             (identical(other.todoId, todoId) ||
                 const DeepCollectionEquality().equals(other.todoId, todoId)) &&
-            (identical(other.editMemo, editMemo) ||
-                const DeepCollectionEquality()
-                    .equals(other.editMemo, editMemo)) &&
+            (identical(other.memo, memo) ||
+                const DeepCollectionEquality().equals(other.memo, memo)) &&
             (identical(other.isDone, isDone) ||
-                const DeepCollectionEquality().equals(other.isDone, isDone)));
+                const DeepCollectionEquality().equals(other.isDone, isDone)) &&
+            (identical(other.deadline, deadline) ||
+                const DeepCollectionEquality()
+                    .equals(other.deadline, deadline)) &&
+            (identical(other.notificationDate, notificationDate) ||
+                const DeepCollectionEquality()
+                    .equals(other.notificationDate, notificationDate)) &&
+            (identical(other.isOver, isOver) ||
+                const DeepCollectionEquality().equals(other.isOver, isOver)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(todoId) ^
-      const DeepCollectionEquality().hash(editMemo) ^
-      const DeepCollectionEquality().hash(isDone);
+      const DeepCollectionEquality().hash(memo) ^
+      const DeepCollectionEquality().hash(isDone) ^
+      const DeepCollectionEquality().hash(deadline) ^
+      const DeepCollectionEquality().hash(notificationDate) ^
+      const DeepCollectionEquality().hash(isOver);
 
   @JsonKey(ignore: true)
   @override
@@ -173,15 +245,24 @@ class _$_DetailTodoState implements _DetailTodoState {
 abstract class _DetailTodoState implements DetailTodoState {
   const factory _DetailTodoState(
       {required String? todoId,
-      required String editMemo,
-      required bool isDone}) = _$_DetailTodoState;
+      required String memo,
+      required bool isDone,
+      required Deadline deadline,
+      required String? notificationDate,
+      required bool isOver}) = _$_DetailTodoState;
 
   @override
   String? get todoId => throw _privateConstructorUsedError;
   @override
-  String get editMemo => throw _privateConstructorUsedError;
+  String get memo => throw _privateConstructorUsedError;
   @override
   bool get isDone => throw _privateConstructorUsedError;
+  @override
+  Deadline get deadline => throw _privateConstructorUsedError;
+  @override
+  String? get notificationDate => throw _privateConstructorUsedError;
+  @override
+  bool get isOver => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$DetailTodoStateCopyWith<_DetailTodoState> get copyWith =>

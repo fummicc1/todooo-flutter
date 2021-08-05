@@ -7,6 +7,9 @@ part 'detail_todo_state.freezed.dart';
 abstract class DetailTodoState with _$DetailTodoState {
   const factory DetailTodoState(
       {required String? todoId,
-      required String editMemo,
-      required bool isDone}) = _DetailTodoState;
+      required String memo,
+      required bool isDone,
+      required Deadline deadline,
+        required String? notificationDate,
+      required bool isOver}) = _DetailTodoState;
 }

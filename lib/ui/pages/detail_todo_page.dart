@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:todooo/states/detail_todo_state.dart';
-import 'package:todooo/states/todo_list_state.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todooo/ui/providers/detail_todo_viewmodel_provider.dart';
+import 'package:todooo/models/todo.dart';
 
-class DetailToDoPage extends StatefulWidget {
+class DetailTodoPage extends HookConsumerWidget {
   @override
-  _DetailToDoPageState createState() => _DetailToDoPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(detailTodoViewModelProvider);
 
-class _DetailToDoPageState extends State<DetailToDoPage> {
-  @override
-  Widget build(BuildContext context) {
-    final DetailToDoState detailToDoState = Provider.of(context);
-    final ToDoListState todoListState =
-        Provider.of<ToDoListState>(context, listen: false);
+    final textEditController = useTextEditingController();
+    final focusNode = useFocusNode();
+
     return Scaffold(
-      backgroundColor: detailToDoState.toDo.isOver
-          ? Colors.grey
-          : Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
@@ -39,7 +34,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                           height: 96,
                           child: Row(
                             children: <Widget>[
-                              detailToDoState.toDo.isDone
+                              state.isDone
                                   ? Padding(
                                       padding:
                                           const EdgeInsets.only(right: 8.0),
@@ -48,7 +43,7 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                                   : Container(),
                               Flexible(
                                 child: Text(
-                                  detailToDoState.toDo.content,
+                                  state.memo,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline4
@@ -61,9 +56,9 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                         ),
                         SizedBox(height: 24),
                         TextField(
-                          controller: detailToDoState.memoEditingController,
+                          controller: textEditController,
                           toolbarOptions: ToolbarOptions(),
-                          focusNode: detailToDoState.focusNode,
+                          focusNode: focusNode,
                           maxLines: 7,
                           decoration: InputDecoration(
                               labelStyle: Theme.of(context)
@@ -81,28 +76,28 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                                 borderRadius: BorderRadius.circular(24),
                               )),
                           onChanged: (memo) {
-                            detailToDoState.editedMemo = memo;
+                            ref.read(detailTodoViewModelProvider.notifier).updateMemo(memo);
                           },
                         ),
                         SizedBox(height: 32),
                         Text(
-                          detailToDoState.toDo.isOver
+                          state.isOver
                               ? "目標の日時を過ぎています。"
-                              : "${detailToDoState.toDo.deadlineText}達成することを目標としています。",
+                              : "${state.deadline.displayText}達成することを目標としています。",
                           style: Theme.of(context)
                               .textTheme
                               .headline6
                               ?.apply(fontWeightDelta: 2),
                         ),
-                        SizedBox(height: 32,),
+                        SizedBox(
+                          height: 32,
+                        ),
                         Row(
                           children: [
                             Text("• 通知時刻"),
-                            detailToDoState
-                                        .toDo.notificationDateTimeFromEpoch !=
-                                    null
+                            state.notificationDate != null
                                 ? Text(
-                                    "\t ${convertDateTimeFromEpoch(timeInterval: detailToDoState.toDo.notificationDateTimeFromEpoch!)}")
+                                    "\t ${state.notificationDate}")
                                 : Text("未設定")
                           ],
                         )
@@ -115,15 +110,15 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
       ),
       floatingActionButton: Builder(
         builder: (context) {
-          if (detailToDoState.focusNode.hasFocus) {
+          if (focusNode.hasFocus) {
             return Container(
               margin: const EdgeInsets.only(bottom: 48),
               child: FloatingActionButton.extended(
                   backgroundColor: Theme.of(context).backgroundColor,
                   heroTag: "hero3",
                   onPressed: () {
-                    detailToDoState
-                        .updateMemo(detailToDoState.editedMemo)
+                    ref.read(detailTodoViewModelProvider.notifier)
+                        .updateMemo(state.memo)
                         .then((_) {
                       Scaffold.of(context).showSnackBar(SnackBar(
                         content: Text("メモを更新しました"),
@@ -159,12 +154,9 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                           fontWeightDelta: 2,
                           color: Theme.of(context).primaryColor),
                     ),
-                    onPressed: () {
-                      detailToDoState.deleteToDo().then((_) {
-                        todoListState.updateToDos().then((_) {
-                          Navigator.of(context).pop();
-                        });
-                      });
+                    onPressed: () async {
+                      await ref.read(detailTodoViewModelProvider.notifier).deleteTodo();
+                      Navigator.of(context).pop();
                     },
                   ),
                   SizedBox(width: 32),
@@ -172,25 +164,26 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
                     backgroundColor: Theme.of(context).backgroundColor,
                     heroTag: "hero1",
                     icon: Icon(
-                      detailToDoState.toDo.isDone ? Icons.restore : Icons.check,
+                      state.isDone
+                          ? Icons.restore
+                          : Icons.check,
                       size: 24,
                       color: Colors.black,
                     ),
                     label: Text(
-                      detailToDoState.toDo.isDone ? "未完了に戻す" : "完了",
+                      state.isDone ? "未完了に戻す" : "完了",
                       style: Theme.of(context)
                           .textTheme
                           .button
                           ?.apply(color: Colors.black, fontWeightDelta: 2),
                     ),
-                    onPressed: () {
-                      detailToDoState.toggleToDo().then((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(detailToDoState.toDo.isDone
-                              ? "完了済み"
-                              : "未完了に戻しました"),
-                        ));
-                      });
+                    onPressed: () async {
+                      await ref.read(detailTodoViewModelProvider.notifier).toggleTodo();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.isDone
+                            ? "完了済み"
+                            : "未完了に戻しました"),
+                      ));
                     },
                   ),
                 ],
@@ -199,11 +192,5 @@ class _DetailToDoPageState extends State<DetailToDoPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
-  }
-
-  String convertDateTimeFromEpoch({required int timeInterval}) {
-    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeInterval);
-    final format = DateFormat.yMd().add_jm();
-    return format.format(dateTime);
   }
 }

@@ -5,12 +5,12 @@ import 'package:flutter/cupertino.dart';
 @immutable
 class AppUser {
   final String uid;
-  final String? name;
-  final DateTime? signedInAt;
+  String? name;
+  DateTime? signedInAt;
   final DateTime? signedUpAt;
-  final bool isCompleteWalkThrough;
+  bool isCompleteWalkThrough;
 
-  const AppUser(
+  AppUser(
       {required this.uid,
       required this.name,
       required this.signedUpAt,

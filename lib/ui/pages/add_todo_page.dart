@@ -3,14 +3,13 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todooo/models/todo.dart';
-import "package:timezone/timezone.dart" as tz;
 import 'package:todooo/ui/providers/add_todo_viewmodel_provider.dart';
 
 class AddTodoPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final addTodoViewModel = ref.watch(addTodoViewModelProvider);
+    final addTodoState = ref.watch(addTodoViewModelProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -47,10 +46,10 @@ class AddTodoPage extends HookConsumerWidget {
                         height: 48,
                         child: IconButton(
                             icon: Icon(Icons.create, size: 32),
-                            onPressed: (addTodoViewModel.isDataInputted
+                            onPressed: addTodoState.content.isNotEmpty
                                 ? () async {
                               try {
-                                await addTodoViewModel.create();
+                                await ref.read(addTodoViewModelProvider.notifier).create();
                                 Navigator.of(context).pop();
                               } catch (error) {
                                 if (error == "Processing") {
@@ -66,7 +65,7 @@ class AddTodoPage extends HookConsumerWidget {
                                 ));
                               }
                             }
-                                : null)),
+                                : null),
                       )
                     ],
                   ),
@@ -81,7 +80,7 @@ class AddTodoPage extends HookConsumerWidget {
                     labelText: "なにをしますか？",
                   ),
                   onChanged: (content) {
-                    addTodoViewModel.updateContent(content);
+                    ref.watch(addTodoViewModelProvider.notifier).updateContent(content);
                   },
                 ),
                 SizedBox(height: 48),
@@ -92,18 +91,18 @@ class AddTodoPage extends HookConsumerWidget {
                     RadioListTile(
                       title: Text("今日中"),
                       value: Deadline.values[0],
-                      groupValue: addTodoViewModel.state.deadline,
+                      groupValue: addTodoState.deadline,
                       onChanged: (deadline) {
-                        addTodoViewModel
+                        ref.watch(addTodoViewModelProvider.notifier)
                             .updateDeadline(deadline as Deadline);
                       },
                     ),
                     RadioListTile(
                       title: Text("明日まで"),
                       value: Deadline.values[1],
-                      groupValue: addTodoViewModel.state.deadline,
+                      groupValue: addTodoState.deadline,
                       onChanged: (deadline) {
-                        addTodoViewModel
+                        ref.watch(addTodoViewModelProvider.notifier)
                             .updateDeadline(deadline as Deadline);
                       },
                     ),
@@ -125,7 +124,7 @@ class AddTodoPage extends HookConsumerWidget {
                       onTap: () {
                         onChangeNotificationRadioButton(context,
                             shouldNotificate: true, onSelectDate: (dateTime) {
-                              addTodoViewModel.updateNotificationDate(dateTime);
+                              ref.watch(addTodoViewModelProvider.notifier).updateNotificationDate(dateTime);
                             });
                       },
                       child: Row(
@@ -134,7 +133,7 @@ class AddTodoPage extends HookConsumerWidget {
                           SizedBox(
                             width: 16,
                           ),
-                          DateTextLabelIfNeeded(addTodoViewModel.state.notificationDate)
+                          DateTextLabelIfNeeded(addTodoState.notificationDate)
                         ],
                       ),
                     ),
@@ -145,24 +144,24 @@ class AddTodoPage extends HookConsumerWidget {
                     RadioListTile(
                       title: Text("はい"),
                       value: true,
-                      groupValue: addTodoViewModel.state.notificationDate != null,
+                      groupValue: addTodoState.notificationDate != null,
                       onChanged: (shouldNotificate) {
                         onChangeNotificationRadioButton(context,
                             shouldNotificate: shouldNotificate as bool,
                             onSelectDate: (dateTime) {
-                              addTodoViewModel.updateNotificationDate(dateTime);
+                              ref.watch(addTodoViewModelProvider.notifier).updateNotificationDate(dateTime);
                             });
                       },
                     ),
                     RadioListTile(
                       title: Text("いいえ"),
                       value: false,
-                      groupValue: addTodoViewModel.state.notificationDate != null,
+                      groupValue: addTodoState.notificationDate != null,
                       onChanged: (shouldNotificate) async {
                         onChangeNotificationRadioButton(context,
                             shouldNotificate: shouldNotificate as bool,
                             onSelectDate: (dateTime) {
-                              addTodoViewModel.updateNotificationDate(dateTime);
+                              ref.watch(addTodoViewModelProvider.notifier).updateNotificationDate(dateTime);
                             });
                       },
                     ),

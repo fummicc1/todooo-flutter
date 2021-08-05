@@ -1,34 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todooo/models/todo.dart';
-import 'package:todooo/states/app_state.dart';
-import 'package:todooo/states/detail_todo_state.dart';
 import 'package:todooo/ui/pages/detail_todo_page.dart';
+import 'package:todooo/ui/providers/detail_todo_viewmodel_provider.dart';
 
-class ToDoListCell extends StatelessWidget {
-  final ToDo toDo;
+class ToDoListCell extends HookConsumerWidget {
 
-  ToDoListCell({required this.toDo});
+  final Todo todo;
+
+  ToDoListCell({Key? key, required this.todo}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // TODO: implement build
     return Card(
-      color: toDo.isOver
+      color: todo.isOver
           ? Theme.of(context).disabledColor.withAlpha(0)
           : Theme.of(context).cardColor,
       child: ListTile(
         title: Row(
           children: <Widget>[
-            toDo.isDone
+            todo.isDone
                 ? Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Icon(Icons.check, color: Colors.black),
-                  )
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.check, color: Colors.black),
+            )
                 : Container(),
             Flexible(
               child: Text(
-                toDo.content,
+                todo.content,
                 style: Theme.of(context).textTheme.headline6,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -39,18 +40,12 @@ class ToDoListCell extends StatelessWidget {
           Navigator.of(context).push(MaterialPageRoute(
               settings: const RouteSettings(name: "/detail_todo_page"),
               builder: (context) {
-                final AppState appState = Provider.of(context, listen: false);
-                return ChangeNotifierProvider(
-                  create: (_) => DetailToDoState(
-                      localNotificationService:
-                          appState.localNotificationService,
-                      toDoRepository: appState.toDoRepository,
-                      toDo: toDo),
-                  child: DetailToDoPage(),
-                );
+                ref.read(detailTodoViewModelProvider).copyWith(todoId: todo.uid);
+                return DetailTodoPage();
               }));
         },
       ),
     );
   }
+
 }

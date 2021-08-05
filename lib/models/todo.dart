@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 
 enum Deadline { today, tomorrow }
 
+extension DeadlineText on Deadline {
+  String get displayText => this == Deadline.today ? "今日中に" : "明日までに";
+}
+
 @immutable
 class Todo {
-  final String? uid;
+  String? uid;
   String content;
   String memo;
   String deadline;
@@ -14,6 +18,26 @@ class Todo {
   bool isDone;
   int? notificationDateTimeFromEpoch;
   int? notificationId;
+
+  bool get isOver {
+    final current = DateTime.now();
+    if (deadline != "today") {
+      if (current.day > createDate.day) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (deadline == "tomorrow") {
+      if (current.day > createDate.day + 1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
 
   static const CollectionName = "todos";
 
