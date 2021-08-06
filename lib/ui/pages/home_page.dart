@@ -29,10 +29,15 @@ class HomePage extends HookConsumerWidget {
     final homeState = ref.watch(homeViewModelProvider);
     final tabController = useTabController(initialLength: 2);
     final walkthroughState = ref.watch(walkThroughViewModelProvider);
+    final index = useState(0);
+
+    tabController.addListener(() {
+      index.value = tabController.index;
+    });
 
     if (homeState.user == null) {
       return OnBoardingPage();
-    } else if (!walkthroughState.isCompleteWalkThrough) {
+    } else if (walkthroughState.isCompleteWalkThrough) {
       return Scaffold(
         body: pages[tabController.index],
         bottomNavigationBar: BottomNavigationBar(
@@ -41,7 +46,7 @@ class HomePage extends HookConsumerWidget {
             BottomNavigationBarItem(icon: Icon(Icons.list), label: "一覧"),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: "設定"),
           ],
-          currentIndex: tabController.index,
+          currentIndex: index.value,
           onTap: (index) {
             tabController.index = index;
           },

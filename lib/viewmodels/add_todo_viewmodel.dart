@@ -76,6 +76,6 @@ class AddTodoViewModel extends StateNotifier<AddTodoState> {
             state.notificationDate?.millisecondsSinceEpoch,
         notificationId: notificationId);
 
-    await _toDoRepository.createTodoWithId(_userRepository.uid!, todo);
+    await _toDoRepository.createTodoWithId(todo);
   }
 }

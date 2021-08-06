@@ -12,11 +12,14 @@ class UserRepository {
 
   AppUser? _user;
 
-  Stream<AppUser?>? _appUserStream;
+  UserRepository(this._authClient, this._firestoreClient);
 
-  UserRepository(this._authClient, this._firestoreClient) {
+  String? get uid => _user?.uid;
+
+  Stream<AppUser?> listenUser() {
+
     final stream = _authClient.onAuthStateChanged();
-    _appUserStream = stream.asyncExpand((authUser) {
+    return stream.asyncExpand((authUser) {
       if (authUser == null) {
         return null;
       }
@@ -26,15 +29,8 @@ class UserRepository {
         final appUser = AppUser.fromMap(map: data);
         this._user = appUser;
         return appUser;
-      });
+      }).asBroadcastStream();
     });
-  }
-
-  String? get uid => _user?.uid;
-
-  Stream<AppUser?> listenUser() {
-
-    return _appUserStream ?? Stream.error("No UserStream");
 
   }
 

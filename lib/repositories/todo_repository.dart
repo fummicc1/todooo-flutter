@@ -10,8 +10,9 @@ import '../models/todo.dart';
 
 class ToDoRepository {
   final FirestoreClient firestoreClient;
+  final AuthClient authClient;
 
-  ToDoRepository({required this.firestoreClient});
+  ToDoRepository({required this.firestoreClient, required this.authClient});
 
   Map<String, Todo> _caches = {};
 
@@ -29,9 +30,13 @@ class ToDoRepository {
     return FirebaseFirestore.instance.collection(collectionName).doc();
   }
 
-  Stream<List<Todo>> listenTodoList({required String userID, bool cache = true}) {
+  Stream<List<Todo>> listenTodoList({bool cache = true}) {
     if (cache) {
       return Stream.value(_caches.values.toList());
+    }
+    final userID = authClient.getUID();
+    if (userID == null) {
+      return Stream.error("No Current User");
     }
     try {
       final snapshot = firestoreClient.listenSubCollection(
@@ -56,9 +61,13 @@ class ToDoRepository {
     }
   }
 
-  Future<List<Todo>> fetchToDos({required String userID, bool cache = true}) async {
+  Future<List<Todo>> fetchToDos({bool cache = true}) async {
     if (cache) {
       return Future.value(_caches.values.toList());
+    }
+    final userID = authClient.getUID();
+    if (userID == null) {
+      return Future.error("No Current User");
     }
     try {
       final snapshot = await firestoreClient.getSubCollection(
@@ -78,7 +87,11 @@ class ToDoRepository {
     }
   }
 
-  Future deleteToDo(String userID, Todo toDo) async {
+  Future deleteToDo(Todo toDo) async {
+    final userID = authClient.getUID();
+    if (userID == null) {
+      return Future.error("No Current User");
+    }
     await firestoreClient.deleteDocumentOfSubCollection(
         collectionName: UserCollectionName,
         documentName: userID,
@@ -87,7 +100,11 @@ class ToDoRepository {
     _caches.remove(toDo.uid);
   }
 
-  Future<String> createToDo({required String userID, required Todo todo}) async {
+  Future<String> createToDo({required Todo todo}) async {
+    final userID = authClient.getUID();
+    if (userID == null) {
+      return Future.error("No Current User");
+    }
     try {
       String docId = await firestoreClient.createDocumentOfSubCollection(
           collectionName: UserCollectionName,
@@ -102,13 +119,17 @@ class ToDoRepository {
     }
   }
 
-  Future<Todo> fetchToDo({required String uid, required String userID,  required bool preferCache}) async {
+  Future<Todo> fetchToDo({required String uid, required bool preferCache}) async {
 
     if (preferCache) {
       final todo = _caches[uid];
       if (todo != null) {
         return Future.value(todo);
       }
+    }
+    final userID = authClient.getUID();
+    if (userID == null) {
+      return Future.error("No Current User");
     }
 
     try {
@@ -124,8 +145,12 @@ class ToDoRepository {
     }
   }
 
-  Future updateToDo(String userID, Todo toDo) async {
+  Future updateToDo(Todo toDo) async {
     try {
+      final userID = authClient.getUID();
+      if (userID == null) {
+        return Stream.error("No Current User");
+      }
       await firestoreClient.setDocumentWithinSubCollection(
           collectionName: UserCollectionName,
           documentName: userID,
@@ -138,8 +163,12 @@ class ToDoRepository {
     }
   }
 
-  Future createTodoWithId(String userID, Todo toDo) async {
+  Future createTodoWithId(Todo toDo) async {
     try {
+      final userID = authClient.getUID();
+      if (userID == null) {
+        return Stream.error("No Current User");
+      }
       await firestoreClient.setDocumentWithinSubCollection(
           collectionName: UserCollectionName,
           documentName: userID,

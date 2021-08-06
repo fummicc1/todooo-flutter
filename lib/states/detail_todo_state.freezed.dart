@@ -18,6 +18,7 @@ class _$DetailTodoStateTearOff {
 
   _DetailTodoState call(
       {required String? todoId,
+      required String content,
       required String memo,
       required bool isDone,
       required Deadline deadline,
@@ -25,6 +26,7 @@ class _$DetailTodoStateTearOff {
       required bool isOver}) {
     return _DetailTodoState(
       todoId: todoId,
+      content: content,
       memo: memo,
       isDone: isDone,
       deadline: deadline,
@@ -40,6 +42,7 @@ const $DetailTodoState = _$DetailTodoStateTearOff();
 /// @nodoc
 mixin _$DetailTodoState {
   String? get todoId => throw _privateConstructorUsedError;
+  String get content => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
   Deadline get deadline => throw _privateConstructorUsedError;
@@ -58,6 +61,7 @@ abstract class $DetailTodoStateCopyWith<$Res> {
       _$DetailTodoStateCopyWithImpl<$Res>;
   $Res call(
       {String? todoId,
+      String content,
       String memo,
       bool isDone,
       Deadline deadline,
@@ -77,6 +81,7 @@ class _$DetailTodoStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? todoId = freezed,
+    Object? content = freezed,
     Object? memo = freezed,
     Object? isDone = freezed,
     Object? deadline = freezed,
@@ -88,6 +93,10 @@ class _$DetailTodoStateCopyWithImpl<$Res>
           ? _value.todoId
           : todoId // ignore: cast_nullable_to_non_nullable
               as String?,
+      content: content == freezed
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
@@ -121,6 +130,7 @@ abstract class _$DetailTodoStateCopyWith<$Res>
   @override
   $Res call(
       {String? todoId,
+      String content,
       String memo,
       bool isDone,
       Deadline deadline,
@@ -142,6 +152,7 @@ class __$DetailTodoStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? todoId = freezed,
+    Object? content = freezed,
     Object? memo = freezed,
     Object? isDone = freezed,
     Object? deadline = freezed,
@@ -153,6 +164,10 @@ class __$DetailTodoStateCopyWithImpl<$Res>
           ? _value.todoId
           : todoId // ignore: cast_nullable_to_non_nullable
               as String?,
+      content: content == freezed
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
@@ -182,6 +197,7 @@ class __$DetailTodoStateCopyWithImpl<$Res>
 class _$_DetailTodoState implements _DetailTodoState {
   const _$_DetailTodoState(
       {required this.todoId,
+      required this.content,
       required this.memo,
       required this.isDone,
       required this.deadline,
@@ -190,6 +206,8 @@ class _$_DetailTodoState implements _DetailTodoState {
 
   @override
   final String? todoId;
+  @override
+  final String content;
   @override
   final String memo;
   @override
@@ -203,7 +221,7 @@ class _$_DetailTodoState implements _DetailTodoState {
 
   @override
   String toString() {
-    return 'DetailTodoState(todoId: $todoId, memo: $memo, isDone: $isDone, deadline: $deadline, notificationDate: $notificationDate, isOver: $isOver)';
+    return 'DetailTodoState(todoId: $todoId, content: $content, memo: $memo, isDone: $isDone, deadline: $deadline, notificationDate: $notificationDate, isOver: $isOver)';
   }
 
   @override
@@ -212,6 +230,9 @@ class _$_DetailTodoState implements _DetailTodoState {
         (other is _DetailTodoState &&
             (identical(other.todoId, todoId) ||
                 const DeepCollectionEquality().equals(other.todoId, todoId)) &&
+            (identical(other.content, content) ||
+                const DeepCollectionEquality()
+                    .equals(other.content, content)) &&
             (identical(other.memo, memo) ||
                 const DeepCollectionEquality().equals(other.memo, memo)) &&
             (identical(other.isDone, isDone) ||
@@ -230,6 +251,7 @@ class _$_DetailTodoState implements _DetailTodoState {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(todoId) ^
+      const DeepCollectionEquality().hash(content) ^
       const DeepCollectionEquality().hash(memo) ^
       const DeepCollectionEquality().hash(isDone) ^
       const DeepCollectionEquality().hash(deadline) ^
@@ -245,6 +267,7 @@ class _$_DetailTodoState implements _DetailTodoState {
 abstract class _DetailTodoState implements DetailTodoState {
   const factory _DetailTodoState(
       {required String? todoId,
+      required String content,
       required String memo,
       required bool isDone,
       required Deadline deadline,
@@ -253,6 +276,8 @@ abstract class _DetailTodoState implements DetailTodoState {
 
   @override
   String? get todoId => throw _privateConstructorUsedError;
+  @override
+  String get content => throw _privateConstructorUsedError;
   @override
   String get memo => throw _privateConstructorUsedError;
   @override

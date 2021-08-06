@@ -8,6 +8,5 @@ import 'package:todooo/viewmodels/detail_todo_viewmodel.dart';
 final detailTodoViewModelProvider =
     StateNotifierProvider<DetailTodoViewModel, DetailTodoState>((ref) {
   final todoRepo = ref.read(todoRepositoryProvider);
-  final userRepo = ref.read(userRepositoryProvider);
-  return DetailTodoViewModel(todoRepo, userRepo, uid: null, isDone: false, isOver: false, deadline: Deadline.today, notificationDate: "2021/4/2 15:00");
+  return DetailTodoViewModel(todoRepo, uid: null, content: "", isDone: false, isOver: false, deadline: Deadline.today, notificationDate: "2021/4/2 15:00");
 });

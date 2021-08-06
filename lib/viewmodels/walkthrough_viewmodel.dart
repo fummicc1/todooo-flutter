@@ -15,5 +15,6 @@ class WalkthroughViewModel extends StateNotifier<WalkthroughState> {
     }
     current.isCompleteWalkThrough = isCompleteWalkthrough;
     await _userRepository.updateUser(newUser: current);
+    state = state.copyWith(isCompleteWalkThrough: isCompleteWalkthrough);
   }
 }

@@ -11,6 +11,11 @@ class DetailTodoPage extends HookConsumerWidget {
 
     final textEditController = useTextEditingController();
     final focusNode = useFocusNode();
+    final isFocusing = useState(false);
+
+    focusNode.addListener(() {
+
+    });
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -43,7 +48,7 @@ class DetailTodoPage extends HookConsumerWidget {
                                   : Container(),
                               Flexible(
                                 child: Text(
-                                  state.memo,
+                                  state.content,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline4
@@ -76,7 +81,7 @@ class DetailTodoPage extends HookConsumerWidget {
                                 borderRadius: BorderRadius.circular(24),
                               )),
                           onChanged: (memo) {
-                            ref.read(detailTodoViewModelProvider.notifier).updateMemo(memo);
+                            ref.read(detailTodoViewModelProvider).copyWith(memo: memo);
                           },
                         ),
                         SizedBox(height: 32),
@@ -118,7 +123,7 @@ class DetailTodoPage extends HookConsumerWidget {
                   heroTag: "hero3",
                   onPressed: () {
                     ref.read(detailTodoViewModelProvider.notifier)
-                        .updateMemo(state.memo)
+                        .updateMemo()
                         .then((_) {
                       Scaffold.of(context).showSnackBar(SnackBar(
                         content: Text("メモを更新しました"),

@@ -15,11 +15,10 @@ class TodoListViewModel extends StateNotifier<TodoListState> {
 
   TodoListViewModel(this._toDoRepository, this._userRepository) : super( const TodoListState()) {
     _userRepository.listenUser().listen((user) {
+      if (user == null) return;
       _streamSubscription?.cancel();
-      _streamSubscription = _toDoRepository.listenTodoList(userID: user!.uid, cache: false).listen((todoList) {
-        if (hasListeners) {
-          state = state.copyWith(todoList: todoList);
-        }
+      _streamSubscription = _toDoRepository.listenTodoList(cache: false).listen((todoList) {
+        state = state.copyWith(todoList: todoList);
       });
     });
   }

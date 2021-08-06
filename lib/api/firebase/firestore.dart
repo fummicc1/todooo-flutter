@@ -109,7 +109,6 @@ class FirestoreClient {
     final document;
     if (uid != null) {
       document = _firestore.collection(collectionName).doc(uid);
-      ;
     } else {
       document = _firestore.collection(collectionName).doc();
     }

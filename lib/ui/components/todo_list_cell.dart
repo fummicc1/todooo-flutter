@@ -40,7 +40,7 @@ class ToDoListCell extends HookConsumerWidget {
           Navigator.of(context).push(MaterialPageRoute(
               settings: const RouteSettings(name: "/detail_todo_page"),
               builder: (context) {
-                ref.read(detailTodoViewModelProvider).copyWith(todoId: todo.uid);
+                ref.read(detailTodoViewModelProvider.notifier).setId(todo.uid);
                 return DetailTodoPage();
               }));
         },
