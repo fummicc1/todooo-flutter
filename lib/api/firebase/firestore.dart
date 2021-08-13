@@ -26,13 +26,23 @@ class FirestoreClient {
     return _firestore.collection(collectionName).get();
   }
 
-  Future<QuerySnapshot> getCollectionWithQuery(
+  Future<QuerySnapshot> getCollectionWithEqualQuery(
       {required String collectionName,
       required String fieldName,
       required dynamic fieldValue}) {
     return _firestore
         .collection(collectionName)
         .where(fieldName, isEqualTo: fieldValue)
+        .get();
+  }
+
+  Future<QuerySnapshot> getCollectionWithIncludeQuery(
+      {required String collectionName,
+      required String fieldName,
+      required dynamic includeValue}) {
+    return _firestore
+        .collection(collectionName)
+        .where(fieldName, arrayContains: includeValue)
         .get();
   }
 
@@ -51,13 +61,23 @@ class FirestoreClient {
     return _firestore.collection(collectionName).snapshots();
   }
 
-  Stream<QuerySnapshot> listenCollectionWithQuery(
+  Stream<QuerySnapshot> listenCollectionWithEqualQuery(
       {required String collectionName,
       required String fieldName,
       required dynamic fieldValue}) {
     return _firestore
         .collection(collectionName)
         .where(fieldName, isEqualTo: fieldValue)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> listenCollectionWithIncludeQuery(
+      {required String collectionName,
+      required String fieldName,
+      required dynamic includeValue}) {
+    return _firestore
+        .collection(collectionName)
+        .where(fieldName, arrayContains: includeValue)
         .snapshots();
   }
 
@@ -130,10 +150,18 @@ class FirestoreClient {
       String? uid}) async {
     final document;
     if (uid != null) {
-      document = _firestore.collection(collectionName).doc(documentName).collection(subCollectionName).doc(uid);
+      document = _firestore
+          .collection(collectionName)
+          .doc(documentName)
+          .collection(subCollectionName)
+          .doc(uid);
       ;
     } else {
-      document = _firestore.collection(collectionName).doc(documentName).collection(subCollectionName).doc();
+      document = _firestore
+          .collection(collectionName)
+          .doc(documentName)
+          .collection(subCollectionName)
+          .doc();
     }
     data["uid"] = document.id;
     try {

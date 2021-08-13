@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
-enum Deadline { today, tomorrow }
+enum Deadline { today, tomorrow, deatail }
 
 class ToDo {
   String? uid;
   String content;
   String memo;
-  String deadline;
-  final DateTime createDate;
+  DateTime deadlineDate;
   final String owner;
   bool isDone;
   int? notificationDateTimeFromEpoch;
@@ -19,8 +19,7 @@ class ToDo {
       {String? this.uid,
       required this.content,
       this.memo = "",
-      required this.deadline,
-      required this.createDate,
+      required this.deadlineDate,
       required this.isDone,
       required this.owner,
       required this.notificationDateTimeFromEpoch,
@@ -28,29 +27,14 @@ class ToDo {
 
   bool get isOver {
     final current = DateTime.now();
-    if (deadline != "today") {
-      if (current.day > createDate.day) {
-        return true;
-      } else {
-        return false;
-      }
-    } else if (deadline == "tomorrow") {
-      if (current.day > createDate.day + 1) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
+    return current.millisecondsSinceEpoch > deadlineDate.millisecondsSinceEpoch;
   }
 
   factory ToDo.fromData(Map<String, dynamic> data) {
     final uid = data["uid"] ?? "";
     final content = data["content"];
     final memo = data["memo"];
-    final deadline = data["deadline"];
-    final createDate = (data["create_date"] as Timestamp).toDate();
+    final deadlineDate = (data["deadline_date"] as Timestamp).toDate();
     final isDone = data["is_done"];
     final owner = data["owner"];
     final notificationDateTimeFromEpoch =
@@ -61,8 +45,7 @@ class ToDo {
         uid: uid,
         content: content,
         memo: memo,
-        deadline: deadline,
-        createDate: createDate,
+        deadlineDate: deadlineDate,
         isDone: isDone,
         owner: owner,
         notificationDateTimeFromEpoch: notificationDateTimeFromEpoch,
@@ -73,8 +56,7 @@ class ToDo {
         "uid": uid,
         "content": content,
         "memo": memo,
-        "deadline": deadline,
-        "create_date": createDate,
+        "deadline_date": deadlineDate,
         "is_done": isDone,
         "owner": owner,
         "notification_date_time_from_epoch": notificationDateTimeFromEpoch,
@@ -82,13 +64,16 @@ class ToDo {
       };
 
   String get deadlineText {
-    if (deadline == "everyday") {
-      return "毎日続けて";
-    } else if (deadline == "tomorrow") {
-      return "明日までに";
-    } else if (deadline == "today") {
-      return "今日までに";
+    final year = deadlineDate.year;
+    final currentYear = DateTime.now().year;
+
+    final DateFormat dateFormat;
+
+    if (year == currentYear) {
+      dateFormat = DateFormat.MMMd().add_Hm();
+    } else {
+      dateFormat = DateFormat.yMd().add_Hm();
     }
-    return "";
+    return dateFormat.format(deadlineDate);
   }
 }

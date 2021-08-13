@@ -18,13 +18,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   int _selectedIndex = 0;
 
-  final List<Widget> pages = [
-    ToDoListPage(),
-    SettingPage()
-  ];
+  final List<Widget> pages = [ToDoListPage(), SettingPage()];
 
   @override
   Widget build(BuildContext context) {
